@@ -27,7 +27,7 @@
     }
   },
   "require": {
-    "php": "^8.2|^8.3",
+    "php": "^8.2|^8.3|^8.4",
     "arcanedev/log-viewer": "^10.0",
     "eightynine/filament-advanced-widgets": "^3.0",
     "owenvoke/blade-fontawesome": "^2.9",
