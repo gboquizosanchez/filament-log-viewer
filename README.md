@@ -39,7 +39,7 @@ php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogView
 
 ## Screenshots 💄
 
-![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/main/arts/panel.png)
+![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
 
 ## Problems? 🚨
 
