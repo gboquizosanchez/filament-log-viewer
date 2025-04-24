@@ -1,6 +1,6 @@
 # Filament Log Viewer
 
-[![Latest Stable Version](https://poser.pugx.org/gboquizosanchez/version.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
+[![Latest Stable Version](https://poser.pugx.org/gboquizosanchez/filament-log-viewer/version.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 [![License](https://poser.pugx.org/gboquizosanchez/filament-log-viewer/license.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 [![Downloads](https://poser.pugx.org/gboquizosanchez/filament-log-viewer/d/total.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 
