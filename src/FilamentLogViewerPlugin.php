@@ -5,6 +5,9 @@ namespace Boquizo\FilamentLogViewer;
 use Arcanedev\LogViewer\Entities\Log;
 use Arcanedev\LogViewer\LogViewer;
 use Arcanedev\LogViewer\Tables\StatsTable;
+use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
+use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
+use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Closure;
@@ -170,18 +173,21 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getLogViewerRecord(): Log
     {
-        return $this->logViewer->get(
+        return ExtractLogByDateAction::execute(
             Session::get('filament-log-viewer-record'),
         );
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function deleteLog(string $date): bool
     {
-        return $this->logViewer->delete($date);
+        return DeleteLogAction::execute($date);
     }
 
     public function downloadLog(string $date): BinaryFileResponse
     {
-        return $this->logViewer->download($date);
+        return DownloadLogAction::execute($date);
     }
 }
