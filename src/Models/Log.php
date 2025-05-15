@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Models;
 
-use Arcanedev\LogViewer\Entities\LogEntry;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
@@ -52,20 +51,8 @@ class Log extends Model
      */
     public function getRows(): array
     {
-        $rows = FilamentLogViewerPlugin::get()
-            ->getLogViewerRecord();
-
-        return $rows->entries()
-            ->map(function (LogEntry $entry): array {
-                return [
-                    'env' => $entry->env,
-                    'level' => $entry->level,
-                    'datetime' => $entry->datetime,
-                    'header' => $entry->header,
-                    'stack' => $entry->stack(),
-                    'context' => $entry->context(),
-                ];
-            })
-            ->all() ?? [];
+        return FilamentLogViewerPlugin::get()
+            ->getLogViewerRecord()
+            ->toModel() ?? [];
     }
 }

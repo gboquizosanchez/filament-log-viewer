@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Widgets;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Overrides\Stat;
+use Boquizo\FilamentLogViewer\Utils\Level;
 use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget as BaseWidget;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
@@ -45,8 +46,8 @@ class IconsWidget extends BaseWidget
         $statsTable = FilamentLogViewerPlugin::get()
             ->getViewerStatsTable();
 
-        $levels = $statsTable->footer();
-        $names = $statsTable->header();
+        $levels = $statsTable->footer;
+        $names = $this->names();
         $percents = [];
         $all = Arr::get($levels, 'all');
 
@@ -60,5 +61,12 @@ class IconsWidget extends BaseWidget
         }
 
         return $percents;
+    }
+
+    private function names(): array
+    {
+        return array_merge_recursive([
+            'date' => __('filament-log-viewer::log.table.columns.date.label'),
+        ], Level::options());
     }
 }

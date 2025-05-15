@@ -63,7 +63,7 @@ class LogStat extends Model
     {
         $rows = FilamentLogViewerPlugin::get()
             ->getViewerStatsTable()
-            ->rows();
+            ->rows;
 
         return array_values($rows) ?? [];
     }

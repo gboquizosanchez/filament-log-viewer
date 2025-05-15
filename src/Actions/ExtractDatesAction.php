@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
+use Boquizo\FilamentLogViewer\Utils\Parser;
 use Illuminate\Support\Facades\Config;
 
 class ExtractDatesAction
@@ -34,14 +35,9 @@ class ExtractDatesAction
     private function extractDates(array $files): array
     {
         return array_map(
-            fn (string $file): string => $this->extractDate(basename($file)),
+            static fn (string $file): string => Parser::extractDate(basename($file)),
             $files,
         );
-    }
-
-    private function extractDate(string $date): string
-    {
-        return preg_replace("/.*(\\d{4}(-\\d{2}){2}).*/", '$1', $date);
     }
 
     /** @return list<string> */
