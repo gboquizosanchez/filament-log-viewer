@@ -8,6 +8,7 @@ use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Utils\Icons;
+use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Actions;
 use Filament\Actions\DeleteAction;
 use Filament\Infolists\Components\TextEntry;
@@ -60,7 +61,7 @@ class ViewLog extends Page implements HasTable
                 Group::make('level')
                     ->label(__('filament-log-viewer::log.table.columns.level.label'))
                     ->getTitleFromRecordUsing(
-                        fn (Log $record): string => __(ucfirst($record->level))
+                        fn (Log $record): string => Level::from($record->level)->label()
                     ),
             ])
             ->paginationPageOptions(
@@ -81,7 +82,7 @@ class ViewLog extends Page implements HasTable
                     ->sortable(),
                 Tables\Columns\TextColumn::make('level')
                     ->alignCenter()
-                    ->tooltip(fn (string $state): string => __(ucfirst($state)))
+                    ->tooltip(fn (string $state): string => Level::from($state)->label())
                     ->label(__('filament-log-viewer::log.table.columns.level.label'))
                     ->formatStateUsing(
                         fn (string $state): HtmlString => Icons::get($state, IconSize::Medium),
