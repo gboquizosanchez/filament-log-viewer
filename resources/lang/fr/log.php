@@ -51,4 +51,15 @@ return [
             'updated_at' => 'Mis à jour le',
         ],
     ],
+    'levels' => [
+        'all' => 'Tous',
+        'emergency' => 'Urgent',
+        'alert' => 'Alerte',
+        'critical' => 'Critique',
+        'error' => 'Erreur',
+        'warning' => 'Avertissement',
+        'notice' => 'Avis',
+        'info' => 'Info',
+        'debug' => 'Débogage',
+    ],
 ];
