@@ -9,7 +9,7 @@
             <div class="text-sm font-medium text-gray-900 dark:text-gray-100 w-36 me-3">
                 {{ __('filament-log-viewer::log.table.detail.file_path') }}:
             </div>
-            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $data->getPath() }}</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">{{ $data->path() }}</div>
         </div>
 
         <div class="flex flex-col lg:flex-row justify-between py-3">

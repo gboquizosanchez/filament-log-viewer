@@ -2,14 +2,14 @@
 
 namespace Boquizo\FilamentLogViewer;
 
-use Arcanedev\LogViewer\Entities\Log;
-use Arcanedev\LogViewer\LogViewer;
-use Arcanedev\LogViewer\Tables\StatsTable;
 use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
 use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
+use Boquizo\FilamentLogViewer\Entities\Log;
+use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
+use Boquizo\FilamentLogViewer\Tables\StatsTable;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
@@ -38,8 +38,6 @@ class FilamentLogViewerPlugin implements Plugin
 
     protected string|Closure $slug = 'logs';
 
-    protected LogViewer $logViewer;
-
     public function getId(): string
     {
         return 'filament-laravel-log';
@@ -66,7 +64,7 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        $this->logViewer = app(LogViewer::class);
+        //
     }
 
     public function authorize(bool|Closure $callback = true): static
@@ -168,7 +166,7 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getViewerStatsTable(): StatsTable
     {
-        return $this->logViewer->statsTable();
+        return StatsTable::make((new LogCollection())->stats());
     }
 
     public function getLogViewerRecord(): Log

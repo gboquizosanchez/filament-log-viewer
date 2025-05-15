@@ -16,11 +16,7 @@ class ExtractLogPathAction
 
     public function __invoke(string $date): false|string
     {
-        $prefix = Config::string('log-viewer.pattern.prefix', 'laravel-');
-        $extension = Config::string('log-viewer.pattern.extension', '.log');
-        $storagePath = Config::string('log-viewer.storage_path', storage_path('logs'));
-
-        $path = $storagePath.DIRECTORY_SEPARATOR.$prefix.$date.$extension;
+        $path = $this->path($date);
 
         if ( ! file_exists($path)) {
             throw new RuntimeException(
@@ -29,5 +25,14 @@ class ExtractLogPathAction
         }
 
         return realpath($path);
+    }
+
+    private function path(string $date): string
+    {
+        $prefix = Config::string('log-viewer.pattern.prefix', 'laravel-');
+        $extension = Config::string('log-viewer.pattern.extension', '.log');
+        $storagePath = Config::string('log-viewer.storage_path', storage_path('logs'));
+
+        return $storagePath.DIRECTORY_SEPARATOR.$prefix.$date.$extension;
     }
 }
