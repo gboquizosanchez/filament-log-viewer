@@ -11,7 +11,6 @@
                 <div class="2xl:w-2/3 w-full">
                     @livewire(\Boquizo\FilamentLogViewer\Widgets\IconsWidget::class)
                 </div>
-
             </div>
         </div>
     @endif
