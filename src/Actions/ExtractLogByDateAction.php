@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
-use Arcanedev\LogViewer\Entities\Log;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Filesystem\Filesystem;
+use Boquizo\FilamentLogViewer\Entities\Log;
 use RuntimeException;
 
 class ExtractLogByDateAction
@@ -21,22 +19,9 @@ class ExtractLogByDateAction
         $dates = ExtractDatesAction::execute();
 
         if (!isset($dates[$date])) {
-            throw new \RuntimeException("Log not found in this date [{$date}]");
+            throw new RuntimeException("Log not found in this date [{$date}]");
         }
 
-        return new Log($date, $dates[$date], $this->read($date));
-    }
-
-    private function read(string $date): string
-    {
-        try {
-            $log = (new Filesystem())->get(
-                ExtractLogPathAction::execute($date)
-            );
-        } catch (FileNotFoundException $e) {
-            throw new RuntimeException($e->getMessage());
-        }
-
-        return $log;
+        return new Log($date, $dates[$date], ReadLogAction::execute($date));
     }
 }
