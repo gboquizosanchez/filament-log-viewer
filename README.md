@@ -43,7 +43,6 @@ php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogView
 
 ### PHP dependencies 📦
 
-- Arcanedev Log Viewer [![Latest Stable Version](https://img.shields.io/badge/stable-10.1.0-blue)](https://packagist.org/packages/arcanedev/log-viewer)
 - Calebporzio Sushi [![Latest Stable Version](https://img.shields.io/badge/stable-v2.5.3-blue)](https://packagist.org/packages/calebporzio/sushi)
 - Eightynine Filament Advanced Widgets [![Latest Stable Version](https://img.shields.io/badge/stable-3.0.1-blue)](https://packagist.org/packages/eightynine/filament-advanced-widgets)
 - Owenvoke Blade Fontawesome [![Latest Stable Version](https://img.shields.io/badge/stable-v2.9.1-blue)](https://packagist.org/packages/owenvoke/blade-fontawesome)
