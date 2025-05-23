@@ -7,7 +7,7 @@ return [
         'title' => 'Visualizador de logs',
     ],
     'show' => [
-        'title' => 'Ver o log :log',
+        'title' => 'Ver log :log',
     ],
     'navigation' => [
         'group' => 'Logs',
@@ -31,10 +31,10 @@ return [
                 'label' => 'Ver',
             ],
             'download' => [
-                'label' => 'Baixar',
+                'label' => 'Baixar log :log',
             ],
             'delete' => [
-                'label' => 'Excluir :record',
+                'label' => 'Excluir log :log',
                 'success' => 'Log excluído com sucesso',
                 'error' => 'Erro ao excluir o log',
             ],
