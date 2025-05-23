@@ -7,6 +7,7 @@ namespace Boquizo\FilamentLogViewer\Pages;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Models\LogStat;
+use Boquizo\FilamentLogViewer\Utils\Decoder;
 use Boquizo\FilamentLogViewer\Utils\Icons;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Actions;
@@ -101,11 +102,17 @@ class ViewLog extends Page implements HasTable
                     ->extraAttributes([
                         'class' => 'hidden',
                     ]),
+                Tables\Columns\TextColumn::make('context')
+                    ->searchable()
+                    ->label('')
+                    ->extraAttributes([
+                        'class' => 'hidden',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\Action::make('stack')
                     ->button()
-                    ->hidden(fn (Log $record): bool => empty($record->stack) || empty($record->context))
+                    ->hidden(fn (Log $record): bool => empty($record->stack))
                     ->icon('fas-toggle-on')
                     ->color('gray')
                     ->infolist([
@@ -123,6 +130,36 @@ class ViewLog extends Page implements HasTable
                                     '/(.*vendor.*$)/m',
                                     '<span class="text-gray-400">$1</span>',
                                     nl2br($record->stack),
+                                ),
+                            ),
+                    ])
+                    ->modalHeading('')
+                    ->modalWidth(MaxWidth::ScreenExtraLarge)
+                    ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
+                    ->modalSubmitAction(false),
+                Tables\Actions\Action::make('context')
+                    ->button()
+                    ->hidden(fn(Log $record): bool => $record->context === '[]')
+                    ->icon('fas-toggle-on')
+                    ->color('gray')
+                    ->infolist([
+                        TextEntry::make('context')
+                            ->hiddenLabel()
+                            ->fontFamily(FontFamily::Mono)
+                            ->html()
+                            ->extraAttributes([
+                                'class' => 'overflow-auto',
+                                'style' => 'max-height: 35rem;',
+                            ])
+                            ->hidden(fn(Log $record): bool => empty($record->context))
+                            ->formatStateUsing(
+                                fn(Log $record): string
+                                    => sprintf(
+                                    '<pre>%s</pre>',
+                                    json_encode(
+                                        Decoder::decode($record->context),
+                                        JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
+                                    ),
                                 ),
                             ),
                     ])
