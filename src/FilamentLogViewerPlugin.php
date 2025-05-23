@@ -152,12 +152,20 @@ class FilamentLogViewerPlugin implements Plugin
             ?? __('filament-log-viewer::log.navigation.label');
     }
 
-    public function slug(string|Closure $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
+    /**
+     * Commented until the issue is fixed in filamentphp/filament.
+     *
+     * It doesn't allow changing the plugin slug.
+     *
+     * @see https://github.com/filamentphp/filament/issues/16037
+     * @see https://github.com/gboquizosanchez/filament-log-viewer/issues/1
+     */
+    //    public function slug(string|Closure $slug): static
+    //    {
+    //        $this->slug = $slug;
+    //
+    //        return $this;
+    //    }
 
     public function getSlug(): string
     {
