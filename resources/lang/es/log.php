@@ -31,10 +31,10 @@ return [
                 'label' => 'Ver',
             ],
             'download' => [
-                'label' => 'Descargar',
+                'label' => 'Descargar el log del :log',
             ],
             'delete' => [
-                'label' => 'Eliminar :record',
+                'label' => 'Eliminar el log del :log',
                 'success' => 'Log eliminado con éxito',
                 'error' => 'Error al eliminar el log',
             ],
