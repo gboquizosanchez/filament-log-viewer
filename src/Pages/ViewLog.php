@@ -199,9 +199,15 @@ class ViewLog extends Page implements HasTable
         return FilamentLogViewerPlugin::get()->isAuthorized();
     }
 
+    /**
+     * Changed to ->make() instead of ->get() until filamentphp/filament fix the issue.
+     *
+     * @see https://github.com/filamentphp/filament/issues/16037
+     * @see https://github.com/gboquizosanchez/filament-log-viewer/issues/1
+     */
     public static function getSlug(): string
     {
-        return FilamentLogViewerPlugin::get()->getSlug() . '/{record}';
+        return FilamentLogViewerPlugin::make()->getSlug() . '/{record}';
     }
 
     public function mount(string $record): void

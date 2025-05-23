@@ -125,9 +125,15 @@ class ListLogs extends Page implements HasTable
         return FilamentLogViewerPlugin::get()->getNavigationLabel();
     }
 
+    /**
+     * Changed to ->make() instead of ->get() until filamentphp/filament fix the issue.
+     *
+     * @see https://github.com/filamentphp/filament/issues/16037
+     * @see https://github.com/gboquizosanchez/filament-log-viewer/issues/1
+     */
     public static function getSlug(): string
     {
-        return FilamentLogViewerPlugin::get()->getSlug();
+        return FilamentLogViewerPlugin::make()->getSlug();
     }
 
     public static function canAccess(): bool
