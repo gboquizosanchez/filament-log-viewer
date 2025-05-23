@@ -32,6 +32,10 @@ return [
             ],
             'download' => [
                 'label' => 'Scarica',
+                'bulk' => [
+                    'label' => 'Scarica i log selezionati',
+                    'error' => 'Errore durante il download dei log',
+                ],
             ],
             'delete' => [
                 'label' => 'Elimina :record',

@@ -15,9 +15,8 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ListLogs extends Page implements HasTable
@@ -108,6 +107,26 @@ class ListLogs extends Page implements HasTable
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('download')
+                        ->label(__('filament-log-viewer::log.table.actions.download.bulk.label'))
+                        ->color('success')
+                        ->icon('fas-download')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('filament-log-viewer::log.table.actions.download.bulk.label'))
+                        ->action(function (Tables\Actions\BulkAction $action, Collection $records): BinaryFileResponse {
+                            try {
+                                return FilamentLogViewerPlugin::get()->downloadLogs(
+                                    $records->pluck('date')->all(),
+                                );
+                            } catch (RuntimeException) {
+                                Notification::make()
+                                    ->title(__('filament-log-viewer::log.table.actions.download.bulk.error'))
+                                    ->danger()
+                                    ->send();
+
+                                throw new RuntimeException();
+                            }
+                        }),
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading(__('filament-log-viewer::log.table.actions.delete.bulk.label'))
                         ->action(function (Tables\Actions\DeleteBulkAction $action): void {

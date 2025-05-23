@@ -32,6 +32,10 @@ return [
             ],
             'download' => [
                 'label' => 'Download',
+                'bulk' => [
+                    'label' => 'Download logs',
+                    'error' => 'Error downloading the logs',
+                ],
             ],
             'delete' => [
                 'label' => 'Delete :record',
