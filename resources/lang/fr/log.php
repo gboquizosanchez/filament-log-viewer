@@ -37,6 +37,9 @@ return [
                 'label' => 'Supprimer :record',
                 'success' => 'Log supprimé avec succès',
                 'error' => 'Erreur lors de la suppression du log',
+                'bulk' => [
+                    'label' => 'Supprimer les logs sélectionnés',
+                ],
             ],
             'close' => [
                 'label' => 'Retour',

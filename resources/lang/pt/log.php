@@ -37,6 +37,9 @@ return [
                 'label' => 'Excluir :record',
                 'success' => 'Log excluído com sucesso',
                 'error' => 'Erro ao excluir o log',
+                'bulk' => [
+                    'label' => 'Excluir logs selecionados',
+                ],
             ],
             'close' => [
                 'label' => 'Voltar',

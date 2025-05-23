@@ -14,6 +14,9 @@ use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -102,6 +105,22 @@ class ListLogs extends Page implements HasTable
                                 ->danger()
                                 ->send();
                     }),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->modalHeading(__('filament-log-viewer::log.table.actions.delete.bulk.label'))
+                        ->action(function (Tables\Actions\DeleteBulkAction $action): void {
+                            $action->process(static function (Collection $records): void {
+                                $records->each(
+                                    fn (LogStat $record): bool => FilamentLogViewerPlugin::get()
+                                        ->deleteLog($record->date)
+                                );
+                            });
+
+                            $action->success();
+                        }),
+                ]),
             ]);
     }
 

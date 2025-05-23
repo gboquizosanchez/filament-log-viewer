@@ -37,6 +37,9 @@ return [
                 'label' => 'Delete :record',
                 'success' => 'Log deleted successfully',
                 'error' => 'Error deleting the log',
+                'bulk' => [
+                    'label' => 'Delete selected logs',
+                ],
             ],
             'close' => [
                 'label' => 'Back',
