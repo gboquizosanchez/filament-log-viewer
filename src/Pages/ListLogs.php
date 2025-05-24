@@ -15,6 +15,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -79,6 +80,11 @@ class ListLogs extends Page implements HasTable
                     ->hiddenLabel()
                     ->button()
                     ->label(__('filament-log-viewer::log.table.actions.download.label'))
+                    ->modalHeading(
+                        fn (LogStat $record) => __('filament-log-viewer::log.table.actions.download.label', [
+                            'log' => Carbon::parse($record->date)->isoFormat('LL'),
+                        ]),
+                    )
                     ->color('success')
                     ->icon('fas-download')
                     ->requiresConfirmation()
@@ -90,6 +96,11 @@ class ListLogs extends Page implements HasTable
                     ->hiddenLabel()
                     ->button()
                     ->label(__('filament-log-viewer::log.table.actions.delete.label'))
+                    ->modalHeading(
+                        fn (LogStat $record) => __('filament-log-viewer::log.table.actions.delete.label', [
+                            'log' => Carbon::parse($record->date)->isoFormat('LL'),
+                        ]),
+                    )
                     ->color('danger')
                     ->icon('fas-trash')
                     ->requiresConfirmation()

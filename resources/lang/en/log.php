@@ -31,14 +31,14 @@ return [
                 'label' => 'View',
             ],
             'download' => [
-                'label' => 'Download',
+                'label' => 'Download log :log',
                 'bulk' => [
                     'label' => 'Download logs',
                     'error' => 'Error downloading the logs',
                 ],
             ],
             'delete' => [
-                'label' => 'Delete :record',
+                'label' => 'Delete log :log',
                 'success' => 'Log deleted successfully',
                 'error' => 'Error deleting the log',
                 'bulk' => [

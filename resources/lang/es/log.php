@@ -31,14 +31,14 @@ return [
                 'label' => 'Ver',
             ],
             'download' => [
-                'label' => 'Descargar',
+                'label' => 'Descargar el log del :log',
                 'bulk' => [
                     'label' => 'Descargar seleccionados',
                     'error' => 'Error al descargar los logs',
                 ],
             ],
             'delete' => [
-                'label' => 'Eliminar :record',
+                'label' => 'Eliminar el log del :log',
                 'success' => 'Log eliminado con éxito',
                 'error' => 'Error al eliminar el log',
                 'bulk' => [
