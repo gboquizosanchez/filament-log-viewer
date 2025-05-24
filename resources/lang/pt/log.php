@@ -32,11 +32,18 @@ return [
             ],
             'download' => [
                 'label' => 'Baixar log :log',
+                'bulk' => [
+                    'label' => 'Baixar selecionados',
+                    'error' => 'Erro ao baixar os logs',
+                ],
             ],
             'delete' => [
                 'label' => 'Excluir log :log',
                 'success' => 'Log excluído com sucesso',
                 'error' => 'Erro ao excluir o log',
+                'bulk' => [
+                    'label' => 'Excluir logs selecionados',
+                ],
             ],
             'close' => [
                 'label' => 'Voltar',

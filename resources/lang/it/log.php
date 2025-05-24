@@ -32,11 +32,18 @@ return [
             ],
             'download' => [
                 'label' => 'Scarica il log :log',
+                'bulk' => [
+                    'label' => 'Scarica i log selezionati',
+                    'error' => 'Errore durante il download dei log',
+                ],
             ],
             'delete' => [
                 'label' => 'Elimina il log :log',
                 'success' => 'Log eliminato con successo',
                 'error' => 'Errore durante l\'eliminazione del log',
+                'bulk' => [
+                    'label' => 'Elimina i log selezionati',
+                ],
             ],
             'close' => [
                 'label' => 'Indietro',

@@ -4,6 +4,7 @@ namespace Boquizo\FilamentLogViewer;
 
 use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
+use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
 use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
@@ -195,5 +196,10 @@ class FilamentLogViewerPlugin implements Plugin
     public function downloadLog(string $date): BinaryFileResponse
     {
         return DownloadLogAction::execute($date);
+    }
+
+    public function downloadLogs(array $files): BinaryFileResponse
+    {
+        return DownloadZipAction::execute($files);
     }
 }
