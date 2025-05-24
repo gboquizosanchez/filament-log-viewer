@@ -389,7 +389,7 @@ class ViewLog extends Page implements HasTable
     public function getTitle(): string
     {
         return __('filament-log-viewer::log.show.title', [
-            'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+            'log' => Carbon::parse($this->record->date ?? null)->isoFormat('LL'),
         ]);
     }
 }

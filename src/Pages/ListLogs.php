@@ -174,6 +174,11 @@ class ListLogs extends Page implements HasTable
         return FilamentLogViewerPlugin::get()->getNavigationLabel();
     }
 
+    public static function getCluster(): ?string
+    {
+        return Config::get('filament-log-viewer.resource.cluster');
+    }
+
     /**
      * Changed to ->make() instead of ->get() until filamentphp/filament fix the issue.
      *
