@@ -29,9 +29,9 @@ class ExtractLogPathAction
 
     private function path(string $date): string
     {
-        $prefix = Config::string('log-viewer.pattern.prefix', 'laravel-');
-        $extension = Config::string('log-viewer.pattern.extension', '.log');
-        $storagePath = Config::string('log-viewer.storage_path', storage_path('logs'));
+        $prefix = Config::string('filament-log-viewer.pattern.prefix', 'laravel-');
+        $extension = Config::string('filament-log-viewer.pattern.extension', '.log');
+        $storagePath = Config::string('filament-log-viewer.storage_path', storage_path('logs'));
 
         return $storagePath.DIRECTORY_SEPARATOR.$prefix.$date.$extension;
     }
