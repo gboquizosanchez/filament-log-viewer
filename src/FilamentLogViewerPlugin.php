@@ -16,6 +16,7 @@ use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -36,8 +37,6 @@ class FilamentLogViewerPlugin implements Plugin
     protected string|Closure $navigationIcon = 'heroicon-o-document-text';
 
     protected string|Closure|null $navigationLabel = null;
-
-    protected string|Closure $slug = 'logs';
 
     public function getId(): string
     {
@@ -153,24 +152,9 @@ class FilamentLogViewerPlugin implements Plugin
             ?? __('filament-log-viewer::log.navigation.label');
     }
 
-    /**
-     * Commented until the issue is fixed in filamentphp/filament.
-     *
-     * It doesn't allow changing the plugin slug.
-     *
-     * @see https://github.com/filamentphp/filament/issues/16037
-     * @see https://github.com/gboquizosanchez/filament-log-viewer/issues/1
-     */
-    //    public function slug(string|Closure $slug): static
-    //    {
-    //        $this->slug = $slug;
-    //
-    //        return $this;
-    //    }
-
     public function getSlug(): string
     {
-        return $this->evaluate($this->slug);
+        return Config::string('filament-log-viewer.resource.slug', 'logs');
     }
 
     public function getViewerStatsTable(): StatsTable
