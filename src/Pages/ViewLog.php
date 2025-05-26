@@ -243,7 +243,9 @@ class ViewLog extends Page implements HasTable
 
     public static function getSlug(): string
     {
-        return FilamentLogViewerPlugin::get()->getSlug() . '/{record}';
+        $slug = Config::string('filament-log-viewer.resource.slug', 'logs');
+
+        return "{$slug}/{record}";
     }
 
     public function mount(string $record): void
