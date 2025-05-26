@@ -181,7 +181,7 @@ class ListLogs extends Page implements HasTable
 
     public static function getSlug(): string
     {
-        return FilamentLogViewerPlugin::get()->getSlug();
+        return Config::string('filament-log-viewer.resource.slug', 'logs');
     }
 
     public static function canAccess(): bool
