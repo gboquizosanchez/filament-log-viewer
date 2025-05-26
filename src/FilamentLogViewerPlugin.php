@@ -16,7 +16,6 @@ use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -150,11 +149,6 @@ class FilamentLogViewerPlugin implements Plugin
     {
         return $this->evaluate($this->navigationLabel)
             ?? __('filament-log-viewer::log.navigation.label');
-    }
-
-    public function getSlug(): string
-    {
-        return Config::string('filament-log-viewer.resource.slug', 'logs');
     }
 
     public function getViewerStatsTable(): StatsTable
