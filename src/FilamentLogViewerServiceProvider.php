@@ -4,6 +4,9 @@ namespace Boquizo\FilamentLogViewer;
 
 use Boquizo\FilamentLogViewer\Widgets\IconsWidget;
 use Boquizo\FilamentLogViewer\Widgets\StatsOverviewWidget;
+use Illuminate\Config\Repository;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -34,11 +37,30 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath('/../resources/views'))) {
             $package->hasViews(static::$viewNamespace);
         }
+
+        if (version_compare(Application::VERSION, '11.0.0', '<')) {
+            $this->polyfills();
+        }
     }
 
     public function packageBooted(): void
     {
         Livewire::component('stats-overview-widget', StatsOverviewWidget::class);
         Livewire::component('icons-widget', IconsWidget::class);
+    }
+
+    public function polyfills(): void
+    {
+        Repository::macro('string', function (string $key, mixed $default = null): string {
+            $value = $this->get($key, $default);
+
+            return (string) Str::of($value);
+        });
+
+        Repository::macro('array', function (string $key, array $default = []): array {
+            $value = $this->get($key, $default);
+
+            return is_array($value) ? $value : (array) $value;
+        });
     }
 }
