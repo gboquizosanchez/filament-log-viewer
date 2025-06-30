@@ -37,6 +37,95 @@ You can also publish the configuration file to customize the package:
 php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogViewerServiceProvider"
 ```
 
+### Others configurations
+
+
+```php
+->plugins([
+    \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
+        ->navigationGroup('System')
+        ->navigationSort(2)
+        ->navigationIcon('heroicon-s-document-text')
+        ->navigationLabel('Log Viewer')
+        ->authorize(fn() => auth()->user()->can('view-logs')),
+    // Other plugins
+])
+```
+
+### Custom Pages Configuration
+
+You can customize the plugin pages by extending the base classes:
+
+```php
+// app/Filament/Pages/CustomListLogs.php
+<?php
+
+namespace App\Filament\Pages;
+
+use Boquizo\FilamentLogViewer\Pages\ListLogs as BaseListLogs;
+use Filament\Tables\Table;
+
+class CustomListLogs extends BaseListLogs
+{
+    protected static ?string $navigationLabel = 'Application Logs';
+    
+    protected static ?string $navigationGroup = 'Monitoring';
+    
+    public function table(Table $table): Table
+    {
+        return parent::table($table)
+            ->defaultPaginationPageOption(25)
+            ->poll('30s'); // Auto-refresh every 30 seconds
+    }
+}
+```
+
+```php
+// app/Filament/Pages/CustomViewLog.php
+<?php
+
+namespace App\Filament\Pages;
+
+use Boquizo\FilamentLogViewer\Pages\ViewLog as BaseViewLog;
+use Filament\Actions\Action;
+
+class CustomViewLog extends BaseViewLog
+{
+    protected function getHeaderActions(): array
+    {
+        return array_merge(parent::getHeaderActions(), [
+            Action::make('export')
+                ->label('Export to CSV')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->action(fn() => $this->exportToCsv()),
+        ]);
+    }
+    
+    private function exportToCsv(): void
+    {
+        // Custom export logic
+    }
+}
+```
+
+Then register your custom pages in the plugin configuration:
+
+```php
+->plugins([
+    \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
+        ->listLogs(\App\Filament\Pages\CustomListLogs::class)
+        ->viewLog(\App\Filament\Pages\CustomViewLog::class)
+        ->navigationGroup('System')
+        ->navigationSort(2)
+        ->navigationIcon('heroicon-s-document-text')
+        ->navigationLabel('System Logs')
+        ->authorize(function () {
+            return auth()->user()->hasAnyRole(['admin', 'developer']);
+        }),
+    // Other plugins like FilamentEmailPlugin, etc.
+])
+```
+
 ## Screenshots 💄
 
 ![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
@@ -54,8 +143,6 @@ php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogView
 - Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.0-blue)](https://packagist.org/packages/larastan/larastan)
 - Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.13.0-blue)](https://packagist.org/packages/orchestra/testbench)
 - Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.2-blue)](https://packagist.org/packages/pestphp/pest)
-
-
 
 ## Problems? 🚨
 
