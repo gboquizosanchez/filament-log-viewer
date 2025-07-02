@@ -5,6 +5,7 @@ namespace Boquizo\FilamentLogViewer;
 use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
+use Boquizo\FilamentLogViewer\Actions\ExtractDatesAction;
 use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
@@ -17,6 +18,7 @@ use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Session;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FilamentLogViewerPlugin implements Plugin
@@ -158,9 +160,13 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getLogViewerRecord(): Log
     {
-        return ExtractLogByDateAction::execute(
-            Session::get('filament-log-viewer-record'),
-        );
+        $date = Session::get('filament-log-viewer-record');
+
+        if ($date === null) {
+            throw new RuntimeException('No log date found');
+        }
+
+        return ExtractLogByDateAction::execute($date);
     }
 
     /**
