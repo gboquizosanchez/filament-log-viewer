@@ -39,7 +39,7 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'filament-laravel-log';
+        return 'filament-log-viewer';
     }
 
     public static function make(): static
