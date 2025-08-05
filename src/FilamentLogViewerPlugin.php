@@ -2,10 +2,10 @@
 
 namespace Boquizo\FilamentLogViewer;
 
+use BackedEnum;
 use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
-use Boquizo\FilamentLogViewer\Actions\ExtractDatesAction;
 use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
@@ -17,6 +17,7 @@ use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Session;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -35,7 +36,7 @@ class FilamentLogViewerPlugin implements Plugin
 
     protected int|Closure $navigationSort = 1;
 
-    protected string|Closure $navigationIcon = 'heroicon-o-document-text';
+    protected string|Closure|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected string|Closure|null $navigationLabel = null;
 
@@ -128,14 +129,14 @@ class FilamentLogViewerPlugin implements Plugin
         return $this->evaluate($this->navigationSort);
     }
 
-    public function navigationIcon(string|Closure $navigationIcon): static
+    public function navigationIcon(string|Closure|BackedEnum $navigationIcon): static
     {
         $this->navigationIcon = $navigationIcon;
 
         return $this;
     }
 
-    public function getNavigationIcon(): string
+    public function getNavigationIcon(): string|BackedEnum|null
     {
         return $this->evaluate($this->navigationIcon);
     }
