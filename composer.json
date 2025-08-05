@@ -29,7 +29,6 @@
   "require": {
     "ext-zip": "*",
     "php": "^8.3|^8.4",
-    "eightynine/filament-advanced-widgets": "^3.0",
     "owenvoke/blade-fontawesome": "^2.9",
     "calebporzio/sushi": "^2.0"
   },
