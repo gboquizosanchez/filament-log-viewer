@@ -31,9 +31,12 @@ class Icons
     private static function size(IconSize $size): string
     {
         return match ($size) {
-            IconSize::Small => 'w-4 h-4',
-            IconSize::Medium => 'w-5 h-5',
-            IconSize::Large => 'w-8 h-8',
+            IconSize::ExtraSmall => 'fi-icon fi-size-xs',
+            IconSize::Small => 'fi-icon fi-size-sm',
+            IconSize::Medium => 'fi-icon',
+            IconSize::Large => 'fi-icon fi-size-lg',
+            IconSize::ExtraLarge => 'fi-icon fi-size-xl',
+            IconSize::TwoExtraLarge => 'fi-icon fi-size-2xl',
         };
     }
 }

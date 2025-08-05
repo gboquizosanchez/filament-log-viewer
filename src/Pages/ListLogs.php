@@ -9,6 +9,8 @@ use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Utils\Icons;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Panel;
+use Filament\Actions;
 use Filament\Support\Enums\IconSize;
 use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -24,7 +26,7 @@ class ListLogs extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static string $view = 'filament-log-viewer::list-logs';
+    protected string $view = 'filament-log-viewer::list-logs';
 
     public static function table(Table $table): Table
     {
@@ -67,7 +69,7 @@ class ListLogs extends Page implements HasTable
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
+                Actions\ViewAction::make()
                     ->hiddenLabel()
                     ->button()
                     ->icon('fas-search')
@@ -76,7 +78,7 @@ class ListLogs extends Page implements HasTable
                     ]))
                     ->label(__('filament-log-viewer::log.table.actions.view.label'))
                     ->color('info'),
-                Tables\Actions\Action::make('download')
+                Actions\Action::make('download')
                     ->hiddenLabel()
                     ->button()
                     ->label(__('filament-log-viewer::log.table.actions.download.label'))
@@ -92,7 +94,7 @@ class ListLogs extends Page implements HasTable
                         fn (LogStat $record): BinaryFileResponse => FilamentLogViewerPlugin::get()
                             ->downloadLog($record->date)
                     ),
-                Tables\Actions\DeleteAction::make()
+                Actions\DeleteAction::make()
                     ->hiddenLabel()
                     ->button()
                     ->label(__('filament-log-viewer::log.table.actions.delete.label'))
@@ -117,8 +119,8 @@ class ListLogs extends Page implements HasTable
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('download')
+                Actions\BulkActionGroup::make([
+                    Actions\BulkAction::make('download')
                         ->label(__('filament-log-viewer::log.table.actions.download.bulk.label'))
                         ->color('success')
                         ->icon('fas-download')
@@ -138,7 +140,7 @@ class ListLogs extends Page implements HasTable
                                 throw new RuntimeException();
                             }
                         }),
-                    Tables\Actions\DeleteBulkAction::make()
+                    Actions\DeleteBulkAction::make()
                         ->modalHeading(__('filament-log-viewer::log.table.actions.delete.bulk.label'))
                         ->action(function (Tables\Actions\DeleteBulkAction $action): void {
                             $action->process(static function (Collection $records): void {
@@ -179,7 +181,7 @@ class ListLogs extends Page implements HasTable
         return Config::get('filament-log-viewer.resource.cluster');
     }
 
-    public static function getSlug(): string
+    public static function getSlug(?Panel $panel = null): string
     {
         return Config::string('filament-log-viewer.resource.slug', 'logs');
     }

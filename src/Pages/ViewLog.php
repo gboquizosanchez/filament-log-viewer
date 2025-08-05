@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Pages;
 
+use BackedEnum;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Models\LogStat;
@@ -15,11 +16,11 @@ use Filament\Actions\DeleteAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Resources\Components\Tab;
+use Filament\Panel;
 use Filament\Resources\Concerns\HasTabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\IconSize;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -43,9 +44,9 @@ class ViewLog extends Page implements HasTable
     #[Locked]
     public LogStat|string|null $record;
 
-    protected static string $view = 'filament-log-viewer::view-log';
+    protected string $view = 'filament-log-viewer::view-log';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|null|BackedEnum $navigationIcon = 'heroicon-o-document-text';
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -110,7 +111,7 @@ class ViewLog extends Page implements HasTable
                     ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('stack')
+                Actions\Action::make('stack')
                     ->button()
                     ->hidden(fn (Log $record): bool => empty($record->stack))
                     ->icon('fas-toggle-on')
@@ -134,10 +135,10 @@ class ViewLog extends Page implements HasTable
                             ),
                     ])
                     ->modalHeading('')
-                    ->modalWidth(MaxWidth::ScreenExtraLarge)
+                    ->modalWidth('7xl')
                     ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
                     ->modalSubmitAction(false),
-                Tables\Actions\Action::make('context')
+                Actions\Action::make('context')
                     ->button()
                     ->hidden(fn(Log $record): bool => $record->context === '[]')
                     ->icon('fas-toggle-on')
@@ -164,7 +165,7 @@ class ViewLog extends Page implements HasTable
                             ),
                     ])
                     ->modalHeading('')
-                    ->modalWidth(MaxWidth::ScreenExtraLarge)
+                    ->modalWidth('7xl')
                     ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
                     ->modalSubmitAction(false),
             ]);
@@ -241,7 +242,7 @@ class ViewLog extends Page implements HasTable
         return FilamentLogViewerPlugin::get()->isAuthorized();
     }
 
-    public static function getSlug(): string
+    public static function getSlug(?Panel $panel = null): string
     {
         $slug = Config::string('filament-log-viewer.resource.slug', 'logs');
 

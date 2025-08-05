@@ -12,7 +12,7 @@ use Override;
 class StatsOverviewWidget extends ChartWidget
 {
     /** @var array<string, array<string, array<string, bool>>> */
-    protected static ?array $options = [
+    protected ?array $options = [
         'scales' => [
             'x' => [
                 'display' => false,
