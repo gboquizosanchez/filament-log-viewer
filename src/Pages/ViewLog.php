@@ -19,6 +19,7 @@ use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Resources\Concerns\HasTabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\IconSize;
 use Filament\Tables;
@@ -116,7 +117,7 @@ class ViewLog extends Page implements HasTable
                     ->hidden(fn (Log $record): bool => empty($record->stack))
                     ->icon('fas-toggle-on')
                     ->color('gray')
-                    ->infolist([
+                    ->schema([
                         TextEntry::make('stack')
                             ->hiddenLabel()
                             ->fontFamily(FontFamily::Mono)
@@ -168,6 +169,14 @@ class ViewLog extends Page implements HasTable
                     ->modalWidth('7xl')
                     ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
                     ->modalSubmitAction(false),
+            ]);
+    }
+
+    public function content(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                $this->table,
             ]);
     }
 
