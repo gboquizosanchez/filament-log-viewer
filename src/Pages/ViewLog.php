@@ -102,16 +102,16 @@ class ViewLog extends Page implements HasTable
                     ->searchable()
                     ->label('')
                     ->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]),
                 Tables\Columns\TextColumn::make('context')
                     ->searchable()
                     ->label('')
                     ->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]),
             ])
-            ->actions([
+            ->recordActions([
                 Actions\Action::make('stack')
                     ->button()
                     ->hidden(fn (Log $record): bool => empty($record->stack))
@@ -144,7 +144,7 @@ class ViewLog extends Page implements HasTable
                     ->hidden(fn(Log $record): bool => $record->context === '[]')
                     ->icon('fas-toggle-on')
                     ->color('gray')
-                    ->infolist([
+                    ->schema([
                         TextEntry::make('context')
                             ->hiddenLabel()
                             ->fontFamily(FontFamily::Mono)
@@ -176,6 +176,7 @@ class ViewLog extends Page implements HasTable
     {
         return $schema
             ->components([
+                $this->getTabsContentComponent(),
                 $this->table,
             ]);
     }
