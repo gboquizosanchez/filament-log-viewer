@@ -68,7 +68,7 @@ class ListLogs extends Page implements HasTable
                     ->label(Icons::get('debug', IconSize::Small))
                     ->sortable(),
             ])
-            ->actions([
+            ->recordActions([
                 Actions\ViewAction::make()
                     ->hiddenLabel()
                     ->button()
@@ -118,7 +118,7 @@ class ListLogs extends Page implements HasTable
                                 ->send();
                     }),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 Actions\BulkActionGroup::make([
                     Actions\BulkAction::make('download')
                         ->label(__('filament-log-viewer::log.table.actions.download.bulk.label'))
@@ -126,7 +126,7 @@ class ListLogs extends Page implements HasTable
                         ->icon('fas-download')
                         ->requiresConfirmation()
                         ->modalHeading(__('filament-log-viewer::log.table.actions.download.bulk.label'))
-                        ->action(function (Tables\Actions\BulkAction $action, Collection $records): BinaryFileResponse {
+                        ->action(function (Actions\BulkAction $action, Collection $records): BinaryFileResponse {
                             try {
                                 return FilamentLogViewerPlugin::get()->downloadLogs(
                                     $records->pluck('date')->all(),
@@ -142,7 +142,7 @@ class ListLogs extends Page implements HasTable
                         }),
                     Actions\DeleteBulkAction::make()
                         ->modalHeading(__('filament-log-viewer::log.table.actions.delete.bulk.label'))
-                        ->action(function (Tables\Actions\DeleteBulkAction $action): void {
+                        ->action(function (Actions\DeleteBulkAction $action): void {
                             $action->process(static function (Collection $records): void {
                                 $records->each(
                                     fn (LogStat $record): bool => FilamentLogViewerPlugin::get()
