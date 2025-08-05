@@ -285,7 +285,7 @@ class ViewLog extends Page implements HasTable
                 ->badge($this->record->all)
                 ->when($this->record->all === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->icon(Icons::get('all', IconSize::Small)),
@@ -295,7 +295,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('emergency', IconSize::Small))
                 ->when($this->record->emergency === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -307,7 +307,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('alert', IconSize::Small))
                 ->when($this->record->alert === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -319,7 +319,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('critical', IconSize::Small))
                 ->when($this->record->critical === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -331,7 +331,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('error', IconSize::Small))
                 ->when($this->record->error === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -343,7 +343,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('warning', IconSize::Small))
                 ->when($this->record->warning === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -355,7 +355,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('notice', IconSize::Small))
                 ->when($this->record->notice === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -367,7 +367,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('info', IconSize::Small))
                 ->when($this->record->info === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
@@ -379,7 +379,7 @@ class ViewLog extends Page implements HasTable
                 ->icon(Icons::get('debug', IconSize::Small))
                 ->when($this->record->debug === 0, function (Tab $tab): void {
                     $tab->extraAttributes([
-                        'class' => 'hidden',
+                        'style' => 'display: none;',
                     ]);
                 })
                 ->query(function (Builder $query) {
