@@ -11,6 +11,8 @@ use Override;
 
 class StatsOverviewWidget extends ChartWidget
 {
+    protected ?string $maxHeight = '300px';
+
     /** @var array<string, array<string, array<string, bool>>> */
     protected ?array $options = [
         'scales' => [

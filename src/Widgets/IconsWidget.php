@@ -5,36 +5,40 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Widgets;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Overrides\Stat;
 use Boquizo\FilamentLogViewer\Utils\Level;
-use EightyNine\FilamentAdvancedWidget\AdvancedStatsOverviewWidget as BaseWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\StatsOverviewWidget;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
-use Override;
+use Illuminate\Support\HtmlString;
 
-class IconsWidget extends BaseWidget
+class IconsWidget extends StatsOverviewWidget
 {
-    /** {@inheritdoc} */
-    #[Override]
+    protected ?string $maxHeight = '300px';
+
     public function getStats(): array
     {
-        $percentages = $this->percentages();
-
         $stats = [];
 
-        foreach ($percentages as $level => $data) {
-            $color = Arr::get($data, "totals.{$level}.color", '#8A8A8A');
+        foreach ($this->percentages() as $level => $data) {
+            $progressColor = Arr::get($data, "totals.{$level}.color", '#8A8A8A');
 
             $stats[] = Stat::make(
                 label: $data['name'],
                 value: $data['count'],
             )
+                ->label(new HtmlString(
+                    "<div style='color: {$progressColor}'>{$data['name']}</div>"
+                ))
                 ->icon(Config::string("filament-log-viewer.icons.{$level}"))
-                ->progress($data['percent'])
-                ->iconBackgroundColor($color)
-                ->progressBarColor($color)
-                ->iconPosition('start')
-                ->description("{$data['percent']}%");
+                ->description(
+                    new HtmlString(
+                        view('filament-log-viewer::progress-bar', [
+                            'progressColor' => $progressColor,
+                            'percent' => $data['percent'],
+                        ]),
+                    ),
+                );
         }
 
         return $stats;
