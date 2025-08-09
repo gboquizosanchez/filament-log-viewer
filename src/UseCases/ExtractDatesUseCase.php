@@ -7,7 +7,7 @@ namespace Boquizo\FilamentLogViewer\UseCases;
 use Boquizo\FilamentLogViewer\Utils\Parser;
 use Illuminate\Support\Facades\Config;
 
-class ExtractDatesAction
+class ExtractDatesUseCase
 {
     /** @return array<string, string> */
     public static function execute(): array

@@ -7,7 +7,7 @@ namespace Boquizo\FilamentLogViewer\UseCases;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class DownloadLogAction
+class DownloadLogUseCase
 {
     public static function execute(string $date): BinaryFileResponse
     {
@@ -27,7 +27,7 @@ class DownloadLogAction
             );
         }
 
-        $path = ExtractLogPathAction::execute($date);
+        $path = ExtractLogPathUseCase::execute($date);
 
         return response()->download($path, $filename, $headers);
     }

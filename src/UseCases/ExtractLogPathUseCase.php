@@ -7,7 +7,7 @@ namespace Boquizo\FilamentLogViewer\UseCases;
 use Illuminate\Support\Facades\Config;
 use RuntimeException;
 
-class ExtractLogPathAction
+class ExtractLogPathUseCase
 {
     public static function execute(string $date): false|string
     {

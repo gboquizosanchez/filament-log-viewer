@@ -8,7 +8,7 @@ use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
 
-class DownloadZipAction
+class DownloadZipUseCase
 {
     public static function execute(array $files): BinaryFileResponse
     {
@@ -44,7 +44,7 @@ class DownloadZipAction
     {
         return collect($files)
             ->map(
-                static fn (string $log): string => ExtractLogPathAction::execute($log),
+                static fn (string $log): string => ExtractLogPathUseCase::execute($log),
             )
             ->all();
     }
