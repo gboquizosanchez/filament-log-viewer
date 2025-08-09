@@ -3,15 +3,15 @@
 namespace Boquizo\FilamentLogViewer;
 
 use BackedEnum;
-use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
-use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
-use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
-use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\Tables\StatsTable;
+use Boquizo\FilamentLogViewer\UseCases\DeleteLogAction;
+use Boquizo\FilamentLogViewer\UseCases\DownloadLogAction;
+use Boquizo\FilamentLogViewer\UseCases\DownloadZipAction;
+use Boquizo\FilamentLogViewer\UseCases\ExtractLogByDateAction;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\FilamentManager;

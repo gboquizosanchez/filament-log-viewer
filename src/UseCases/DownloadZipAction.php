@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;

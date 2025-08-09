@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Entities;
 
-use Boquizo\FilamentLogViewer\Actions\ExtractDatesAction;
-use Boquizo\FilamentLogViewer\Actions\ReadLogAction;
+use Boquizo\FilamentLogViewer\UseCases\ExtractDatesAction;
+use Boquizo\FilamentLogViewer\UseCases\ReadLogAction;
 use Illuminate\Support\LazyCollection;
 
 class LogCollection extends LazyCollection
