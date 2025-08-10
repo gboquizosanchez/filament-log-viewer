@@ -37,6 +37,15 @@ You can also publish the configuration file to customize the package:
 php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogViewerServiceProvider"
 ```
 
+> [!IMPORTANT]
+> In v4 it's necessary to set up a custom theme following the instructions in the [Filament Docs](https://filamentphp.com/docs/4.x/styling/overview#creating-a-custom-theme) first.
+
+After setting up the custom theme, you need to add this line, if not, the plugin will not work properly.
+
+```css
+@source '../../../../vendor/gboquizosanchez/filament-log-viewer';
+```
+
 ### Others configurations
 
 
