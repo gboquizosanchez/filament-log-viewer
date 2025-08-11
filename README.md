@@ -43,7 +43,7 @@ php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogView
 After setting up the custom theme, you need to add this line, if not, the plugin will not work properly.
 
 ```css
-@source '../../../../vendor/gboquizosanchez/filament-log-viewer';
+@source '../../../../vendor/gboquizosanchez/filament-log-viewer/resources/views/**/*.blade.php';
 ```
 
 ### Others configurations
@@ -54,7 +54,7 @@ After setting up the custom theme, you need to add this line, if not, the plugin
     \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
         ->navigationGroup('System')
         ->navigationSort(2)
-        ->navigationIcon('heroicon-s-document-text')
+        ->navigationIcon(Heroicon::OutlinedDocumentText)
         ->navigationLabel('Log Viewer')
         ->authorize(fn() => auth()->user()->can('view-logs')),
     // Other plugins
@@ -73,6 +73,7 @@ namespace App\Filament\Pages;
 
 use Boquizo\FilamentLogViewer\Pages\ListLogs as BaseListLogs;
 use Filament\Tables\Table;
+use Filament\Support\Icons\Heroicon;
 
 class CustomListLogs extends BaseListLogs
 {
@@ -97,6 +98,7 @@ namespace App\Filament\Pages;
 
 use Boquizo\FilamentLogViewer\Pages\ViewLog as BaseViewLog;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class CustomViewLog extends BaseViewLog
 {
@@ -105,7 +107,7 @@ class CustomViewLog extends BaseViewLog
         return array_merge(parent::getHeaderActions(), [
             Action::make('export')
                 ->label('Export to CSV')
-                ->icon('heroicon-o-arrow-down-tray')
+                ->icon(Heroicon::OutlinedArrowDownTray)
                 ->action(fn() => $this->exportToCsv()),
         ]);
     }
@@ -126,7 +128,7 @@ Then register your custom pages in the plugin configuration:
         ->viewLog(\App\Filament\Pages\CustomViewLog::class)
         ->navigationGroup('System')
         ->navigationSort(2)
-        ->navigationIcon('heroicon-s-document-text')
+        ->navigationIcon(Heroicon::DocumentText)
         ->navigationLabel('System Logs')
         ->authorize(function () {
             return auth()->user()->hasAnyRole(['admin', 'developer']);
@@ -140,18 +142,16 @@ Then register your custom pages in the plugin configuration:
 ![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
 
 ### PHP dependencies 📦
-
 - Calebporzio Sushi [![Latest Stable Version](https://img.shields.io/badge/stable-v2.5.3-blue)](https://packagist.org/packages/calebporzio/sushi)
-- Eightynine Filament Advanced Widgets [![Latest Stable Version](https://img.shields.io/badge/stable-3.0.1-blue)](https://packagist.org/packages/eightynine/filament-advanced-widgets)
 - Owenvoke Blade Fontawesome [![Latest Stable Version](https://img.shields.io/badge/stable-v2.9.1-blue)](https://packagist.org/packages/owenvoke/blade-fontawesome)
 
 #### Develop dependencies 🔧
-
-- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.75.0-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
-- Hermes Dependencies [![Latest Stable Version](https://img.shields.io/badge/stable-1.1.1-blue)](https://packagist.org/packages/hermes/dependencies)
-- Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.0-blue)](https://packagist.org/packages/larastan/larastan)
-- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.13.0-blue)](https://packagist.org/packages/orchestra/testbench)
+- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.85.1-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
+- Hermes Dependencies [![Latest Stable Version](https://img.shields.io/badge/stable-1.2.0-blue)](https://packagist.org/packages/hermes/dependencies)
+- Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.2-blue)](https://packagist.org/packages/larastan/larastan)
+- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.14.0-blue)](https://packagist.org/packages/orchestra/testbench)
 - Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.2-blue)](https://packagist.org/packages/pestphp/pest)
+
 
 ## Problems? 🚨
 
