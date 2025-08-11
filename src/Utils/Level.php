@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Utils;
 
+use Illuminate\Support\Str;
+
+// This is a special case, it's not a level itself.
+// It's used to represent all levels and avoid magic strings.
+const LEVEL_ALL = 'all';
+
 enum Level: string
 {
     case Emergency = 'emergency';
@@ -27,6 +33,6 @@ enum Level: string
 
     public static function all(): string
     {
-        return self::options()['all'] ?? 'All';
+        return self::options()[LEVEL_ALL] ?? Str::ucfirst('All');
     }
 }
