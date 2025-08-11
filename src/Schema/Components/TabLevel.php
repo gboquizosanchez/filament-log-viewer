@@ -11,8 +11,6 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Enums\IconSize;
 use Illuminate\Database\Eloquent\Builder;
 
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
-
 class TabLevel
 {
     public static function make(Level|string $level): Tab
@@ -30,7 +28,7 @@ class TabLevel
         Builder $query,
         string $level
     ): Builder {
-        if ($level === LEVEL_ALL) {
+        if ($level === Level::ALL) {
             return $query;
         }
 

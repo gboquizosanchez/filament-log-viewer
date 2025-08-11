@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Entities;
 
+use Boquizo\FilamentLogViewer\Utils\Level;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Number;
 use Override;
 use SplFileInfo;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class Log extends Entity
 {
@@ -56,9 +55,9 @@ class Log extends Entity
         return Carbon::createFromTimestamp($this->file()->getMTime());
     }
 
-    public function entries(string $level = LEVEL_ALL): EntryCollection
+    public function entries(string $level = Level::ALL): EntryCollection
     {
-        return $level === LEVEL_ALL
+        return $level === Level::ALL
             ? $this->entries
             : $this->level($level);
     }

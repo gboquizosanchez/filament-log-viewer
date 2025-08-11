@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Tables;
 
+use Boquizo\FilamentLogViewer\Utils\Level;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class StatsTable
 {
@@ -63,7 +62,7 @@ class StatsTable
     {
         $totals = Collection::make();
 
-        foreach (Arr::except($this->footer, LEVEL_ALL) as $level => $count) {
+        foreach (Arr::except($this->footer, Level::ALL) as $level => $count) {
             $totals->put($level, [
                 'label' => __("filament-log-viewer::log.levels.{$level}"),
                 'value' => $count,

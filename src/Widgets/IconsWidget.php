@@ -9,8 +9,6 @@ use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Widgets\StatsOverviewWidget;
 use Illuminate\Support\Arr;
 
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
-
 class IconsWidget extends StatsOverviewWidget
 {
     public function getStats(): array
@@ -33,7 +31,7 @@ class IconsWidget extends StatsOverviewWidget
         $levels = $statsTable->footer;
         $names = $this->names();
         $percents = [];
-        $all = Arr::get($levels, LEVEL_ALL);
+        $all = Arr::get($levels, Level::ALL);
 
         foreach ($levels as $level => $count) {
             $percents[$level] = [

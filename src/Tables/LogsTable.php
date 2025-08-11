@@ -17,8 +17,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Config;
 
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
-
 class LogsTable
 {
     public static function configure(Table $table): Table
@@ -30,7 +28,7 @@ class LogsTable
             )
             ->columns([
                 DateColumn::make('date'),
-                LevelColumn::make(LEVEL_ALL),
+                LevelColumn::make(Level::ALL),
                 LevelColumn::make(Level::Emergency),
                 LevelColumn::make(Level::Alert),
                 LevelColumn::make(Level::Critical),

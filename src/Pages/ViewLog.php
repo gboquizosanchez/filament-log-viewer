@@ -29,8 +29,6 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Locked;
 use Override;
 
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
-
 class ViewLog extends Page implements HasTable
 {
     use HasTabs;
@@ -101,14 +99,14 @@ class ViewLog extends Page implements HasTable
     {
         // If there is only a level, and it's equal to 'all',
         // then we don't need to show the tabs. We just show the log.
-        $exceptAll = Arr::except($this->record->toArray(), [LEVEL_ALL]);
+        $exceptAll = Arr::except($this->record->toArray(), [Level::ALL]);
 
         if (in_array($this->record->all, $exceptAll, true)) {
             return [];
         }
 
         return [
-            'all' => TabLevel::make(LEVEL_ALL),
+            'all' => TabLevel::make(Level::ALL),
             'emergency' => TabLevel::make(Level::Emergency)
                 ->when($this->record->emergency === 0,
                     fn (Tab $tab) => $tab->hidden()
@@ -146,7 +144,7 @@ class ViewLog extends Page implements HasTable
 
     public function getDefaultActiveTab(): string|int|null
     {
-        return LEVEL_ALL;
+        return Level::ALL;
     }
 
     public function getTitle(): string
