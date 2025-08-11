@@ -79,7 +79,6 @@ return [
 
     'colors' => [
         'levels' => [
-            'empty' => '#D1D1D1',
             'all' => '#8A8A8A',
             'emergency' => '#B71C1C',
             'alert' => '#D32F2F',
