@@ -9,20 +9,23 @@ use Boquizo\FilamentLogViewer\Actions\DeleteBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadBulkAction;
 use Boquizo\FilamentLogViewer\Actions\ViewLogAction;
-use Boquizo\FilamentLogViewer\Models\LogStat;
+use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Tables\Columns\DateColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Table;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class LogsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->query(LogStat::query())
+            ->records(self::getRecords(...))
             ->paginationPageOptions(
                 Config::array('filament-log-viewer.per-page'),
             )
@@ -49,5 +52,45 @@ class LogsTable
                     DeleteBulkAction::make(),
                 ]),
         ]);
+    }
+
+    private static function getRecords(
+        ?string $sortColumn,
+        ?string $sortDirection,
+        ?string $search,
+        int $page,
+        int $recordsPerPage,
+    ): LengthAwarePaginator {
+        $records = FilamentLogViewerPlugin::get()->getLogsTableRecords();
+
+        $collection = collect($records)
+            ->when(
+                filled($sortColumn),
+                fn (Collection $collection) => $collection->sortBy(
+                    $sortColumn,
+                    SORT_REGULAR,
+                    $sortDirection === 'desc'
+                )
+            )
+            ->when(
+                filled($search),
+                fn (Collection $collection) => $collection->filter(
+                    fn (array $record) => str_contains(
+                        Str::lower($record['date']),
+                        Str::lower($search)
+                    )
+                )
+            );
+
+        $total = $collection->count();
+
+        $data = $collection->forPage($page, $recordsPerPage);
+
+        return new LengthAwarePaginator(
+            $data,
+            total: $total,
+            perPage: $recordsPerPage,
+            currentPage: $page,
+        );
     }
 }

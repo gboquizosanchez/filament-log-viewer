@@ -159,6 +159,15 @@ class FilamentLogViewerPlugin implements Plugin
         return StatsTable::make((new LogCollection())->stats());
     }
 
+    public function getLogsTableRecords(): array
+    {
+        $rows = $this
+            ->getViewerStatsTable()
+            ->rows;
+
+        return array_values($rows) ?? [];
+    }
+
     public function getLogViewerRecord(): Log
     {
         $date = Session::get('filament-log-viewer-record');

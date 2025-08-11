@@ -20,6 +20,7 @@ class DeleteAction
         $action = FilamentDeleteAction::make()
             ->hiddenLabel()
             ->button()
+            ->hidden(false)
             ->label(__('filament-log-viewer::log.table.actions.delete.label'))
             ->modalHeading(self::getTitle(...))
             ->color('danger')
@@ -54,7 +55,7 @@ class DeleteAction
         $model = $action->getRecord() ?? $livewire->record;
 
         return __('filament-log-viewer::log.table.actions.delete.label', [
-            'log' => Carbon::parse($model->date)->isoFormat('LL'),
+            'log' => Carbon::parse($model?->date ?? $model['date'])->isoFormat('LL'),
         ]);
     }
 
@@ -65,7 +66,7 @@ class DeleteAction
         try {
             $model = $action->getRecord() ?? $livewire->record;
 
-            FilamentLogViewerPlugin::get()->deleteLog($model->date);
+            FilamentLogViewerPlugin::get()->deleteLog($model?->date ?? $model['date']);
         } catch (Exception) {
             $action->failure();
         }

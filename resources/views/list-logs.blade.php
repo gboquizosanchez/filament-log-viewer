@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-    @if ($this->table->getQuery()->count() > 0)
+    @if ($this->getTableRecords()->count() > 0)
         <div class="w-full">
             <div class="flex flex-col 2xl:flex-row gap-6">
                 <div class="2xl:w-1/3 flex items-center justify-center">
