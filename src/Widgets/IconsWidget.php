@@ -6,39 +6,19 @@ namespace Boquizo\FilamentLogViewer\Widgets;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Utils\Level;
-use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\HtmlString;
+
+use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class IconsWidget extends StatsOverviewWidget
 {
-    protected ?string $maxHeight = '300px';
-
     public function getStats(): array
     {
         $stats = [];
 
         foreach ($this->percentages() as $level => $data) {
-            $progressColor = Arr::get($data, "totals.{$level}.color", '#8A8A8A');
-
-            $stats[] = Stat::make(
-                label: $data['name'],
-                value: $data['count'],
-            )
-                ->label(new HtmlString(
-                    "<div style='color: {$progressColor}'>{$data['name']}</div>"
-                ))
-                ->icon(Config::string("filament-log-viewer.icons.{$level}"))
-                ->description(
-                    new HtmlString(
-                        view('filament-log-viewer::progress-bar', [
-                            'progressColor' => $progressColor,
-                            'percent' => $data['percent'],
-                        ]),
-                    ),
-                );
+            $stats[] = Stat::make($level, $data);
         }
 
         return $stats;
@@ -53,7 +33,7 @@ class IconsWidget extends StatsOverviewWidget
         $levels = $statsTable->footer;
         $names = $this->names();
         $percents = [];
-        $all = Arr::get($levels, 'all');
+        $all = Arr::get($levels, LEVEL_ALL);
 
         foreach ($levels as $level => $count) {
             $percents[$level] = [
