@@ -55,7 +55,7 @@ class Stat
 
         $style .= <<<CSS
 .fi-sc-has-gap > div:nth-child({$index}) .fi-wi-stats-overview-stat-label-ctn > .fi-icon {
-    color: white !important;
+    color: #FFFFFF;
     background-color: {$progressColor};
     border-radius: 5px;
     padding: 3px;
