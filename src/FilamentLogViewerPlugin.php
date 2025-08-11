@@ -3,15 +3,15 @@
 namespace Boquizo\FilamentLogViewer;
 
 use BackedEnum;
-use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
-use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
-use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
-use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\Tables\StatsTable;
+use Boquizo\FilamentLogViewer\UseCases\DeleteLogUseCase;
+use Boquizo\FilamentLogViewer\UseCases\DownloadLogUseCase;
+use Boquizo\FilamentLogViewer\UseCases\DownloadZipUseCase;
+use Boquizo\FilamentLogViewer\UseCases\ExtractLogByDateUseCase;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
@@ -167,7 +167,7 @@ class FilamentLogViewerPlugin implements Plugin
             throw new RuntimeException('No log date found');
         }
 
-        return ExtractLogByDateAction::execute($date);
+        return ExtractLogByDateUseCase::execute($date);
     }
 
     /**
@@ -175,16 +175,16 @@ class FilamentLogViewerPlugin implements Plugin
      */
     public function deleteLog(string $date): bool
     {
-        return DeleteLogAction::execute($date);
+        return DeleteLogUseCase::execute($date);
     }
 
     public function downloadLog(string $date): BinaryFileResponse
     {
-        return DownloadLogAction::execute($date);
+        return DownloadLogUseCase::execute($date);
     }
 
     public function downloadLogs(array $files): BinaryFileResponse
     {
-        return DownloadZipAction::execute($files);
+        return DownloadZipUseCase::execute($files);
     }
 }

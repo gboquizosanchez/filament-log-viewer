@@ -11,7 +11,7 @@ use Illuminate\Support\HtmlString;
 
 class Icons
 {
-    public static function get(string $name, IconSize $iconSize): HtmlString
+    public static function get(string $name, IconSize $size): HtmlString
     {
         $colors = Config::array('filament-log-viewer.colors.levels');
         $icons = Config::array('filament-log-viewer.icons');
@@ -21,7 +21,7 @@ class Icons
                 sprintf('
                     <x-%s class="%s" style="color: %s"/>',
                     $icons[$name],
-                    self::size($iconSize),
+                    self::size($size),
                     $colors[$name],
                 ),
             ),

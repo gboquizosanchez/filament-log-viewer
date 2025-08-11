@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Illuminate\Filesystem\Filesystem;
 use RuntimeException;
 
-class DeleteLogAction
+class DeleteLogUseCase
 {
     /**
      * @throws \Throwable
@@ -22,7 +22,7 @@ class DeleteLogAction
      */
     public function __invoke(string $date): true
     {
-        $path = ExtractLogPathAction::execute($date);
+        $path = ExtractLogPathUseCase::execute($date);
 
         $system = new Filesystem();
 

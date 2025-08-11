@@ -5,37 +5,31 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Pages;
 
 use BackedEnum;
+use Boquizo\FilamentLogViewer\Actions\BackAction;
+use Boquizo\FilamentLogViewer\Actions\DeleteAction;
+use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Models\LogStat;
-use Boquizo\FilamentLogViewer\Utils\Decoder;
-use Boquizo\FilamentLogViewer\Utils\Icons;
+use Boquizo\FilamentLogViewer\Schema\Components\TabLevel;
+use Boquizo\FilamentLogViewer\Tables\LogTable;
 use Boquizo\FilamentLogViewer\Utils\Level;
-use Filament\Actions;
-use Filament\Actions\DeleteAction;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Resources\Concerns\HasTabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\FontFamily;
-use Filament\Support\Enums\IconSize;
-use Filament\Tables;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\HtmlString;
 use Livewire\Attributes\Locked;
 use Override;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
+use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class ViewLog extends Page implements HasTable
 {
@@ -47,129 +41,13 @@ class ViewLog extends Page implements HasTable
 
     protected string $view = 'filament-log-viewer::view-log';
 
-    protected static string|null|BackedEnum $navigationIcon = 'heroicon-o-document-text';
+    protected static string|null|BackedEnum $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected static bool $shouldRegisterNavigation = false;
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->query(Log::query())
-            ->header(
-                fn (ViewLog $livewire) => view('filament-log-viewer::log-information', [
-                    'data' => FilamentLogViewerPlugin::get()->getLogViewerRecord(),
-                ]),
-            )
-            ->groups([
-                Group::make('level')
-                    ->label(__('filament-log-viewer::log.table.columns.level.label'))
-                    ->getTitleFromRecordUsing(
-                        fn (Log $record): string => Level::from($record->level)->label()
-                    ),
-            ])
-            ->paginationPageOptions(
-                Config::array('filament-log-viewer.per-page'),
-            )
-            ->columns([
-                Tables\Columns\TextColumn::make('env')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'production' => 'danger',
-                        'staging' => 'orange',
-                        default => 'success',
-                    })
-                    ->translateLabel()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('datetime')
-                    ->label(__('filament-log-viewer::log.table.columns.date.label'))
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('level')
-                    ->alignCenter()
-                    ->tooltip(fn (string $state): string => Level::from($state)->label())
-                    ->label(__('filament-log-viewer::log.table.columns.level.label'))
-                    ->formatStateUsing(
-                        fn (string $state): HtmlString => Icons::get($state, IconSize::Medium),
-                    )
-                    ->translateLabel()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('header')
-                    ->label(__('filament-log-viewer::log.table.columns.message.label'))
-                    ->wrap()
-                    ->searchable()
-                    ->translateLabel()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stack')
-                    ->searchable()
-                    ->label('')
-                    ->extraAttributes([
-                        'style' => 'display: none;',
-                    ]),
-                Tables\Columns\TextColumn::make('context')
-                    ->searchable()
-                    ->label('')
-                    ->extraAttributes([
-                        'style' => 'display: none;',
-                    ]),
-            ])
-            ->recordActions([
-                Actions\Action::make('stack')
-                    ->button()
-                    ->hidden(fn (Log $record): bool => empty($record->stack))
-                    ->icon('fas-toggle-on')
-                    ->color('gray')
-                    ->schema([
-                        TextEntry::make('stack')
-                            ->hiddenLabel()
-                            ->fontFamily(FontFamily::Mono)
-                            ->html()
-                            ->extraAttributes([
-                                'class' => 'overflow-auto',
-                                'style' => 'max-height: 35rem;',
-                            ])
-                            ->hidden(fn (Log $record): bool => empty($record->stack))
-                            ->formatStateUsing(
-                                fn (Log $record): string => preg_replace(
-                                    '/(.*vendor.*$)/m',
-                                    '<span class="text-gray-400">$1</span>',
-                                    nl2br($record->stack),
-                                ),
-                            ),
-                    ])
-                    ->modalHeading('')
-                    ->modalWidth('7xl')
-                    ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
-                    ->modalSubmitAction(false),
-                Actions\Action::make('context')
-                    ->button()
-                    ->hidden(fn(Log $record): bool => $record->context === '[]')
-                    ->icon('fas-toggle-on')
-                    ->color('gray')
-                    ->schema([
-                        TextEntry::make('context')
-                            ->hiddenLabel()
-                            ->fontFamily(FontFamily::Mono)
-                            ->html()
-                            ->extraAttributes([
-                                'class' => 'overflow-auto',
-                                'style' => 'max-height: 35rem;',
-                            ])
-                            ->hidden(fn(Log $record): bool => empty($record->context))
-                            ->formatStateUsing(
-                                fn(Log $record): string
-                                    => sprintf(
-                                    '<pre>%s</pre>',
-                                    json_encode(
-                                        Decoder::decode($record->context),
-                                        JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
-                                    ),
-                                ),
-                            ),
-                    ])
-                    ->modalHeading('')
-                    ->modalWidth('7xl')
-                    ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
-                    ->modalSubmitAction(false),
-            ]);
+        return LogTable::configure($table);
     }
 
     public function content(Schema $schema): Schema
@@ -185,59 +63,9 @@ class ViewLog extends Page implements HasTable
     public function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('download')
-                ->hiddenLabel()
-                ->tooltip(__('filament-log-viewer::log.table.actions.download.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
-                ]))
-                ->button()
-                ->modalHeading(__('filament-log-viewer::log.table.actions.download.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
-                ]))
-                ->label(__('filament-log-viewer::log.table.actions.download.label'))
-                ->color('success')
-                ->icon('fas-download')
-                ->requiresConfirmation()
-                ->action(
-                    fn (): BinaryFileResponse => FilamentLogViewerPlugin::get()
-                        ->downloadLog($this->record->date)
-                ),
-            DeleteAction::make()
-                ->hiddenLabel()
-                ->tooltip(__('filament-log-viewer::log.table.actions.delete.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
-                ]))
-                ->hidden(false)
-                ->button()
-                ->modalHeading(__('filament-log-viewer::log.table.actions.delete.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
-                ]))
-                ->label(__('filament-log-viewer::log.table.actions.delete.label'))
-                ->color('danger')
-                ->icon('fas-trash')
-                ->requiresConfirmation()
-                ->action(function (): void {
-                    FilamentLogViewerPlugin::get()->deleteLog($this->record->date)
-                        ? Notification::make()
-                            ->title(__('filament-log-viewer::log.table.actions.delete.success'))
-                            ->success()
-                            ->send()
-                        : Notification::make()
-                            ->title(__('filament-log-viewer::log.table.actions.delete.error'))
-                            ->danger()
-                            ->send();
-
-                    $this->redirect(ListLogs::getUrl());
-                }),
-            Actions\Action::make('back')
-                ->hiddenLabel()
-                ->tooltip(__('filament-log-viewer::log.table.actions.close.label'))
-                ->button()
-                ->color('primary')
-                ->icon('fas-arrow-left')
-                ->action(
-                    fn () => $this->redirect(ListLogs::getUrl())
-                ),
+            DeleteAction::make(withTooltip: true),
+            DownloadAction::make(withTooltip: true),
+            BackAction::make(),
         ];
     }
 
@@ -271,126 +99,54 @@ class ViewLog extends Page implements HasTable
     /** @return array<string, Tab> */
     public function getTabs(): array
     {
-        if (\in_array(
-            $this->record->all,
-            Arr::except($this->record->toArray(), ['all']),
-            true)
-        ) {
+        // If there is only a level, and it's equal to 'all',
+        // then we don't need to show the tabs. We just show the log.
+        $exceptAll = Arr::except($this->record->toArray(), [LEVEL_ALL]);
+
+        if (in_array($this->record->all, $exceptAll, true)) {
             return [];
         }
 
         return [
-            'all' => Tab::make()
-                ->label(__('All'))
-                ->badge($this->record->all)
-                ->when($this->record->all === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->icon(Icons::get('all', IconSize::Small)),
-            'emergency' => Tab::make()
-                ->label(__('Emergency'))
-                ->badge($this->record->emergency)
-                ->icon(Icons::get('emergency', IconSize::Small))
-                ->when($this->record->emergency === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'emergency');
-                }),
-            'alert' => Tab::make()
-                ->label(__('Alert'))
-                ->badge($this->record->alert)
-                ->icon(Icons::get('alert', IconSize::Small))
-                ->when($this->record->alert === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'alert');
-                }),
-            'critical' => Tab::make()
-                ->label(__('Critical'))
-                ->badge($this->record->critical)
-                ->icon(Icons::get('critical', IconSize::Small))
-                ->when($this->record->critical === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'critical');
-                }),
-            'error' => Tab::make()
-                ->label(__('Error'))
-                ->badge($this->record->error)
-                ->icon(Icons::get('error', IconSize::Small))
-                ->when($this->record->error === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'error');
-                }),
-            'warning' => Tab::make()
-                ->label(__('Warning'))
-                ->badge($this->record->warning)
-                ->icon(Icons::get('warning', IconSize::Small))
-                ->when($this->record->warning === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'warning');
-                }),
-            'notice' => Tab::make()
-                ->label(__('Notice'))
-                ->badge($this->record->notice)
-                ->icon(Icons::get('notice', IconSize::Small))
-                ->when($this->record->notice === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'notice');
-                }),
-            'info' => Tab::make()
-                ->label(__('Info'))
-                ->badge($this->record->info)
-                ->icon(Icons::get('info', IconSize::Small))
-                ->when($this->record->info === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'info');
-                }),
-            'debug' => Tab::make()
-                ->label(__('Debug'))
-                ->badge($this->record->debug)
-                ->icon(Icons::get('debug', IconSize::Small))
-                ->when($this->record->debug === 0, function (Tab $tab): void {
-                    $tab->extraAttributes([
-                        'style' => 'display: none;',
-                    ]);
-                })
-                ->query(function (Builder $query) {
-                    return $query->where('level', 'debug');
-                }),
+            'all' => TabLevel::make(LEVEL_ALL),
+            'emergency' => TabLevel::make(Level::Emergency)
+                ->when($this->record->emergency === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'alert' => TabLevel::make(Level::Alert)
+                ->when($this->record->alert === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'critical' => TabLevel::make(Level::Critical)
+                ->when($this->record->critical === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'error' => TabLevel::make(Level::Error)
+                ->when($this->record->error === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'warning' => TabLevel::make(Level::Warning)
+                ->when($this->record->warning === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'notice' => TabLevel::make(Level::Notice)
+                ->when($this->record->notice === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'info' => TabLevel::make(Level::Info)
+                ->when($this->record->info === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
+            'debug' => TabLevel::make(Level::Debug)
+                ->when($this->record->debug === 0,
+                    fn (Tab $tab) => $tab->hidden()
+                ),
         ];
     }
 
     public function getDefaultActiveTab(): string|int|null
     {
-        return 'all';
+        return LEVEL_ALL;
     }
 
     public function getTitle(): string

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use RuntimeException;
 
-class ReadLogAction
+class ReadLogUseCase
 {
     public static function execute(string $date): string
     {
@@ -19,7 +19,7 @@ class ReadLogAction
     {
         try {
             $log = (new Filesystem())->get(
-                ExtractLogPathAction::execute($date)
+                ExtractLogPathUseCase::execute($date)
             );
         } catch (FileNotFoundException $e) {
             throw new RuntimeException($e->getMessage());
