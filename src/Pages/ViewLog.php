@@ -9,7 +9,6 @@ use Boquizo\FilamentLogViewer\Actions\BackAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Schema\Components\TabLevel;
 use Boquizo\FilamentLogViewer\Tables\LogTable;
 use Boquizo\FilamentLogViewer\Utils\Level;
@@ -35,7 +34,7 @@ class ViewLog extends Page implements HasTable
     use InteractsWithTable;
 
     #[Locked]
-    public LogStat|string|null $record;
+    public array|object|string|null $record;
 
     protected string $view = 'filament-log-viewer::view-log';
 
@@ -87,7 +86,8 @@ class ViewLog extends Page implements HasTable
 
     public function mount(string $record): void
     {
-        $this->record = LogStat::query()->where('date', $record)->firstOrFail();
+        $this->record = (object) FilamentLogViewerPlugin::get()
+            ->getLogsTableFiltered($record);
 
         Session::put('filament-log-viewer-record', $this->record->date);
 
@@ -99,7 +99,7 @@ class ViewLog extends Page implements HasTable
     {
         // If there is only a level, and it's equal to 'all',
         // then we don't need to show the tabs. We just show the log.
-        $exceptAll = Arr::except($this->record->toArray(), [Level::ALL]);
+        $exceptAll = Arr::except((array) $this->record, [Level::ALL]);
 
         if (in_array($this->record->all, $exceptAll, true)) {
             return [];

@@ -159,6 +159,14 @@ class FilamentLogViewerPlugin implements Plugin
         return StatsTable::make((new LogCollection())->stats());
     }
 
+    public function getLogsTableFiltered(string $date): array
+    {
+        return collect($this->getLogsTableRecords())
+            ->filter(fn ($row) => $row['date'] === $date)
+            ->values()
+            ->first();
+    }
+
     public function getLogsTableRecords(): array
     {
         $rows = $this
