@@ -59,7 +59,7 @@ class StatsOverviewWidget extends ChartWidget
     private function data(): array
     {
         return FilamentLogViewerPlugin::get()
-            ->getViewerStatsTable()
+            ->getViewerStats()
             ->totals()
             ->all();
     }

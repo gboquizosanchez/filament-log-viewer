@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Widgets;
 
+use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Widgets\StatsOverviewWidget\Stat as FilamentStat;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\HtmlString;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class Stat
 {
@@ -47,7 +46,7 @@ class Stat
     {
         $style = '<style>';
 
-        if ($level === LEVEL_ALL) {
+        if ($level === Level::ALL) {
             $style .= self::getResetProgressBarStyle();
         }
 
@@ -55,7 +54,7 @@ class Stat
 
         $style .= <<<CSS
 .fi-sc-has-gap > div:nth-child({$index}) .fi-wi-stats-overview-stat-label-ctn > .fi-icon {
-    color: white !important;
+    color: #FFFFFF;
     background-color: {$progressColor};
     border-radius: 5px;
     padding: 3px;

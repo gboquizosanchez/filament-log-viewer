@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Tables\Grouping;
 
-use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Tables\Grouping\Group;
 
@@ -17,8 +16,8 @@ class LevelGroup
             ->getTitleFromRecordUsing(self::getTitle(...));
     }
 
-    private static function getTitle(Log $record): string
+    private static function getTitle(array $record): string
     {
-        return Level::from($record->level)->label();
+        return Level::from($record['level'])->label();
     }
 }

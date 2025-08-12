@@ -6,9 +6,8 @@ namespace Boquizo\FilamentLogViewer\Entities;
 
 use Boquizo\FilamentLogViewer\UseCases\ExtractDatesUseCase;
 use Boquizo\FilamentLogViewer\UseCases\ReadLogUseCase;
+use Boquizo\FilamentLogViewer\Utils\Level;
 use Illuminate\Support\LazyCollection;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class LogCollection extends LazyCollection
 {
@@ -37,7 +36,7 @@ class LogCollection extends LazyCollection
         );
     }
 
-    public function total(string $level = LEVEL_ALL): int
+    public function total(string $level = Level::ALL): int
     {
         return (int) $this->sum(
             fn (Log $log): int => $log->entries($level)->count()

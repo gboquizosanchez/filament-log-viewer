@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Infolists\Components;
 
-use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Utils\Decoder;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Enums\FontFamily;
@@ -25,17 +24,17 @@ class ContextTextEntry
             ->formatStateUsing(self::getStateUsing(...));
     }
 
-    private static function getHidden(Log $record): bool
+    private static function getHidden(array $record): bool
     {
-        return empty($record->context);
+        return empty($record['context']);
     }
 
-    private static function getStateUsing(Log $record): string
+    private static function getStateUsing(array $record): string
     {
         return sprintf(
             '<pre>%s</pre>',
             json_encode(
-                Decoder::decode($record->context),
+                Decoder::decode($record['context']),
                 JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
             ),
         );

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
-use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Filament\Actions\ViewAction;
 
@@ -21,10 +20,10 @@ class ViewLogAction
             ->color('info');
     }
 
-    private static function getUrl(LogStat $record): string
+    private static function getUrl(array $record): string
     {
         return ViewLog::getUrl([
-            'record' => $record->date,
+            'record' => $record['date'],
         ]);
     }
 }

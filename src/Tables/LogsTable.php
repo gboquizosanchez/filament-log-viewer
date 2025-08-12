@@ -9,28 +9,32 @@ use Boquizo\FilamentLogViewer\Actions\DeleteBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadBulkAction;
 use Boquizo\FilamentLogViewer\Actions\ViewLogAction;
-use Boquizo\FilamentLogViewer\Models\LogStat;
+use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Tables\Columns\DateColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Table;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
+use Illuminate\Support\Str;
 
 class LogsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
-            ->query(LogStat::query())
+            ->records(self::getRecords(...))
+            ->resolveSelectedRecordsUsing(
+                self::getResolveSelectedRecordsUsing(...),
+            )
             ->paginationPageOptions(
                 Config::array('filament-log-viewer.per-page'),
             )
             ->columns([
                 DateColumn::make('date'),
-                LevelColumn::make(LEVEL_ALL),
+                LevelColumn::make(Level::ALL),
                 LevelColumn::make(Level::Emergency),
                 LevelColumn::make(Level::Alert),
                 LevelColumn::make(Level::Critical),
@@ -50,6 +54,60 @@ class LogsTable
                     DownloadBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
-        ]);
+            ]);
+    }
+
+    private static function getRecords(
+        ?string $sortColumn,
+        ?string $sortDirection,
+        ?string $search,
+        int $page,
+        int $recordsPerPage,
+    ): LengthAwarePaginator {
+        $records = FilamentLogViewerPlugin::get()->getLogsTableRecords();
+
+        $collection = collect($records)
+            ->when(
+                filled($sortColumn),
+                fn (Collection $collection) => $collection->sortBy(
+                    $sortColumn,
+                    SORT_REGULAR,
+                    $sortDirection === 'desc',
+                ),
+            )
+            ->when(
+                filled($search),
+                fn (Collection $collection) => $collection->filter(
+                    fn (array $record) => Str::contains(
+                        Str::lower($record['date']),
+                        Str::lower($search),
+                    ),
+                ),
+            );
+
+        $total = $collection->count();
+
+        $data = $collection->forPage($page, $recordsPerPage);
+
+        return new LengthAwarePaginator(
+            $data,
+            total: $total,
+            perPage: $recordsPerPage,
+            currentPage: $page,
+        );
+    }
+
+    private static function getResolveSelectedRecordsUsing(
+        array $keys,
+        bool $isTrackingDeselectedKeys,
+        array $deselectedKeys,
+    ): Collection {
+        $records = collect(FilamentLogViewerPlugin::get()->getLogsTableRecords());
+
+        if ($isTrackingDeselectedKeys) {
+            return $records->except($deselectedKeys)->values();
+        }
+
+        return $records->only($keys)->values();
     }
 }

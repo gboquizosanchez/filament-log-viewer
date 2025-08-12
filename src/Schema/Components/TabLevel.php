@@ -9,9 +9,6 @@ use Boquizo\FilamentLogViewer\Utils\Icons;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Support\Enums\IconSize;
-use Illuminate\Database\Eloquent\Builder;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class TabLevel
 {
@@ -23,17 +20,17 @@ class TabLevel
             ->label(__("filament-log-viewer::log.levels.{$value}"))
             ->badge(fn (ViewLog $livewire): int => $livewire->record->$value)
             ->icon(Icons::get($value, IconSize::Small))
-            ->query(fn (Builder $query) => static::applyLevelFilter($query, $value));
+            ->extraAttributes([
+                'wire:click' => self::buildWireClickActions($value),
+            ]);
     }
+    private static function buildWireClickActions(string $value): string
+    {
+        $setActiveTab = "\$set('activeTab', '{$value}')";
+        $filterValue = $value === Level::ALL ? 'null' : "'{$value}'";
+        $setFilterLevel = "\$set('tableFilters.level.value', {$filterValue})";
 
-    private static function applyLevelFilter(
-        Builder $query,
-        string $level
-    ): Builder {
-        if ($level === LEVEL_ALL) {
-            return $query;
-        }
 
-        return $query->where('level', $level);
+        return "{$setActiveTab}; {$setFilterLevel};";
     }
 }

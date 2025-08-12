@@ -9,9 +9,8 @@ use Boquizo\FilamentLogViewer\Actions\BackAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Schema\Components\TabLevel;
-use Boquizo\FilamentLogViewer\Tables\LogTable;
+use Boquizo\FilamentLogViewer\Tables\EntriesTable;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Pages\Page;
 use Filament\Panel;
@@ -25,11 +24,8 @@ use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Locked;
 use Override;
-
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
 
 class ViewLog extends Page implements HasTable
 {
@@ -37,7 +33,7 @@ class ViewLog extends Page implements HasTable
     use InteractsWithTable;
 
     #[Locked]
-    public LogStat|string|null $record;
+    public array|object|string|null $record;
 
     protected string $view = 'filament-log-viewer::view-log';
 
@@ -47,7 +43,7 @@ class ViewLog extends Page implements HasTable
 
     public static function table(Table $table): Table
     {
-        return LogTable::configure($table);
+        return EntriesTable::configure($table);
     }
 
     public function content(Schema $schema): Schema
@@ -69,12 +65,6 @@ class ViewLog extends Page implements HasTable
         ];
     }
 
-    protected function makeTable(): Table
-    {
-        return Table::make($this)
-            ->modifyQueryUsing($this->modifyQueryWithActiveTab(...));
-    }
-
     public static function canAccess(): bool
     {
         return FilamentLogViewerPlugin::get()->isAuthorized();
@@ -89,9 +79,8 @@ class ViewLog extends Page implements HasTable
 
     public function mount(string $record): void
     {
-        $this->record = LogStat::query()->where('date', $record)->firstOrFail();
-
-        Session::put('filament-log-viewer-record', $this->record->date);
+        $this->record = (object) FilamentLogViewerPlugin::get()
+            ->getLogsTableFiltered($record);
 
         $this->loadDefaultActiveTab();
     }
@@ -101,14 +90,14 @@ class ViewLog extends Page implements HasTable
     {
         // If there is only a level, and it's equal to 'all',
         // then we don't need to show the tabs. We just show the log.
-        $exceptAll = Arr::except($this->record->toArray(), [LEVEL_ALL]);
+        $exceptAll = Arr::except((array) $this->record, [Level::ALL]);
 
         if (in_array($this->record->all, $exceptAll, true)) {
             return [];
         }
 
         return [
-            'all' => TabLevel::make(LEVEL_ALL),
+            'all' => TabLevel::make(Level::ALL),
             'emergency' => TabLevel::make(Level::Emergency)
                 ->when($this->record->emergency === 0,
                     fn (Tab $tab) => $tab->hidden()
@@ -146,7 +135,7 @@ class ViewLog extends Page implements HasTable
 
     public function getDefaultActiveTab(): string|int|null
     {
-        return LEVEL_ALL;
+        return Level::ALL;
     }
 
     public function getTitle(): string

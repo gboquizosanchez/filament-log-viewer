@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Filament\Actions\DeleteBulkAction as FilamentDeleteBulkAction;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class DeleteBulkAction
 {
@@ -35,8 +34,8 @@ class DeleteBulkAction
         $records->each(self::delete(...));
     }
 
-    private static function delete(LogStat $record): bool
+    private static function delete(array $record): bool
     {
-        return FilamentLogViewerPlugin::get()->deleteLog($record->date);
+        return FilamentLogViewerPlugin::get()->deleteLog($record['date']);
     }
 }

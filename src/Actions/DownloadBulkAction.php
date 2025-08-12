@@ -7,7 +7,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Exception;
 use Filament\Actions\BulkAction;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadBulkAction

@@ -7,19 +7,17 @@ use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
-use Boquizo\FilamentLogViewer\Tables\StatsTable;
 use Boquizo\FilamentLogViewer\UseCases\DeleteLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DownloadLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DownloadZipUseCase;
 use Boquizo\FilamentLogViewer\UseCases\ExtractLogByDateUseCase;
+use Boquizo\FilamentLogViewer\Utils\Stats;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Support\Icons\Heroicon;
-use Illuminate\Support\Facades\Session;
-use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FilamentLogViewerPlugin implements Plugin
@@ -154,19 +152,30 @@ class FilamentLogViewerPlugin implements Plugin
             ?? __('filament-log-viewer::log.navigation.label');
     }
 
-    public function getViewerStatsTable(): StatsTable
+    public function getViewerStats(): Stats
     {
-        return StatsTable::make((new LogCollection())->stats());
+        return Stats::make((new LogCollection())->stats());
     }
 
-    public function getLogViewerRecord(): Log
+    public function getLogsTableFiltered(string $date): array
     {
-        $date = Session::get('filament-log-viewer-record');
+        return collect($this->getLogsTableRecords())
+            ->filter(fn(array $row): bool => $row['date'] === $date)
+            ->values()
+            ->first();
+    }
 
-        if ($date === null) {
-            throw new RuntimeException('No log date found');
-        }
+    public function getLogsTableRecords(): array
+    {
+        $rows = $this
+            ->getViewerStats()
+            ->rows;
 
+        return array_values($rows) ?? [];
+    }
+
+    public function getLogViewerRecord(string $date): Log
+    {
         return ExtractLogByDateUseCase::execute($date);
     }
 

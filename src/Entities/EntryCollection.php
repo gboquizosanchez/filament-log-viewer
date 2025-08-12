@@ -9,8 +9,6 @@ use Boquizo\FilamentLogViewer\Utils\Parser;
 use Generator;
 use Illuminate\Support\LazyCollection;
 
-use const Boquizo\FilamentLogViewer\Utils\LEVEL_ALL;
-
 class EntryCollection extends LazyCollection
 {
     public static function load(string $raw): static
@@ -39,7 +37,7 @@ class EntryCollection extends LazyCollection
             $countEntries = count($entries);
             $countAll = $countEntries;
             $counters[$level] = $countEntries;
-            $counters[LEVEL_ALL] += $countAll;
+            $counters[Level::ALL] += $countAll;
         }
 
         return $counters;

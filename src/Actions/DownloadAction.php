@@ -39,7 +39,7 @@ class DownloadAction
         $model = $action->getRecord() ?? $livewire->record;
 
         return __('filament-log-viewer::log.table.actions.download.label', [
-            'log' => Carbon::parse($model->date)->isoFormat('LL'),
+            'log' => Carbon::parse($model?->date ?? $model['date'])->isoFormat('LL'),
         ]);
     }
 
@@ -49,6 +49,6 @@ class DownloadAction
     ): BinaryFileResponse {
         $model = $action->getRecord() ?? $livewire->record;
 
-        return FilamentLogViewerPlugin::get()->downloadLog($model->date);
+        return FilamentLogViewerPlugin::get()->downloadLog($model?->date ?? $model['date']);
     }
 }

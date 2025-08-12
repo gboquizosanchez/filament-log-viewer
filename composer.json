@@ -29,8 +29,7 @@
   "require": {
     "ext-zip": "*",
     "php": "^8.3|^8.4",
-    "owenvoke/blade-fontawesome": "^2.9",
-    "calebporzio/sushi": "^2.0"
+    "owenvoke/blade-fontawesome": "^2.9"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.64",
