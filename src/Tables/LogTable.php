@@ -7,7 +7,7 @@ namespace Boquizo\FilamentLogViewer\Tables;
 use Boquizo\FilamentLogViewer\Actions\ContextAction;
 use Boquizo\FilamentLogViewer\Actions\StackAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Models\Log;
+use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\Tables\Columns\ContextColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\DateColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\EnvColumn;
@@ -24,7 +24,11 @@ class LogTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->query(Log::query())
+            ->records(function ($livewire) {
+                return FilamentLogViewerPlugin::get()
+                    ->getLogViewerRecord($livewire->record->date)
+                    ->toModel();
+            })
             ->header(self::getHeader(...))
             ->groups([
                 LevelGroup::make(),
@@ -46,10 +50,10 @@ class LogTable
             ]);
     }
 
-    private static function getHeader(): View
+    private static function getHeader(ViewLog $livewire): View
     {
         return view('filament-log-viewer::log-information', [
-            'data' => FilamentLogViewerPlugin::get()->getLogViewerRecord(),
+            'data' => FilamentLogViewerPlugin::get()->getLogViewerRecord($livewire->record->date),
         ]);
     }
 }

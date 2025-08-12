@@ -176,14 +176,8 @@ class FilamentLogViewerPlugin implements Plugin
         return array_values($rows) ?? [];
     }
 
-    public function getLogViewerRecord(): Log
+    public function getLogViewerRecord(string $date): Log
     {
-        $date = Session::get('filament-log-viewer-record');
-
-        if ($date === null) {
-            throw new RuntimeException('No log date found');
-        }
-
         return ExtractLogByDateUseCase::execute($date);
     }
 

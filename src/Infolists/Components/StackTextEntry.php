@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Infolists\Components;
 
-use Boquizo\FilamentLogViewer\Models\Log;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Enums\FontFamily;
 
@@ -24,17 +23,17 @@ class StackTextEntry
             ->formatStateUsing(self::getStateUsing(...));
     }
 
-    private static function getHidden(Log $record): bool
+    private static function getHidden(array $record): bool
     {
-        return empty($record->stack);
+        return empty($record['stack']);
     }
 
-    private static function getStateUsing(Log $record): string
+    private static function getStateUsing(array $record): string
     {
         return preg_replace(
             '/(.*vendor.*$)/m',
             '<span class="text-gray-400">$1</span>',
-            nl2br($record->stack),
+            nl2br($record['stack']),
         );
     }
 }

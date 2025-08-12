@@ -56,7 +56,7 @@ After setting up the custom theme, you need to add this line, if not, the plugin
         ->navigationSort(2)
         ->navigationIcon(Heroicon::OutlinedDocumentText)
         ->navigationLabel('Log Viewer')
-        ->authorize(fn() => auth()->user()->can('view-logs')),
+        ->authorize(fn (): bool => auth()->user()->can('view-logs')),
     // Other plugins
 ])
 ```
@@ -98,7 +98,6 @@ namespace App\Filament\Pages;
 
 use Boquizo\FilamentLogViewer\Pages\ViewLog as BaseViewLog;
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
 
 class CustomViewLog extends BaseViewLog
 {
@@ -130,7 +129,7 @@ Then register your custom pages in the plugin configuration:
         ->navigationSort(2)
         ->navigationIcon(Heroicon::DocumentText)
         ->navigationLabel('System Logs')
-        ->authorize(function () {
+        ->authorize(function (): bool {
             return auth()->user()->hasAnyRole(['admin', 'developer']);
         }),
     // Other plugins like FilamentEmailPlugin, etc.
@@ -142,7 +141,6 @@ Then register your custom pages in the plugin configuration:
 ![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
 
 ### PHP dependencies 📦
-- Calebporzio Sushi [![Latest Stable Version](https://img.shields.io/badge/stable-v2.5.3-blue)](https://packagist.org/packages/calebporzio/sushi)
 - Owenvoke Blade Fontawesome [![Latest Stable Version](https://img.shields.io/badge/stable-v2.9.1-blue)](https://packagist.org/packages/owenvoke/blade-fontawesome)
 
 #### Develop dependencies 🔧

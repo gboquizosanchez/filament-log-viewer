@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\Infolists\Components\StackTextEntry;
-use Boquizo\FilamentLogViewer\Models\Log;
 use Filament\Actions\Action;
 
 class StackAction
@@ -28,8 +27,8 @@ class StackAction
             ->modalSubmitAction(false);
     }
 
-    private static function getHidden(Log $record): bool
+    private static function getHidden(array $record): bool
     {
-        return empty($record->stack);
+        return empty($record['stack']);
     }
 }
