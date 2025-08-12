@@ -10,7 +10,7 @@ use Boquizo\FilamentLogViewer\Actions\DeleteAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Schema\Components\TabLevel;
-use Boquizo\FilamentLogViewer\Tables\LogTable;
+use Boquizo\FilamentLogViewer\Tables\EntriesTable;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Pages\Page;
 use Filament\Panel;
@@ -44,7 +44,7 @@ class ViewLog extends Page implements HasTable
 
     public static function table(Table $table): Table
     {
-        return LogTable::configure($table);
+        return EntriesTable::configure($table);
     }
 
     public function content(Schema $schema): Schema

@@ -19,7 +19,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Config;
 use Illuminate\View\View;
 
-class LogTable
+class EntriesTable
 {
     public static function configure(Table $table): Table
     {
