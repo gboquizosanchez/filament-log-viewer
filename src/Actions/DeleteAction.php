@@ -15,7 +15,6 @@ class DeleteAction
 {
     public static function make(
         bool $withTooltip = false,
-//        bool $withRedirection = false,
     ): FilamentDeleteAction {
         $action = FilamentDeleteAction::make()
             ->hiddenLabel()
@@ -40,10 +39,6 @@ class DeleteAction
             $action->tooltip(self::getTitle(...))
                 ->hidden(false);
         }
-
-//        if ($withRedirection) {
-//            $action->successRedirectUrl(ListLogs::getUrl());
-//        }
 
         return $action;
     }
