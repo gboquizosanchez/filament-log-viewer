@@ -50,8 +50,7 @@ class ViewLog extends Page implements HasTable
     {
         return $schema
             ->components([
-                // TODO: Fix tabs. Tabs not working with custom data feature.
-                // $this->getTabsContentComponent(),
+                $this->getTabsContentComponent(),
                 $this->table,
             ]);
     }
@@ -64,12 +63,6 @@ class ViewLog extends Page implements HasTable
             DownloadAction::make(withTooltip: true),
             BackAction::make(),
         ];
-    }
-
-    protected function makeTable(): Table
-    {
-        return Table::make($this)
-            ->modifyQueryUsing($this->modifyQueryWithActiveTab(...));
     }
 
     public static function canAccess(): bool

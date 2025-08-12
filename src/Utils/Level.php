@@ -21,9 +21,15 @@ enum Level: string
     case Info = 'info';
     case Debug = 'debug';
 
-    public static function options(): array
+    public static function options(bool $withoutAll = false): array
     {
-        return __('filament-log-viewer::log.levels');
+        $levels = __('filament-log-viewer::log.levels');
+
+        if ($withoutAll) {
+            unset($levels[self::ALL]);
+        }
+
+        return $levels;
     }
 
     public function label(): string

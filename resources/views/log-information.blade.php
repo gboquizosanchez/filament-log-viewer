@@ -1,3 +1,8 @@
+<style>
+    .fi-ta-header-toolbar {
+        display: none;
+    }
+</style>
 <div class="filament-tables-table overflow-hidden bg-white dark:bg-gray-900 shadow xs:rounded-lg">
     <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
         <h3 class="text-md font-semibold text-gray-900 dark:text-gray-100">

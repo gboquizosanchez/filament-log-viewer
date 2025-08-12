@@ -47,7 +47,7 @@ class Log extends Entity
 
     public function createdAt(): Carbon
     {
-        return Carbon::createFromTimestamp($this->file()->getATime());
+        return Carbon::createFromTimestamp(filectime($this->file->getPathname()));
     }
 
     public function updatedAt(): Carbon

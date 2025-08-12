@@ -14,7 +14,6 @@ use Boquizo\FilamentLogViewer\Tables\Columns\EnvColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\MessageColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\StackColumn;
-use Boquizo\FilamentLogViewer\Tables\Grouping\LevelGroup;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -52,8 +51,8 @@ class EntriesTable
             ])
             ->filters([
                 SelectFilter::make('level')
-                    ->options(Level::options())
-                    ->default(Level::Error->value),
+                    ->label(__('filament-log-viewer::log.table.columns.level.label'))
+                    ->options(Level::options(withoutAll: true)),
             ]);
     }
 
@@ -66,7 +65,6 @@ class EntriesTable
                 ),
         ]);
     }
-
 
     private static function getRecords(
         ViewLog $livewire,
@@ -94,7 +92,7 @@ class EntriesTable
                 filled($search),
                 fn (Collection $collection) => $collection->filter(
                     fn (array $record) => Str::contains(
-                        Str::lower($record['datetime']),
+                        Str::lower($record['datetime'] ?? ''),
                         Str::lower($search),
                     ) || Str::contains(
                         Str::lower($record['header'] ?? ''),
