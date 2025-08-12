@@ -6,7 +6,7 @@ namespace Boquizo\FilamentLogViewer\Tables\Columns;
 
 use Filament\Tables\Columns\TextColumn;
 
-class HeaderColumn
+class MessageColumn
 {
     public static function make(): TextColumn
     {

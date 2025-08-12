@@ -12,8 +12,7 @@ class EnvColumn
     {
         return TextColumn::make('env')
             ->badge()
-            ->color(self::getColor(...))
-            ->sortable();
+            ->color(self::getColor(...));
     }
 
     private static function getColor(string $state): string
