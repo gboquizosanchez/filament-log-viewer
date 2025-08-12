@@ -160,7 +160,7 @@ class FilamentLogViewerPlugin implements Plugin
     public function getLogsTableFiltered(string $date): array
     {
         return collect($this->getLogsTableRecords())
-            ->filter(fn ($row) => $row['date'] === $date)
+            ->filter(fn(array $row): bool => $row['date'] === $date)
             ->values()
             ->first();
     }
