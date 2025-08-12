@@ -15,6 +15,8 @@ use Boquizo\FilamentLogViewer\Tables\Columns\MessageColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\StackColumn;
 use Boquizo\FilamentLogViewer\Tables\Grouping\LevelGroup;
+use Boquizo\FilamentLogViewer\Utils\Level;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -47,6 +49,11 @@ class EntriesTable
             ->recordActions([
                 StackAction::make(),
                 ContextAction::make(),
+            ])
+            ->filters([
+                SelectFilter::make('level')
+                    ->options(Level::options())
+                    ->default(Level::Error->value),
             ]);
     }
 
@@ -63,6 +70,7 @@ class EntriesTable
 
     private static function getRecords(
         ViewLog $livewire,
+        array $filters,
         ?string $sortColumn,
         ?string $sortDirection,
         ?string $search,
@@ -86,12 +94,18 @@ class EntriesTable
                 filled($search),
                 fn (Collection $collection) => $collection->filter(
                     fn (array $record) => Str::contains(
-                            Str::lower($record['datetime']),
-                            Str::lower($search),
-                        ) || Str::contains(
-                            Str::lower($record['header'] ?? ''),
-                            Str::lower($search),
-                        ),
+                        Str::lower($record['datetime']),
+                        Str::lower($search),
+                    ) || Str::contains(
+                        Str::lower($record['header'] ?? ''),
+                        Str::lower($search),
+                    ),
+                ),
+            )
+            ->when(
+                filled($level = $filters['level']['value'] ?? null),
+                fn (Collection $data): Collection => $data->where(
+                    'level', $level
                 ),
             );
 
