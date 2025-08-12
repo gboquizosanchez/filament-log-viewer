@@ -24,7 +24,6 @@ use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Locked;
 use Override;
 
@@ -51,7 +50,8 @@ class ViewLog extends Page implements HasTable
     {
         return $schema
             ->components([
-                $this->getTabsContentComponent(),
+                // TODO: Fix tabs. Tabs not working with custom data feature.
+                // $this->getTabsContentComponent(),
                 $this->table,
             ]);
     }

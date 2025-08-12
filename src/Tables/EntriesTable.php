@@ -29,9 +29,10 @@ class EntriesTable
         return $table
             ->records(self::getRecords(...))
             ->header(self::getHeader(...))
-            ->groups([
-                LevelGroup::make(),
-            ])
+            // TODO: Fix grouping. Groups not working with custom data feature.
+            // ->groups([
+            //     LevelGroup::make(),
+            // ])
             ->paginationPageOptions(
                 Config::array('filament-log-viewer.per-page'),
             )
