@@ -26,7 +26,7 @@ class IconsWidget extends StatsOverviewWidget
     protected function percentages(): array
     {
         $statsTable = FilamentLogViewerPlugin::get()
-            ->getViewerStatsTable();
+            ->getViewerStats();
 
         $levels = $statsTable->footer;
         $names = $this->names();

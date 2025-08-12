@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Tables;
+namespace Boquizo\FilamentLogViewer\Utils;
 
-use Boquizo\FilamentLogViewer\Utils\Level;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
-class StatsTable
+class Stats
 {
     public array $rows = [];
 
