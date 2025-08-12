@@ -26,6 +26,9 @@ class LogsTable
     {
         return $table
             ->records(self::getRecords(...))
+            ->resolveSelectedRecordsUsing(
+                self::getResolveSelectedRecordsUsing(...),
+            )
             ->paginationPageOptions(
                 Config::array('filament-log-viewer.per-page'),
             )
@@ -51,7 +54,7 @@ class LogsTable
                     DownloadBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
-        ]);
+            ]);
     }
 
     private static function getRecords(
@@ -69,17 +72,17 @@ class LogsTable
                 fn (Collection $collection) => $collection->sortBy(
                     $sortColumn,
                     SORT_REGULAR,
-                    $sortDirection === 'desc'
-                )
+                    $sortDirection === 'desc',
+                ),
             )
             ->when(
                 filled($search),
                 fn (Collection $collection) => $collection->filter(
-                    fn (array $record) => str_contains(
+                    fn (array $record) => Str::contains(
                         Str::lower($record['date']),
-                        Str::lower($search)
-                    )
-                )
+                        Str::lower($search),
+                    ),
+                ),
             );
 
         $total = $collection->count();
@@ -92,5 +95,19 @@ class LogsTable
             perPage: $recordsPerPage,
             currentPage: $page,
         );
+    }
+
+    private static function getResolveSelectedRecordsUsing(
+        array $keys,
+        bool $isTrackingDeselectedKeys,
+        array $deselectedKeys,
+    ): Collection {
+        $records = collect(FilamentLogViewerPlugin::get()->getLogsTableRecords());
+
+        if ($isTrackingDeselectedKeys) {
+            return $records->except($deselectedKeys)->values();
+        }
+
+        return $records->only($keys)->values();
     }
 }
