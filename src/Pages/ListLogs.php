@@ -115,18 +115,19 @@ class ListLogs extends Page implements HasTable
                         ]),
                     )
                     ->color('warning')
-                    ->successNotificationTitle(
-                        __('filament-log-viewer::log.table.actions.clear.success'),
-                    )
-                    ->failureNotificationTitle(
-                        __('filament-log-viewer::log.table.actions.clear.error'),
-                    )
                     ->icon('fas-broom')
                     ->requiresConfirmation()
-                    ->action(
-                        fn (LogStat $record): bool => FilamentLogViewerPlugin::get()
-                            ->clearLog($record->date)
-                    ),
+                    ->action(function (LogStat $record): void {
+                        FilamentLogViewerPlugin::get()->clearLog($record->date)
+                            ? Notification::make()
+                                ->title(__('filament-log-viewer::log.table.actions.clear.success'))
+                                ->success()
+                                ->send()
+                            : Notification::make()
+                                ->title(__('filament-log-viewer::log.table.actions.clear.error'))
+                                ->danger()
+                                ->send();
+                    }),
                 Tables\Actions\DeleteAction::make()
                     ->hiddenLabel()
                     ->button()
