@@ -46,6 +46,40 @@ After setting up the custom theme, you need to add this line, if not, the plugin
 @source '../../../../vendor/gboquizosanchez/filament-log-viewer/resources/views/**/*.blade.php';
 ```
 
+### 🔧 Drivers
+
+By default, the plugin uses **LOG_CHANNEL** as the driver.  
+To override this behavior, set the environment variable in your `.env` file:
+
+```
+FILAMENT_LOG_VIEWER_DRIVER=raw
+```
+---
+
+#### 📌 Available Drivers
+| Driver | Description                                                                          |
+|--------|--------------------------------------------------------------------------------------|
+| daily  | Default driver used by the plugin                                                    |
+| stack  | Standard Laravel stack driver                                                        |
+| raw    | Only available when explicitly using FILAMENT_LOG_VIEWER_DRIVER; shows all log files |
+
+---
+👉 **Note:**  
+If `FILAMENT_LOG_VIEWER_DRIVER` is not defined, the plugin will continue using `LOG_CHANNEL`.
+---
+#### Example `.env` configuration
+**Use the default LOG_CHANNEL (daily):**
+
+```
+LOG_CHANNEL=daily
+```
+
+**Or override to use raw with FILAMENT_LOG_VIEWER_DRIVER:**
+
+```
+FILAMENT_LOG_VIEWER_DRIVER=raw
+```
+
 ### Others configurations
 
 
