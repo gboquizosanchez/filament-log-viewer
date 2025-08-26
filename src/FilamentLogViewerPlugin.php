@@ -18,6 +18,7 @@ use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Config;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -66,6 +67,16 @@ class FilamentLogViewerPlugin implements Plugin
     public function boot(Panel $panel): void
     {
         //
+    }
+
+    public function driver(): string
+    {
+        $driver = Config::string('filament-log-viewer.driver');
+
+        return match ($driver) {
+            'raw', 'stack', 'daily' => $driver,
+            default => 'daily',
+        };
     }
 
     public function authorize(bool|Closure $callback = true): static
