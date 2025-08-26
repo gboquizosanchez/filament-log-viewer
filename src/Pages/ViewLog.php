@@ -178,7 +178,7 @@ class ViewLog extends Page implements HasTable
             Actions\Action::make('download')
                 ->hiddenLabel()
                 ->tooltip(__('filament-log-viewer::log.table.actions.download.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->button()
                 ->modalHeading(__('filament-log-viewer::log.table.actions.download.label', [
@@ -219,7 +219,7 @@ class ViewLog extends Page implements HasTable
             DeleteAction::make()
                 ->hiddenLabel()
                 ->tooltip(__('filament-log-viewer::log.table.actions.delete.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->hidden(false)
                 ->button()
