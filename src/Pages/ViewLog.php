@@ -11,6 +11,7 @@ use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Schema\Components\TabLevel;
 use Boquizo\FilamentLogViewer\Tables\EntriesTable;
+use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Pages\Page;
 use Filament\Panel;
@@ -22,7 +23,6 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Attributes\Locked;
 use Override;
@@ -140,8 +140,10 @@ class ViewLog extends Page implements HasTable
 
     public function getTitle(): string
     {
+        $date = $this->record->date ?? null;
+
         return __('filament-log-viewer::log.show.title', [
-            'log' => Carbon::parse($this->record->date ?? null)->isoFormat('LL'),
+            'log' => ParseDateUseCase::execute($date),
         ]);
     }
 }

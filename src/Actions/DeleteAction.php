@@ -7,9 +7,9 @@ namespace Boquizo\FilamentLogViewer\Actions;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
+use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Exception;
 use Filament\Actions\DeleteAction as FilamentDeleteAction;
-use Illuminate\Support\Carbon;
 
 class DeleteAction
 {
@@ -49,8 +49,10 @@ class DeleteAction
     ): string {
         $model = $action->getRecord() ?? $livewire->record;
 
+        $date = $model?->date ?? $model['date'];
+
         return __('filament-log-viewer::log.table.actions.delete.label', [
-            'log' => Carbon::parse($model?->date ?? $model['date'])->isoFormat('LL'),
+            'log' => ParseDateUseCase::execute($date),
         ]);
     }
 

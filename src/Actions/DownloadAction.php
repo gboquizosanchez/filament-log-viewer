@@ -7,8 +7,8 @@ namespace Boquizo\FilamentLogViewer\Actions;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
+use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Filament\Actions\Action;
-use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadAction
@@ -38,8 +38,10 @@ class DownloadAction
     ): string {
         $model = $action->getRecord() ?? $livewire->record;
 
+        $date = $model?->date ?? $model['date'];
+
         return __('filament-log-viewer::log.table.actions.download.label', [
-            'log' => Carbon::parse($model?->date ?? $model['date'])->isoFormat('LL'),
+            'log' => ParseDateUseCase::execute($date),
         ]);
     }
 
