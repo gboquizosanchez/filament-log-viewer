@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
+use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Illuminate\Support\Facades\Config;
 use RuntimeException;
 
 class ExtractLogPathAction
 {
-    public static function execute(string $date): false|string
+    public static function execute(string $name): false|string
     {
-        return (new self())($date);
+        return (new self())($name);
     }
 
-    public function __invoke(string $date): false|string
+    public function __invoke(string $name): false|string
     {
-        $path = $this->path($date);
+        $path = $this->path($name);
 
         if ( ! file_exists($path)) {
             throw new RuntimeException(
@@ -27,12 +28,18 @@ class ExtractLogPathAction
         return realpath($path);
     }
 
-    private function path(string $date): string
+    private function path(string $name): string
     {
         $prefix = Config::string('filament-log-viewer.pattern.prefix', 'laravel-');
         $extension = Config::string('filament-log-viewer.pattern.extension', '.log');
         $storagePath = Config::string('filament-log-viewer.storage_path', storage_path('logs'));
 
-        return $storagePath.DIRECTORY_SEPARATOR.$prefix.$date.$extension;
+        $basePath = $storagePath.DIRECTORY_SEPARATOR;
+
+        return match (FilamentLogViewerPlugin::get()->driver()) {
+            'daily' => $basePath.$prefix.$name.$extension,
+            'stack' => $basePath.rtrim($prefix, '-').$extension,
+            'raw' => $basePath.$name,
+        };
     }
 }

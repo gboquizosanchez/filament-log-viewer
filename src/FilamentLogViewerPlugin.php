@@ -5,7 +5,7 @@ namespace Boquizo\FilamentLogViewer;
 use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
-use Boquizo\FilamentLogViewer\Actions\ExtractDatesAction;
+use Boquizo\FilamentLogViewer\Actions\ExtractNamesAction;
 use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;

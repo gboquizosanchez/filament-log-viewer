@@ -16,7 +16,7 @@ class ExtractLogByDateAction
 
     public function __invoke(string $date): Log
     {
-        $dates = ExtractDatesAction::execute();
+        $dates = ExtractNamesAction::execute();
 
         if (!isset($dates[$date])) {
             throw new RuntimeException("Log not found in this date [{$date}]");
