@@ -46,9 +46,9 @@ class LogsTable
                 LevelColumn::make(Level::Debug),
             ])
             ->recordActions([
-//                ClearLogAction::make(),
                 ViewLogAction::make(),
                 DownloadAction::make(),
+                ClearLogAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
@@ -91,9 +91,11 @@ class LogsTable
 
         $data = $collection->forPage($page, $recordsPerPage);
 
+        $isEmpty = self::isEmpty($data);
+
         return new LengthAwarePaginator(
-            $data,
-            total: $total,
+            $isEmpty ? [] : $data,
+            total: $isEmpty ? 0 : $total,
             perPage: $recordsPerPage,
             currentPage: $page,
         );
@@ -111,5 +113,12 @@ class LogsTable
         }
 
         return $records->only($keys)->values();
+    }
+
+    private static function isEmpty(Collection $data): bool
+    {
+        $firstRecord = collect($data->first());
+
+        return $data->count() === 1 && $firstRecord->filter()->count() === 1;
     }
 }

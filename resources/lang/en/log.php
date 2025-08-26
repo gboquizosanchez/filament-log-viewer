@@ -48,6 +48,11 @@ return [
                     'label' => 'Delete selected logs',
                 ],
             ],
+            'clear' => [
+                'label' => 'Clear log :log',
+                'success' => 'Log cleared successfully',
+                'error' => 'Error clearing the log',
+            ],
             'close' => [
                 'label' => 'Back',
             ],

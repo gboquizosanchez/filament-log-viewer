@@ -48,6 +48,11 @@ return [
                     'label' => 'Supprimer les logs sélectionnés',
                 ],
             ],
+            'clear' => [
+                'label' => 'Effacer le journal :log',
+                'success' => 'Journal effacé avec succès',
+                'error' => 'Erreur lors de l\'effacement du journal',
+            ],
             'close' => [
                 'label' => 'Retour',
             ],

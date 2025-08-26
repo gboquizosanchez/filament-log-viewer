@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Pages;
 
 use BackedEnum;
 use Boquizo\FilamentLogViewer\Actions\BackAction;
+use Boquizo\FilamentLogViewer\Actions\ClearLogAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
@@ -60,6 +61,7 @@ class ViewLog extends Page implements HasTable
     {
         return [
             DeleteAction::make(withTooltip: true),
+            ClearLogAction::make(withTooltip: true),
             DownloadAction::make(withTooltip: true),
             BackAction::make(),
         ];

@@ -6,6 +6,7 @@ use Boquizo\FilamentLogViewer\Widgets\IconsWidget;
 use Boquizo\FilamentLogViewer\Widgets\StatsOverviewWidget;
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -61,6 +62,12 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
             $value = $this->get($key, $default);
 
             return is_array($value) ? $value : (array) $value;
+        });
+
+        Repository::macro('boolean', function (string $key, bool $default = false): bool {
+            $value = $this->get($key, $default);
+
+            return is_bool($value) ? $value : (bool) $value;
         });
     }
 }
