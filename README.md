@@ -45,7 +45,6 @@ To override this behavior, set the environment variable in your `.env` file:
 ```
 FILAMENT_LOG_VIEWER_DRIVER=raw
 ```
----
 
 #### 📌 Available Drivers
 | Driver | Description                                                                          |
@@ -54,10 +53,9 @@ FILAMENT_LOG_VIEWER_DRIVER=raw
 | stack  | Standard Laravel stack driver                                                        |
 | raw    | Only available when explicitly using FILAMENT_LOG_VIEWER_DRIVER; shows all log files |
 
----
 👉 **Note:**  
 If `FILAMENT_LOG_VIEWER_DRIVER` is not defined, the plugin will continue using `LOG_CHANNEL`.
----
+
 #### Example `.env` configuration
 **Use the default LOG_CHANNEL (daily):**
 
@@ -72,7 +70,6 @@ FILAMENT_LOG_VIEWER_DRIVER=raw
 ```
 
 ### Others configurations
-
 
 ```php
 ->plugins([
@@ -127,12 +124,15 @@ class CustomViewLog extends BaseViewLog
 {
     protected function getHeaderActions(): array
     {
-        return array_merge(parent::getHeaderActions(), [
-            Action::make('export')
-                ->label('Export to CSV')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->action(fn() => $this->exportToCsv()),
-        ]);
+        return array_merge(
+            parent::getHeaderActions(),
+            [
+                Action::make('export')
+                    ->label('Export to CSV')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(fn () => $this->exportToCsv()),
+            ],
+        );
     }
     
     private function exportToCsv(): void
