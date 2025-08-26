@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'الرسالة',
             ],
+            'filename' => [
+                'label' => 'اسم الملف',
+            ],
         ],
         'actions' => [
             'view' => [

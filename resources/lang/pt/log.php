@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'Mensagem',
             ],
+            'filename' => [
+                'label' => 'Nome do arquivo',
+            ],
         ],
         'actions' => [
             'view' => [
