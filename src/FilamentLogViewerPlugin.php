@@ -7,6 +7,7 @@ use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
+use Boquizo\FilamentLogViewer\UseCases\ClearLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DeleteLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DownloadLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DownloadZipUseCase;
@@ -206,5 +207,10 @@ class FilamentLogViewerPlugin implements Plugin
     public function downloadLogs(array $files): BinaryFileResponse
     {
         return DownloadZipUseCase::execute($files);
+    }
+
+    public function clearLog(string $file): bool
+    {
+        return ClearLogUseCase::execute($file);
     }
 }
