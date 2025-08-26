@@ -2,6 +2,7 @@
 
 namespace Boquizo\FilamentLogViewer;
 
+use Boquizo\FilamentLogViewer\Actions\ClearLogAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
@@ -196,5 +197,10 @@ class FilamentLogViewerPlugin implements Plugin
     public function downloadLogs(array $files): BinaryFileResponse
     {
         return DownloadZipAction::execute($files);
+    }
+
+    public function clearLog(string $file): bool
+    {
+        return ClearLogAction::execute($file);
     }
 }
