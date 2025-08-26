@@ -35,7 +35,15 @@ class ListLogs extends Page implements HasTable
             )
             ->columns([
                 Tables\Columns\TextColumn::make('date')
-                    ->label(__('filament-log-viewer::log.table.columns.date.label'))
+                    ->label(function () {
+                        $driver = FilamentLogViewerPlugin::get()->driver();
+
+                        if ($driver !== 'daily') {
+                            return __('filament-log-viewer::log.table.columns.filename.label');
+                        }
+
+                        return __('filament-log-viewer::log.table.columns.date.label');
+                    })
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('all')
