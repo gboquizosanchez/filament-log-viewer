@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Pages;
 
+use Boquizo\FilamentLogViewer\Actions\ParseDateAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Utils\Icons;
@@ -90,7 +91,7 @@ class ListLogs extends Page implements HasTable
                     ->label(__('filament-log-viewer::log.table.actions.download.label'))
                     ->modalHeading(
                         fn (LogStat $record) => __('filament-log-viewer::log.table.actions.download.label', [
-                            'log' => Carbon::parse($record->date)->isoFormat('LL'),
+                            'log' => ParseDateAction::execute($record->date),
                         ]),
                     )
                     ->color('success')
@@ -106,7 +107,7 @@ class ListLogs extends Page implements HasTable
                     ->label(__('filament-log-viewer::log.table.actions.delete.label'))
                     ->modalHeading(
                         fn (LogStat $record) => __('filament-log-viewer::log.table.actions.delete.label', [
-                            'log' => Carbon::parse($record->date)->isoFormat('LL'),
+                            'log' => ParseDateAction::execute($record->date),
                         ]),
                     )
                     ->color('danger')

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Pages;
 
+use Boquizo\FilamentLogViewer\Actions\ParseDateAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Models\LogStat;
@@ -181,7 +182,7 @@ class ViewLog extends Page implements HasTable
                 ]))
                 ->button()
                 ->modalHeading(__('filament-log-viewer::log.table.actions.download.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->label(__('filament-log-viewer::log.table.actions.download.label'))
                 ->color('success')
@@ -199,7 +200,7 @@ class ViewLog extends Page implements HasTable
                 ->hidden(false)
                 ->button()
                 ->modalHeading(__('filament-log-viewer::log.table.actions.delete.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->label(__('filament-log-viewer::log.table.actions.delete.label'))
                 ->color('danger')
@@ -384,8 +385,10 @@ class ViewLog extends Page implements HasTable
 
     public function getTitle(): string
     {
+        $date = $this->record->date ?? null;
+
         return __('filament-log-viewer::log.show.title', [
-            'log' => Carbon::parse($this->record->date ?? null)->isoFormat('LL'),
+            'log' => ParseDateAction::execute($date),
         ]);
     }
 }
