@@ -192,6 +192,30 @@ class ViewLog extends Page implements HasTable
                     fn (): BinaryFileResponse => FilamentLogViewerPlugin::get()
                         ->downloadLog($this->record->date)
                 ),
+            Actions\Action::make('clear-logs')
+                ->hiddenLabel()
+                ->button()
+                ->visible(
+                    FilamentLogViewerPlugin::get()->driver() === 'stack'
+                        || Config::boolean('filament-log-viewer.clearable'),
+                )
+                ->label(__('filament-log-viewer::log.table.actions.clear.label'))
+                ->modalHeading(__('filament-log-viewer::log.table.actions.clear.label', [
+                    'log' => ParseDateAction::execute($this->record->date),
+                ]))
+                ->color('warning')
+                ->successNotificationTitle(
+                    __('filament-log-viewer::log.table.actions.clear.success'),
+                )
+                ->failureNotificationTitle(
+                    __('filament-log-viewer::log.table.actions.clear.error'),
+                )
+                ->icon('fas-broom')
+                ->requiresConfirmation()
+                ->action(
+                    fn (): bool => FilamentLogViewerPlugin::get()
+                        ->clearLog($this->record->date)
+                ),
             DeleteAction::make()
                 ->hiddenLabel()
                 ->tooltip(__('filament-log-viewer::log.table.actions.delete.label', [

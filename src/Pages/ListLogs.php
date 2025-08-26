@@ -101,6 +101,32 @@ class ListLogs extends Page implements HasTable
                         fn (LogStat $record): BinaryFileResponse => FilamentLogViewerPlugin::get()
                             ->downloadLog($record->date)
                     ),
+                Tables\Actions\Action::make('clear-logs')
+                    ->hiddenLabel()
+                    ->button()
+                    ->visible(
+                        FilamentLogViewerPlugin::get()->driver() === 'stack'
+                        || Config::boolean('filament-log-viewer.clearable'),
+                    )
+                    ->label(__('filament-log-viewer::log.table.actions.clear.label'))
+                    ->modalHeading(
+                        fn (LogStat $record) => __('filament-log-viewer::log.table.actions.clear.label', [
+                            'log' => ParseDateAction::execute($record->date),
+                        ]),
+                    )
+                    ->color('warning')
+                    ->successNotificationTitle(
+                        __('filament-log-viewer::log.table.actions.clear.success'),
+                    )
+                    ->failureNotificationTitle(
+                        __('filament-log-viewer::log.table.actions.clear.error'),
+                    )
+                    ->icon('fas-broom')
+                    ->requiresConfirmation()
+                    ->action(
+                        fn (LogStat $record): bool => FilamentLogViewerPlugin::get()
+                            ->clearLog($record->date)
+                    ),
                 Tables\Actions\DeleteAction::make()
                     ->hiddenLabel()
                     ->button()

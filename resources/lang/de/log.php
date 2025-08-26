@@ -48,6 +48,11 @@ return [
                     'label' => 'Ausgewählte Logs löschen',
                 ],
             ],
+            'clear' => [
+                'label' => 'Protokoll löschen :log',
+                'success' => 'Protokoll erfolgreich gelöscht',
+                'error' => 'Fehler beim Löschen des Protokolls',
+            ],
             'close' => [
                 'label' => 'Zurück',
             ],

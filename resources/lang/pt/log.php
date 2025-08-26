@@ -48,6 +48,11 @@ return [
                     'label' => 'Excluir logs selecionados',
                 ],
             ],
+            'clear' => [
+                'label' => 'Limpar log :log',
+                'success' => 'Log limpo com sucesso',
+                'error' => 'Erro ao limpar o log',
+            ],
             'close' => [
                 'label' => 'Voltar',
             ],
