@@ -33,9 +33,7 @@ class ClearLogAction
             )
             ->icon('fas-broom')
             ->requiresConfirmation()
-            ->action(self::getAction(...))
-            // I have to set this manually because the default is not working
-            ->successRedirectUrl(ListLogs::getUrl());
+            ->action(self::getAction(...));
 
         if ($withTooltip) {
             $action->tooltip(__('filament-log-viewer::log.table.actions.clear.label'));

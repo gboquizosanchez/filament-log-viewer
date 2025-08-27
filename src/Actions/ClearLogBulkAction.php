@@ -34,7 +34,7 @@ class ClearLogBulkAction
                 __('filament-log-viewer::log.table.actions.clear.bulk.error'),
             )
             ->action(self::getAction(...))
-            ->successRedirectUrl(ListLogs::getUrl());
+            ->deselectRecordsAfterCompletion();
     }
 
     private static function getAction(Collection $records,): void
