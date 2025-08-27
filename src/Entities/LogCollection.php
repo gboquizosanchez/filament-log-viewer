@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Entities;
 
-use Boquizo\FilamentLogViewer\Actions\ExtractDatesAction;
+use Boquizo\FilamentLogViewer\Actions\ExtractNamesAction;
 use Boquizo\FilamentLogViewer\Actions\ReadLogAction;
 use Illuminate\Support\LazyCollection;
 
@@ -14,7 +14,7 @@ class LogCollection extends LazyCollection
     {
         if ($source !== null) {
             $source = static function () {
-                foreach (ExtractDatesAction::execute() as $date => $path) {
+                foreach (ExtractNamesAction::execute() as $date => $path) {
                     yield $date => Log::make(
                         $date,
                         $path,

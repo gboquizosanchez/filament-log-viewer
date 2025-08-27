@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'Nachricht',
             ],
+            'filename' => [
+                'label' => 'Dateiname',
+            ],
         ],
         'actions' => [
             'view' => [
@@ -43,6 +46,15 @@ return [
                 'error' => 'Fehler beim Löschen des Logs',
                 'bulk' => [
                     'label' => 'Ausgewählte Logs löschen',
+                ],
+            ],
+            'clear' => [
+                'label' => 'Protokoll löschen :log',
+                'success' => 'Protokoll erfolgreich gelöscht',
+                'error' => 'Fehler beim Löschen des Protokolls',
+                'bulk' => [
+                    'success' => 'Protokolle erfolgreich gelöscht',
+                    'label' => 'Ausgewählte Protokolle löschen',
                 ],
             ],
             'close' => [

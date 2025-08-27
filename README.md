@@ -37,8 +37,39 @@ You can also publish the configuration file to customize the package:
 php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogViewerServiceProvider"
 ```
 
-### Others configurations
+### 🔧 Drivers
 
+By default, the plugin uses **LOG_CHANNEL** as the driver.  
+To override this behavior, set the environment variable in your `.env` file:
+
+```
+FILAMENT_LOG_VIEWER_DRIVER=raw
+```
+
+#### 📌 Available Drivers
+| Driver | Description                                                                          |
+|--------|--------------------------------------------------------------------------------------|
+| daily  | Default driver used by the plugin                                                    |
+| stack  | Standard Laravel stack driver                                                        |
+| raw    | Only available when explicitly using FILAMENT_LOG_VIEWER_DRIVER; shows all log files |
+
+👉 **Note:**  
+If `FILAMENT_LOG_VIEWER_DRIVER` is not defined, the plugin will continue using `LOG_CHANNEL`.
+
+#### Example `.env` configuration
+**Use the default LOG_CHANNEL (daily):**
+
+```
+LOG_CHANNEL=daily
+```
+
+**Or override to use raw with FILAMENT_LOG_VIEWER_DRIVER:**
+
+```
+FILAMENT_LOG_VIEWER_DRIVER=raw
+```
+
+### Others configurations
 
 ```php
 ->plugins([
@@ -93,12 +124,15 @@ class CustomViewLog extends BaseViewLog
 {
     protected function getHeaderActions(): array
     {
-        return array_merge(parent::getHeaderActions(), [
-            Action::make('export')
-                ->label('Export to CSV')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->action(fn() => $this->exportToCsv()),
-        ]);
+        return array_merge(
+            parent::getHeaderActions(),
+            [
+                Action::make('export')
+                    ->label('Export to CSV')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->action(fn () => $this->exportToCsv()),
+            ],
+        );
     }
     
     private function exportToCsv(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Pages;
 
+use Boquizo\FilamentLogViewer\Actions\ParseDateAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\LogStat;
 use Boquizo\FilamentLogViewer\Utils\Icons;
@@ -35,7 +36,15 @@ class ListLogs extends Page implements HasTable
             )
             ->columns([
                 Tables\Columns\TextColumn::make('date')
-                    ->label(__('filament-log-viewer::log.table.columns.date.label'))
+                    ->label(function () {
+                        $driver = FilamentLogViewerPlugin::get()->driver();
+
+                        if ($driver !== 'daily') {
+                            return __('filament-log-viewer::log.table.columns.filename.label');
+                        }
+
+                        return __('filament-log-viewer::log.table.columns.date.label');
+                    })
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('all')
@@ -82,7 +91,7 @@ class ListLogs extends Page implements HasTable
                     ->label(__('filament-log-viewer::log.table.actions.download.label'))
                     ->modalHeading(
                         fn (LogStat $record) => __('filament-log-viewer::log.table.actions.download.label', [
-                            'log' => Carbon::parse($record->date)->isoFormat('LL'),
+                            'log' => ParseDateAction::execute($record->date),
                         ]),
                     )
                     ->color('success')
@@ -92,13 +101,40 @@ class ListLogs extends Page implements HasTable
                         fn (LogStat $record): BinaryFileResponse => FilamentLogViewerPlugin::get()
                             ->downloadLog($record->date)
                     ),
+                Tables\Actions\Action::make('clear-logs')
+                    ->hiddenLabel()
+                    ->button()
+                    ->visible(
+                        FilamentLogViewerPlugin::get()->driver() === 'stack'
+                        || Config::boolean('filament-log-viewer.clearable'),
+                    )
+                    ->label(__('filament-log-viewer::log.table.actions.clear.label'))
+                    ->modalHeading(
+                        fn (LogStat $record) => __('filament-log-viewer::log.table.actions.clear.label', [
+                            'log' => ParseDateAction::execute($record->date),
+                        ]),
+                    )
+                    ->color('warning')
+                    ->icon('fas-broom')
+                    ->requiresConfirmation()
+                    ->action(function (LogStat $record): void {
+                        FilamentLogViewerPlugin::get()->clearLog($record->date)
+                            ? Notification::make()
+                                ->title(__('filament-log-viewer::log.table.actions.clear.success'))
+                                ->success()
+                                ->send()
+                            : Notification::make()
+                                ->title(__('filament-log-viewer::log.table.actions.clear.error'))
+                                ->danger()
+                                ->send();
+                    }),
                 Tables\Actions\DeleteAction::make()
                     ->hiddenLabel()
                     ->button()
                     ->label(__('filament-log-viewer::log.table.actions.delete.label'))
                     ->modalHeading(
                         fn (LogStat $record) => __('filament-log-viewer::log.table.actions.delete.label', [
-                            'log' => Carbon::parse($record->date)->isoFormat('LL'),
+                            'log' => ParseDateAction::execute($record->date),
                         ]),
                     )
                     ->color('danger')
@@ -138,6 +174,34 @@ class ListLogs extends Page implements HasTable
                                 throw new RuntimeException();
                             }
                         }),
+                    Tables\Actions\BulkAction::make('clear-logs')
+                        ->label(__('filament-log-viewer::log.table.actions.clear.bulk.label'))
+                        ->color('warning')
+                        ->visible(FilamentLogViewerPlugin::get()->driver() === 'stack' || Config::boolean('filament-log-viewer.clearable'))
+                        ->icon('fas-broom')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('filament-log-viewer::log.table.actions.clear.bulk.label'))
+                        ->action(function (Tables\Actions\BulkAction $action, Collection $records): void {
+                            try {
+                                $records->each(function ($record) {
+                                    FilamentLogViewerPlugin::get()->clearLog($record->date);
+                                });
+
+                                Notification::make()
+                                    ->title(__('filament-log-viewer::log.table.actions.clear.bulk.success'))
+                                    ->success()
+                                    ->send();
+
+                            } catch (RuntimeException) {
+                                Notification::make()
+                                    ->title(__('filament-log-viewer::log.table.actions.clear.bulk.error'))
+                                    ->danger()
+                                    ->send();
+
+                                throw new RuntimeException();
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading(__('filament-log-viewer::log.table.actions.delete.bulk.label'))
                         ->action(function (Tables\Actions\DeleteBulkAction $action): void {

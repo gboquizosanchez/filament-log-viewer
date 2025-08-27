@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'Message',
             ],
+            'filename' => [
+                'label' => 'Filename',
+            ],
         ],
         'actions' => [
             'view' => [
@@ -43,6 +46,15 @@ return [
                 'error' => 'Error deleting the log',
                 'bulk' => [
                     'label' => 'Delete selected logs',
+                ],
+            ],
+            'clear' => [
+                'label' => 'Clear log :log',
+                'success' => 'Log cleared successfully',
+                'error' => 'Error clearing the log',
+                'bulk' => [
+                    'success' => 'Logs cleared successfully',
+                    'label' => 'Clear selected logs',
                 ],
             ],
             'close' => [

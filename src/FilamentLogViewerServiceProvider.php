@@ -62,5 +62,11 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
 
             return is_array($value) ? $value : (array) $value;
         });
+
+        Repository::macro('boolean', function (string $key, bool $default = false): bool {
+            $value = $this->get($key, $default);
+
+            return is_bool($value) ? $value : (bool) $value;
+        });
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Pages;
 
+use Boquizo\FilamentLogViewer\Actions\ParseDateAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Models\Log;
 use Boquizo\FilamentLogViewer\Models\LogStat;
@@ -177,11 +178,11 @@ class ViewLog extends Page implements HasTable
             Actions\Action::make('download')
                 ->hiddenLabel()
                 ->tooltip(__('filament-log-viewer::log.table.actions.download.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->button()
                 ->modalHeading(__('filament-log-viewer::log.table.actions.download.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->label(__('filament-log-viewer::log.table.actions.download.label'))
                 ->color('success')
@@ -191,15 +192,39 @@ class ViewLog extends Page implements HasTable
                     fn (): BinaryFileResponse => FilamentLogViewerPlugin::get()
                         ->downloadLog($this->record->date)
                 ),
+            Actions\Action::make('clear-logs')
+                ->hiddenLabel()
+                ->button()
+                ->visible(
+                    FilamentLogViewerPlugin::get()->driver() === 'stack'
+                        || Config::boolean('filament-log-viewer.clearable'),
+                )
+                ->label(__('filament-log-viewer::log.table.actions.clear.label'))
+                ->modalHeading(__('filament-log-viewer::log.table.actions.clear.label', [
+                    'log' => ParseDateAction::execute($this->record->date),
+                ]))
+                ->color('warning')
+                ->successNotificationTitle(
+                    __('filament-log-viewer::log.table.actions.clear.success'),
+                )
+                ->failureNotificationTitle(
+                    __('filament-log-viewer::log.table.actions.clear.error'),
+                )
+                ->icon('fas-broom')
+                ->requiresConfirmation()
+                ->action(
+                    fn (): bool => FilamentLogViewerPlugin::get()
+                        ->clearLog($this->record->date)
+                ),
             DeleteAction::make()
                 ->hiddenLabel()
                 ->tooltip(__('filament-log-viewer::log.table.actions.delete.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->hidden(false)
                 ->button()
                 ->modalHeading(__('filament-log-viewer::log.table.actions.delete.label', [
-                    'log' => Carbon::parse($this->record->date)->isoFormat('LL'),
+                    'log' => ParseDateAction::execute($this->record->date),
                 ]))
                 ->label(__('filament-log-viewer::log.table.actions.delete.label'))
                 ->color('danger')
@@ -384,8 +409,10 @@ class ViewLog extends Page implements HasTable
 
     public function getTitle(): string
     {
+        $date = $this->record->date ?? null;
+
         return __('filament-log-viewer::log.show.title', [
-            'log' => Carbon::parse($this->record->date ?? null)->isoFormat('LL'),
+            'log' => ParseDateAction::execute($date),
         ]);
     }
 }

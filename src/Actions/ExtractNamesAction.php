@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
+use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Utils\Parser;
 use Illuminate\Support\Facades\Config;
 
-class ExtractDatesAction
+class ExtractNamesAction
 {
     /** @return array<string, string> */
     public static function execute(): array
@@ -22,7 +23,7 @@ class ExtractDatesAction
 
         // [date => file]
         return array_combine(
-            $this->extractDates($files),
+            $this->extractNames($files),
             $files,
         );
     }
@@ -32,12 +33,16 @@ class ExtractDatesAction
      *
      * @return array<string, string>
      */
-    private function extractDates(array $files): array
+    private function extractNames(array $files): array
     {
-        return array_map(
-            static fn (string $file): string => Parser::extractDate(basename($file)),
-            $files,
-        );
+        $driver = FilamentLogViewerPlugin::get()->driver();
+
+        $extractor = match ($driver) {
+            'daily' => static fn (string $file): string => Parser::extractDate(basename($file)),
+            'stack', 'raw' => static fn (string $file): string => basename($file),
+        };
+
+        return array_map($extractor, $files);
     }
 
     /** @return list<string> */
@@ -61,6 +66,10 @@ class ExtractDatesAction
     {
         $patterns = (object) Config::array('filament-log-viewer.pattern');
 
-        return $patterns->prefix.$patterns->date.$patterns->extension;
+        return match (FilamentLogViewerPlugin::get()->driver()) {
+            'daily' => $patterns->prefix.$patterns->date.$patterns->extension,
+            'stack' => rtrim($patterns->prefix, '-').$patterns->extension,
+            'raw' => "*{$patterns->extension}",
+        };
     }
 }
