@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'Messaggio',
             ],
+            'filename' => [
+                'label' => 'Nome del file',
+            ],
         ],
         'actions' => [
             'view' => [
@@ -43,6 +46,15 @@ return [
                 'error' => 'Errore durante l\'eliminazione del log',
                 'bulk' => [
                     'label' => 'Elimina i log selezionati',
+                ],
+            ],
+            'clear' => [
+                'label' => 'Cancella registro :log',
+                'success' => 'Registro cancellato con successo',
+                'error' => 'Errore durante la cancellazione del registro',
+                'bulk' => [
+                    'success' => 'Log cancellati con successo',
+                    'label' => 'Cancella i log selezionati',
                 ],
             ],
             'close' => [

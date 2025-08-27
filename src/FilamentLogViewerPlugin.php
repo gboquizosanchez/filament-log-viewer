@@ -7,6 +7,7 @@ use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
+use Boquizo\FilamentLogViewer\UseCases\ClearLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DeleteLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DownloadLogUseCase;
 use Boquizo\FilamentLogViewer\UseCases\DownloadZipUseCase;
@@ -18,6 +19,7 @@ use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FilamentLogViewerPlugin implements Plugin
@@ -65,6 +67,16 @@ class FilamentLogViewerPlugin implements Plugin
     public function boot(Panel $panel): void
     {
         //
+    }
+
+    public function driver(): string
+    {
+        $driver = Config::string('filament-log-viewer.driver');
+
+        return match ($driver) {
+            'raw', 'stack', 'daily' => $driver,
+            default => 'daily',
+        };
     }
 
     public function authorize(bool|Closure $callback = true): static
@@ -195,5 +207,10 @@ class FilamentLogViewerPlugin implements Plugin
     public function downloadLogs(array $files): BinaryFileResponse
     {
         return DownloadZipUseCase::execute($files);
+    }
+
+    public function clearLog(string $file): bool
+    {
+        return ClearLogUseCase::execute($file);
     }
 }

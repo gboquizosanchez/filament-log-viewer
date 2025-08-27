@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'Mensagem',
             ],
+            'filename' => [
+                'label' => 'Nome do arquivo',
+            ],
         ],
         'actions' => [
             'view' => [
@@ -43,6 +46,15 @@ return [
                 'error' => 'Erro ao excluir o log',
                 'bulk' => [
                     'label' => 'Excluir logs selecionados',
+                ],
+            ],
+            'clear' => [
+                'label' => 'Limpar log :log',
+                'success' => 'Log limpo com sucesso',
+                'error' => 'Erro ao limpar o log',
+                'bulk' => [
+                    'success' => 'Logs limpos com sucesso',
+                    'label' => 'Limpar logs selecionados',
                 ],
             ],
             'close' => [

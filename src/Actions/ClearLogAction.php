@@ -9,61 +9,63 @@ use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Exception;
-use Filament\Actions\DeleteAction as FilamentDeleteAction;
+use Filament\Actions\Action;
+use Illuminate\Support\Facades\Config;
 
-class DeleteAction
+class ClearLogAction
 {
-    public static function make(
-        bool $withTooltip = false,
-    ): FilamentDeleteAction {
-        $action = FilamentDeleteAction::make()
+    public static function make(bool $withTooltip = false): Action
+    {
+        $driver = FilamentLogViewerPlugin::get()->driver();
+
+        $action = Action::make('clear-logs')
             ->hiddenLabel()
             ->button()
-            ->hidden(false)
-            ->label(__('filament-log-viewer::log.table.actions.delete.label'))
+            ->visible($driver === 'stack' || Config::boolean('filament-log-viewer.clearable'))
+            ->label(__('filament-log-viewer::log.table.actions.clear.label'))
             ->modalHeading(self::getTitle(...))
-            ->color('danger')
+            ->color('warning')
             ->successNotificationTitle(
-                __('filament-log-viewer::log.table.actions.delete.success'),
+                __('filament-log-viewer::log.table.actions.clear.success'),
             )
             ->failureNotificationTitle(
-                __('filament-log-viewer::log.table.actions.delete.error'),
+                __('filament-log-viewer::log.table.actions.clear.error'),
             )
-            ->icon('fas-trash')
+            ->icon('fas-broom')
             ->requiresConfirmation()
-            ->action(self::getAction(...))
-            // I have to set this manually because the default is not working
-            ->successRedirectUrl(ListLogs::getUrl());
+            ->action(self::getAction(...));
 
         if ($withTooltip) {
-            $action->tooltip(self::getTitle(...))
-                ->hidden(false);
+            $action->tooltip(__('filament-log-viewer::log.table.actions.clear.label'));
         }
 
         return $action;
     }
 
     private static function getTitle(
-        FilamentDeleteAction $action,
+        Action $action,
         ViewLog|ListLogs $livewire,
     ): string {
         $model = $action->getRecord() ?? $livewire->record;
 
         $date = $model?->date ?? $model['date'];
 
-        return __('filament-log-viewer::log.table.actions.delete.label', [
+        return __('filament-log-viewer::log.table.actions.clear.label', [
             'log' => ParseDateUseCase::execute($date),
         ]);
     }
 
+
     private static function getAction(
-        FilamentDeleteAction $action,
+        Action $action,
         ViewLog|ListLogs $livewire,
     ): void {
         try {
             $model = $action->getRecord() ?? $livewire->record;
 
-            FilamentLogViewerPlugin::get()->deleteLog($model?->date ?? $model['date']);
+            $date = $model?->date ?? $model['date'];
+
+            FilamentLogViewerPlugin::get()->clearLog($date);
         } catch (Exception) {
             $action->failure();
         }

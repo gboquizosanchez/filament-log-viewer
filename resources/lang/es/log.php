@@ -7,7 +7,7 @@ return [
         'title' => 'Visor de logs',
     ],
     'show' => [
-        'title' => 'Ver el log del :log',
+        'title' => 'Ver el log :log',
     ],
     'navigation' => [
         'group' => 'Logs',
@@ -25,24 +25,36 @@ return [
             'message' => [
                 'label' => 'Mensaje',
             ],
+            'filename' => [
+                'label' => 'Nombre del archivo',
+            ],
         ],
         'actions' => [
             'view' => [
                 'label' => 'Ver',
             ],
             'download' => [
-                'label' => 'Descargar el log del :log',
+                'label' => 'Descargar el log :log',
                 'bulk' => [
                     'label' => 'Descargar seleccionados',
                     'error' => 'Error al descargar los logs',
                 ],
             ],
             'delete' => [
-                'label' => 'Eliminar el log del :log',
+                'label' => 'Eliminar el log :log',
                 'success' => 'Log eliminado con éxito',
                 'error' => 'Error al eliminar el log',
                 'bulk' => [
                     'label' => 'Eliminar logs seleccionados',
+                ],
+            ],
+            'clear' => [
+                'label' => 'Limpiar el log :log',
+                'success' => 'Log limpiado con éxito',
+                'error' => 'Error limpiando el log',
+                'bulk' => [
+                    'success' => 'Logs limpiados con éxito',
+                    'label' => 'Limpiar logs seleccionados',
                 ],
             ],
             'close' => [

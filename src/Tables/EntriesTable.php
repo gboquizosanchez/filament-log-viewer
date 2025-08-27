@@ -9,7 +9,7 @@ use Boquizo\FilamentLogViewer\Actions\StackAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\Tables\Columns\ContextColumn;
-use Boquizo\FilamentLogViewer\Tables\Columns\DateColumn;
+use Boquizo\FilamentLogViewer\Tables\Columns\NameColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\EnvColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\MessageColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
@@ -39,7 +39,7 @@ class EntriesTable
             )
             ->columns([
                 EnvColumn::make(),
-                DateColumn::make('datetime'),
+                NameColumn::make('datetime'),
                 LevelColumn::make(),
                 MessageColumn::make(),
                 StackColumn::make(),

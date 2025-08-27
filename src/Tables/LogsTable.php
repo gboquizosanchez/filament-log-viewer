@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Tables;
 
+use Boquizo\FilamentLogViewer\Actions\ClearLogAction;
+use Boquizo\FilamentLogViewer\Actions\ClearLogBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadBulkAction;
 use Boquizo\FilamentLogViewer\Actions\ViewLogAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Tables\Columns\DateColumn;
+use Boquizo\FilamentLogViewer\Tables\Columns\NameColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Actions\BulkActionGroup;
@@ -33,7 +35,7 @@ class LogsTable
                 Config::array('filament-log-viewer.per-page'),
             )
             ->columns([
-                DateColumn::make('date'),
+                NameColumn::make('date'),
                 LevelColumn::make(Level::ALL),
                 LevelColumn::make(Level::Emergency),
                 LevelColumn::make(Level::Alert),
@@ -47,11 +49,13 @@ class LogsTable
             ->recordActions([
                 ViewLogAction::make(),
                 DownloadAction::make(),
+                ClearLogAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DownloadBulkAction::make(),
+                    ClearLogBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);
@@ -89,9 +93,11 @@ class LogsTable
 
         $data = $collection->forPage($page, $recordsPerPage);
 
+        $isEmpty = self::isEmpty($data);
+
         return new LengthAwarePaginator(
-            $data,
-            total: $total,
+            $isEmpty ? [] : $data,
+            total: $isEmpty ? 0 : $total,
             perPage: $recordsPerPage,
             currentPage: $page,
         );
@@ -109,5 +115,12 @@ class LogsTable
         }
 
         return $records->only($keys)->values();
+    }
+
+    private static function isEmpty(Collection $data): bool
+    {
+        $firstRecord = collect($data->first());
+
+        return $data->count() === 1 && $firstRecord->filter()->count() === 1;
     }
 }

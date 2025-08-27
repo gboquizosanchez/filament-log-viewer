@@ -25,6 +25,9 @@ return [
             'message' => [
                 'label' => 'Message',
             ],
+            'filename' => [
+                'label' => 'Nom du fichier',
+            ],
         ],
         'actions' => [
             'view' => [
@@ -43,6 +46,15 @@ return [
                 'error' => 'Erreur lors de la suppression du log',
                 'bulk' => [
                     'label' => 'Supprimer les logs sélectionnés',
+                ],
+            ],
+            'clear' => [
+                'label' => 'Effacer le journal :log',
+                'success' => 'Journal effacé avec succès',
+                'error' => 'Erreur lors de l\'effacement du journal',
+                'bulk' => [
+                    'success' => 'Journaux effacés avec succès',
+                    'label' => 'Effacer les journaux sélectionnés',
                 ],
             ],
             'close' => [
