@@ -52,6 +52,10 @@ return [
                 'label' => 'Effacer le journal :log',
                 'success' => 'Journal effacé avec succès',
                 'error' => 'Erreur lors de l\'effacement du journal',
+                'bulk' => [
+                    'success' => 'Journaux effacés avec succès',
+                    'label' => 'Effacer les journaux sélectionnés',
+                ],
             ],
             'close' => [
                 'label' => 'Retour',

@@ -52,6 +52,10 @@ return [
                 'label' => 'Limpar log :log',
                 'success' => 'Log limpo com sucesso',
                 'error' => 'Erro ao limpar o log',
+                'bulk' => [
+                    'success' => 'Logs limpos com sucesso',
+                    'label' => 'Limpar logs selecionados',
+                ],
             ],
             'close' => [
                 'label' => 'Voltar',

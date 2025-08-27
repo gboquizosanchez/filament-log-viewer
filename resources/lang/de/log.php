@@ -52,6 +52,10 @@ return [
                 'label' => 'Protokoll löschen :log',
                 'success' => 'Protokoll erfolgreich gelöscht',
                 'error' => 'Fehler beim Löschen des Protokolls',
+                'bulk' => [
+                    'success' => 'Protokolle erfolgreich gelöscht',
+                    'label' => 'Ausgewählte Protokolle löschen',
+                ],
             ],
             'close' => [
                 'label' => 'Zurück',
