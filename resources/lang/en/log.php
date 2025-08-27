@@ -52,6 +52,10 @@ return [
                 'label' => 'Clear log :log',
                 'success' => 'Log cleared successfully',
                 'error' => 'Error clearing the log',
+                'bulk' => [
+                    'success' => 'Logs cleared successfully',
+                    'label' => 'Clear selected logs',
+                ],
             ],
             'close' => [
                 'label' => 'Back',

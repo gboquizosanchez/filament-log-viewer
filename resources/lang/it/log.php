@@ -52,6 +52,10 @@ return [
                 'label' => 'Cancella registro :log',
                 'success' => 'Registro cancellato con successo',
                 'error' => 'Errore durante la cancellazione del registro',
+                'bulk' => [
+                    'success' => 'Log cancellati con successo',
+                    'label' => 'Cancella i log selezionati',
+                ],
             ],
             'close' => [
                 'label' => 'Indietro',
