@@ -174,6 +174,34 @@ class ListLogs extends Page implements HasTable
                                 throw new RuntimeException();
                             }
                         }),
+                    Tables\Actions\BulkAction::make('clear-logs')
+                        ->label(__('filament-log-viewer::log.table.actions.clear.bulk.label'))
+                        ->color('warning')
+                        ->visible(FilamentLogViewerPlugin::get()->driver() === 'stack' || Config::boolean('filament-log-viewer.clearable'))
+                        ->icon('fas-broom')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('filament-log-viewer::log.table.actions.clear.bulk.label'))
+                        ->action(function (Tables\Actions\BulkAction $action, Collection $records): void {
+                            try {
+                                $records->each(function ($record) {
+                                    FilamentLogViewerPlugin::get()->clearLog($record->date);
+                                });
+
+                                Notification::make()
+                                    ->title(__('filament-log-viewer::log.table.actions.clear.bulk.success'))
+                                    ->success()
+                                    ->send();
+
+                            } catch (RuntimeException) {
+                                Notification::make()
+                                    ->title(__('filament-log-viewer::log.table.actions.clear.bulk.error'))
+                                    ->danger()
+                                    ->send();
+
+                                throw new RuntimeException();
+                            }
+                        })
+                        ->deselectRecordsAfterCompletion(),
                     Tables\Actions\DeleteBulkAction::make()
                         ->modalHeading(__('filament-log-viewer::log.table.actions.delete.bulk.label'))
                         ->action(function (Tables\Actions\DeleteBulkAction $action): void {
