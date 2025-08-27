@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Tables;
 
 use Boquizo\FilamentLogViewer\Actions\ClearLogAction;
+use Boquizo\FilamentLogViewer\Actions\ClearLogBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteAction;
 use Boquizo\FilamentLogViewer\Actions\DeleteBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
@@ -54,6 +55,7 @@ class LogsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DownloadBulkAction::make(),
+                    ClearLogBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);
