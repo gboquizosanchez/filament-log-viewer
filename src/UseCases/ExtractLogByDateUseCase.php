@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Boquizo\FilamentLogViewer\Entities\Log;
+use Illuminate\Support\Arr;
 use RuntimeException;
 
 class ExtractLogByDateUseCase
@@ -16,12 +17,13 @@ class ExtractLogByDateUseCase
 
     public function __invoke(string $date): Log
     {
+        $file = Arr::last(explode('\\', $date));
         $dates = ExtractNamesUseCase::execute();
 
-        if (!isset($dates[$date])) {
-            throw new RuntimeException("Log not found in this date [{$date}]");
+        if (!isset($dates[$file])) {
+            throw new RuntimeException("Log not found in [{$file}]");
         }
 
-        return new Log($date, $dates[$date], ReadLogUseCase::execute($date));
+        return new Log($date, $dates[$file], ReadLogUseCase::execute($date));
     }
 }
