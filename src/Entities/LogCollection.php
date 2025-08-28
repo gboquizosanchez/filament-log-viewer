@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Entities;
 
+use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\UseCases\ExtractNamesUseCase;
 use Boquizo\FilamentLogViewer\UseCases\ReadLogUseCase;
 use Boquizo\FilamentLogViewer\Utils\Level;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Str;
 
 class LogCollection extends LazyCollection
 {
@@ -15,11 +18,16 @@ class LogCollection extends LazyCollection
     {
         if ($source !== null) {
             $source = static function () {
+                $driver = FilamentLogViewerPlugin::get()->driver();
+                $storagePath = Config::string('filament-log-viewer.storage_path', storage_path('logs'));
+
                 foreach (ExtractNamesUseCase::execute() as $date => $path) {
-                    yield $date => Log::make(
+                    $path = Str::replace("{$storagePath}\\", '', $path);
+
+                    yield $path => Log::make(
                         $date,
                         $path,
-                        ReadLogUseCase::execute($date),
+                        ReadLogUseCase::execute($driver === 'raw' ? $path : $date),
                     );
                 }
             };
