@@ -2,24 +2,23 @@
 
 namespace Boquizo\FilamentLogViewer;
 
-use Boquizo\FilamentLogViewer\Actions\ClearLogAction;
-use Boquizo\FilamentLogViewer\Actions\DeleteLogAction;
-use Boquizo\FilamentLogViewer\Actions\DownloadLogAction;
-use Boquizo\FilamentLogViewer\Actions\DownloadZipAction;
-use Boquizo\FilamentLogViewer\Actions\ExtractNamesAction;
-use Boquizo\FilamentLogViewer\Actions\ExtractLogByDateAction;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
-use Boquizo\FilamentLogViewer\Tables\StatsTable;
+use Boquizo\FilamentLogViewer\UseCases\ClearLogUseCase;
+use Boquizo\FilamentLogViewer\UseCases\DeleteLogUseCase;
+use Boquizo\FilamentLogViewer\UseCases\DownloadLogUseCase;
+use Boquizo\FilamentLogViewer\UseCases\DownloadZipUseCase;
+use Boquizo\FilamentLogViewer\UseCases\ExtractLogByDateUseCase;
+use Boquizo\FilamentLogViewer\Utils\Stats;
 use Closure;
 use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -165,9 +164,9 @@ class FilamentLogViewerPlugin implements Plugin
             ?? __('filament-log-viewer::log.navigation.label');
     }
 
-    public function getViewerStatsTable(): StatsTable
+    public function getViewerStatsTable(): Stats
     {
-        return StatsTable::make((new LogCollection())->stats());
+        return Stats::make((new LogCollection())->stats());
     }
 
     public function getLogViewerRecord(): Log
@@ -178,7 +177,7 @@ class FilamentLogViewerPlugin implements Plugin
             throw new RuntimeException('No log date found');
         }
 
-        return ExtractLogByDateAction::execute($date);
+        return ExtractLogByDateUseCase::execute($date);
     }
 
     /**
@@ -186,21 +185,21 @@ class FilamentLogViewerPlugin implements Plugin
      */
     public function deleteLog(string $date): bool
     {
-        return DeleteLogAction::execute($date);
+        return DeleteLogUseCase::execute($date);
     }
 
     public function downloadLog(string $date): BinaryFileResponse
     {
-        return DownloadLogAction::execute($date);
+        return DownloadLogUseCase::execute($date);
     }
 
     public function downloadLogs(array $files): BinaryFileResponse
     {
-        return DownloadZipAction::execute($files);
+        return DownloadZipUseCase::execute($files);
     }
 
     public function clearLog(string $file): bool
     {
-        return ClearLogAction::execute($file);
+        return ClearLogUseCase::execute($file);
     }
 }

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Support\Carbon;
 
-class ParseDateAction
+class ParseDateUseCase
 {
     public static function execute(?string $date): string
     {
@@ -17,5 +17,4 @@ class ParseDateAction
             return $date;
         }
     }
-
 }

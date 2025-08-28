@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Illuminate\Support\Facades\Config;
 
-class ExtractFilenameAction
+class ExtractFilenameUseCase
 {
     public static function execute(?string $filename, string $date): string
     {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Illuminate\Support\Facades\Config;
 use RuntimeException;
 
-class ExtractLogPathAction
+class ExtractLogPathUseCase
 {
     public static function execute(string $name): false|string
     {

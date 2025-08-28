@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Entities;
 
-use Boquizo\FilamentLogViewer\Actions\ExtractNamesAction;
-use Boquizo\FilamentLogViewer\Actions\ReadLogAction;
+use Boquizo\FilamentLogViewer\UseCases\ExtractNamesUseCase;
+use Boquizo\FilamentLogViewer\UseCases\ReadLogUseCase;
+use Boquizo\FilamentLogViewer\Utils\Level;
 use Illuminate\Support\LazyCollection;
 
 class LogCollection extends LazyCollection
@@ -14,11 +15,11 @@ class LogCollection extends LazyCollection
     {
         if ($source !== null) {
             $source = static function () {
-                foreach (ExtractNamesAction::execute() as $date => $path) {
+                foreach (ExtractNamesUseCase::execute() as $date => $path) {
                     yield $date => Log::make(
                         $date,
                         $path,
-                        ReadLogAction::execute($date),
+                        ReadLogUseCase::execute($date),
                     );
                 }
             };
@@ -35,7 +36,7 @@ class LogCollection extends LazyCollection
         );
     }
 
-    public function total(string $level = 'all'): int
+    public function total(string $level = Level::ALL): int
     {
         return (int) $this->sum(
             fn (Log $log): int => $log->entries($level)->count()

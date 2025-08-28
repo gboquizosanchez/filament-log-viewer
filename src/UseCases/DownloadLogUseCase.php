@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class DownloadLogAction
+class DownloadLogUseCase
 {
     public static function execute(string $file): BinaryFileResponse
     {
@@ -18,8 +18,8 @@ class DownloadLogAction
         ?string $filename = null,
         array $headers = [],
     ): BinaryFileResponse {
-        $filename = ExtractFilenameAction::execute($filename, $file);
-        $path = ExtractLogPathAction::execute($file);
+        $filename = ExtractFilenameUseCase::execute($filename, $file);
+        $path = ExtractLogPathUseCase::execute($file);
 
         return response()->download($path, $filename, $headers);
     }

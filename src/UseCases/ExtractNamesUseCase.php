@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Boquizo\FilamentLogViewer\Actions;
+namespace Boquizo\FilamentLogViewer\UseCases;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Utils\Parser;
 use Illuminate\Support\Facades\Config;
 
-class ExtractNamesAction
+class ExtractNamesUseCase
 {
     /** @return array<string, string> */
     public static function execute(): array
