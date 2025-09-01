@@ -7,6 +7,7 @@ namespace Boquizo\FilamentLogViewer\UseCases;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Utils\Parser;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 
 class ExtractNamesUseCase
 {
@@ -48,17 +49,25 @@ class ExtractNamesUseCase
     /** @return list<string> */
     private function files(): array
     {
-        $storagePath = Config::string('filament-log-viewer.storage_path');
-
-        $files = glob(
-            $storagePath.DIRECTORY_SEPARATOR.$this->pattern(),
-            defined('GLOB_BRACE') ? GLOB_BRACE : 0
-        );
-
         return array_reverse(
             array_filter(
-                array_map('realpath', $files),
+                array_map('realpath', $this->globFiles()),
             ),
+        );
+    }
+
+    private function globFiles(): array
+    {
+        $storagePath = Config::string('filament-log-viewer.storage_path');
+        $driver = FilamentLogViewerPlugin::get()->driver();
+
+        if ($driver === 'raw') {
+            return File::allFiles($storagePath);
+        }
+
+        return glob(
+            $storagePath.DIRECTORY_SEPARATOR.$this->pattern(),
+            defined('GLOB_BRACE') ? GLOB_BRACE : 0
         );
     }
 

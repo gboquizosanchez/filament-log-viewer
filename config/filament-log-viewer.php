@@ -28,7 +28,7 @@ return [
     | -----------------------------------------------------------------
     */
 
-    'clearable' => false,
+    'clearable' => env('FILAMENT_LOG_VIEWER_CLEARABLE', false),
 
     /* -----------------------------------------------------------------
     |  Log files storage path
