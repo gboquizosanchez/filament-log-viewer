@@ -23,11 +23,12 @@ class LogCollection extends LazyCollection
 
                 foreach (ExtractNamesUseCase::execute() as $date => $path) {
                     $path = Str::replace("{$storagePath}\\", '', $path);
+                    $mode = $driver === 'raw' ? $path : $date;
 
-                    yield $path => Log::make(
+                    yield $mode => Log::make(
                         $date,
                         $path,
-                        ReadLogUseCase::execute($driver === 'raw' ? $path : $date),
+                        ReadLogUseCase::execute($mode),
                     );
                 }
             };
