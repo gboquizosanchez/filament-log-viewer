@@ -40,7 +40,7 @@ class ExtractNamesUseCase
 
         $extractor = match ($driver) {
             'daily' => static fn (string $file): string => Parser::extractDate(basename($file)),
-            'stack', 'raw' => static fn (string $file): string => basename($file),
+            'single', 'raw' => static fn (string $file): string => basename($file),
         };
 
         return array_map($extractor, $files);
@@ -77,7 +77,7 @@ class ExtractNamesUseCase
 
         return match (FilamentLogViewerPlugin::get()->driver()) {
             'daily' => $patterns->prefix.$patterns->date.$patterns->extension,
-            'stack' => rtrim($patterns->prefix, '-').$patterns->extension,
+            'single' => rtrim($patterns->prefix, '-').$patterns->extension,
             'raw' => "*{$patterns->extension}",
         };
     }

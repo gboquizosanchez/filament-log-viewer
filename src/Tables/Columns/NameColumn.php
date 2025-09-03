@@ -13,7 +13,7 @@ class NameColumn
     {
         return TextColumn::make($name)
             ->label(self::getLabel(...))
-            ->hidden(FilamentLogViewerPlugin::get()->driver() === 'stack')
+            ->hidden(FilamentLogViewerPlugin::get()->driver() === 'single')
             ->searchable()
             ->sortable();
     }

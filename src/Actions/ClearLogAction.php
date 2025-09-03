@@ -22,7 +22,7 @@ class ClearLogAction
         $action = self::resolveAction($withTooltip)
             ->hiddenLabel()
             ->button()
-            ->visible($driver === 'stack' || Config::boolean('filament-log-viewer.clearable'))
+            ->visible($driver === 'single' || Config::boolean('filament-log-viewer.clearable'))
             ->label(__('filament-log-viewer::log.table.actions.clear.label'))
             ->modalHeading(self::getTitle(...))
             ->color('warning')

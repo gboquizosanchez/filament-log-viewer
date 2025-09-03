@@ -14,7 +14,7 @@ class ExtractFilenameUseCase
         $driver = FilamentLogViewerPlugin::get()->driver();
 
         return match ($driver) {
-            'stack', 'raw' => basename($filename ?? ''),
+            'single', 'raw' => basename($filename ?? ''),
             'daily' => sprintf(
                 "%s{$date}.%s",
                 Config::string('log-viewer.download.prefix', 'laravel-'),
