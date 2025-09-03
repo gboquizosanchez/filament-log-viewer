@@ -59,7 +59,7 @@ FILAMENT_LOG_VIEWER_DRIVER=raw
 | Driver | Description                                                                          |
 |--------|--------------------------------------------------------------------------------------|
 | daily  | Default driver used by the plugin                                                    |
-| stack  | Standard Laravel stack driver                                                        |
+| single | Standard Laravel single driver                                                       |
 | raw    | Only available when explicitly using FILAMENT_LOG_VIEWER_DRIVER; shows all log files |
 
 👉 **Note:**  

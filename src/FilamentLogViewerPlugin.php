@@ -74,7 +74,7 @@ class FilamentLogViewerPlugin implements Plugin
         $driver = Config::string('filament-log-viewer.driver');
 
         return match ($driver) {
-            'raw', 'stack', 'daily' => $driver,
+            'raw', 'single', 'daily' => $driver,
             default => 'daily',
         };
     }

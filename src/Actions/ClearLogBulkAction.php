@@ -20,7 +20,7 @@ class ClearLogBulkAction
             ->label(
                 __('filament-log-viewer::log.table.actions.clear.bulk.label'),
             )
-            ->visible($driver === 'stack' || Config::boolean('filament-log-viewer.clearable'))
+            ->visible($driver === 'single' || Config::boolean('filament-log-viewer.clearable'))
             ->color('warning')
             ->icon('fas-broom')
             ->requiresConfirmation()
