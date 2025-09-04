@@ -37,7 +37,7 @@ class ClearLogAction
             ->action(self::getAction(...));
 
         if ($withTooltip) {
-            $action->tooltip(__('filament-log-viewer::log.table.actions.clear.label'));
+            $action->tooltip(self::getTitle(...));
         }
 
         return $action;
