@@ -23,17 +23,17 @@ class StackTextEntry
             ->formatStateUsing(self::getStateUsing(...));
     }
 
-    private static function getHidden(array $record): bool
+    private static function getHidden(array|object $record): bool
     {
-        return empty($record['stack']);
+        return empty($record->stack ?? $record['stack']);
     }
 
-    private static function getStateUsing(array $record): string
+    private static function getStateUsing(array|object $record): string
     {
         return preg_replace(
             '/(.*vendor.*$)/m',
             '<span class="text-gray-400">$1</span>',
-            nl2br($record['stack']),
+            nl2br($record->stack ?? $record['stack']),
         );
     }
 }
