@@ -1,8 +1,8 @@
 # Filament Log Viewer
 
-[![Latest Stable Version](https://poser.pugx.org/gboquizosanchez/filament-log-viewer/version.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
-[![License](https://poser.pugx.org/gboquizosanchez/filament-log-viewer/license.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
-[![Downloads](https://poser.pugx.org/gboquizosanchez/filament-log-viewer/d/total.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
+[![Latest Stable Version](https://img.shields.io/packagist/v/gboquizosanchez/filament-log-viewer.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
+[![Software License](https://img.shields.io/badge/license-MIT-red.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
+[![Total Downloads](https://img.shields.io/packagist/dt/gboquizosanchez/filament-log-viewer.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 
 ## Summary
 
