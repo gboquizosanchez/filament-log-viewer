@@ -11,7 +11,7 @@ return [
     | -----------------------------------------------------------------
      */
 
-    'driver' => env('FILAMENT_LOG_VIEWER_DRIVER', env('LOG_CHANNEL')),
+    'driver' => env('FILAMENT_LOG_VIEWER_DRIVER', env('LOG_CHANNEL', 'stack')),
 
     /* -----------------------------------------------------------------
     | Resource configuration
