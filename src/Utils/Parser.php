@@ -8,9 +8,9 @@ use Illuminate\Support\Str;
 
 class Parser
 {
-    public const string DATE_PATTERN = '\d{4}(-\d{2}){2}';
-    public const string TIME_PATTERN = '\d{2}(:\d{2}){2}';
-    public const string DATETIME_PATTERN = self::DATE_PATTERN . ' ' . self::TIME_PATTERN;
+    public const DATE_PATTERN = '\d{4}(-\d{2}){2}';
+    public const TIME_PATTERN = '\d{2}(:\d{2}){2}';
+    public const DATETIME_PATTERN = self::DATE_PATTERN . ' ' . self::TIME_PATTERN;
 
     protected static array $parsed = [];
 
