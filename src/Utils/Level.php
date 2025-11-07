@@ -10,7 +10,7 @@ enum Level: string
 {
     // This is a special case, it's not a level itself.
     // It's used to represent all levels and avoid magic strings.
-    const string ALL = 'all';
+    const ALL = 'all';
 
     case Emergency = 'emergency';
     case Alert = 'alert';

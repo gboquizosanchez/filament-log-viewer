@@ -28,10 +28,11 @@
   },
   "require": {
     "ext-zip": "*",
-    "php": "^8.3|^8.4",
+    "php": "^8.2|^8.3|^8.4",
     "eightynine/filament-advanced-widgets": "^3.0",
     "owenvoke/blade-fontawesome": "^2.9",
-    "calebporzio/sushi": "^2.0"
+    "calebporzio/sushi": "^2.0",
+    "symfony/polyfill-php83": "^1.33"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.64",

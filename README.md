@@ -15,7 +15,7 @@ Based on [ARCANEDEV LogViewer](https://github.com/ARCANEDEV/LogViewer).
 ### Prerequisites 📋
 
 - Composer.
-- PHP version 8.3 or higher.
+- PHP version 8.2 or higher.
 
 ## Versions 🔖
 | Plugin | Filament |
