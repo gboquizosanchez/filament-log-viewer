@@ -84,7 +84,8 @@ FILAMENT_LOG_VIEWER_DRIVER=raw
         ->navigationSort(2)
         ->navigationIcon('heroicon-s-document-text')
         ->navigationLabel('Log Viewer')
-        ->authorize(fn() => auth()->user()->can('view-logs')),
+        ->timezone('Europe/Madrid')
+        ->authorize(fn (): bool => auth()->user()->can('view-logs')),
     // Other plugins
 ])
 ```
@@ -159,7 +160,8 @@ Then register your custom pages in the plugin configuration:
         ->navigationSort(2)
         ->navigationIcon('heroicon-s-document-text')
         ->navigationLabel('System Logs')
-        ->authorize(function () {
+        ->timezone('Pacific/Auckland')
+        ->authorize(function (): bool {
             return auth()->user()->hasAnyRole(['admin', 'developer']);
         }),
     // Other plugins like FilamentEmailPlugin, etc.
@@ -171,18 +173,17 @@ Then register your custom pages in the plugin configuration:
 ![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
 
 ### PHP dependencies 📦
-
 - Calebporzio Sushi [![Latest Stable Version](https://img.shields.io/badge/stable-v2.5.3-blue)](https://packagist.org/packages/calebporzio/sushi)
 - Eightynine Filament Advanced Widgets [![Latest Stable Version](https://img.shields.io/badge/stable-3.0.1-blue)](https://packagist.org/packages/eightynine/filament-advanced-widgets)
 - Owenvoke Blade Fontawesome [![Latest Stable Version](https://img.shields.io/badge/stable-v2.9.1-blue)](https://packagist.org/packages/owenvoke/blade-fontawesome)
+- Symfony Polyfill Php83 [![Latest Stable Version](https://img.shields.io/badge/stable-v1.33.0-blue)](https://packagist.org/packages/symfony/polyfill-php83)
 
 #### Develop dependencies 🔧
-
-- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.75.0-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
-- Hermes Dependencies [![Latest Stable Version](https://img.shields.io/badge/stable-1.1.1-blue)](https://packagist.org/packages/hermes/dependencies)
-- Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.0-blue)](https://packagist.org/packages/larastan/larastan)
-- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.13.0-blue)](https://packagist.org/packages/orchestra/testbench)
-- Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.2-blue)](https://packagist.org/packages/pestphp/pest)
+- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.90.0-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
+- Hermes Dependencies [![Latest Stable Version](https://img.shields.io/badge/stable-1.2.0-blue)](https://packagist.org/packages/hermes/dependencies)
+- Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.2-blue)](https://packagist.org/packages/larastan/larastan)
+- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.15.0-blue)](https://packagist.org/packages/orchestra/testbench)
+- Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.4-blue)](https://packagist.org/packages/pestphp/pest)
 
 ## Problems? 🚨
 

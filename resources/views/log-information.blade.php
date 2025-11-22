@@ -1,3 +1,5 @@
+@php($timezone = config('app.timezone'))
+
 <div class="filament-tables-table overflow-hidden bg-white dark:bg-gray-900 shadow sm:rounded-lg">
     <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
         <h3 class="text-md font-semibold text-gray-900 dark:text-gray-100">
@@ -29,13 +31,17 @@
                 <div class="text-sm font-medium text-gray-900 dark:text-gray-100 w-36 me-3">
                     {{ __('filament-log-viewer::log.table.detail.created_at') }}:
                 </div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $data->createdAt() }}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ $data->createdAt() }} <small>({{ $timezone }})</small>
+                </div>
             </div>
             <div class="flex items-center py-2 sm:py-0">
                 <div class="text-sm font-medium text-gray-900 dark:text-gray-100 w-36 me-3">
                     {{ __('filament-log-viewer::log.table.detail.updated_at') }}:
                 </div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">{{ $data->updatedAt() }}</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ $data->updatedAt() }} <small>({{ $timezone }})</small>
+                </div>
             </div>
         </div>
     </div>
