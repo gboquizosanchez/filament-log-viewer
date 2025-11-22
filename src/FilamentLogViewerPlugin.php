@@ -5,6 +5,7 @@ namespace Boquizo\FilamentLogViewer;
 use BackedEnum;
 use Boquizo\FilamentLogViewer\Entities\Log;
 use Boquizo\FilamentLogViewer\Entities\LogCollection;
+use Boquizo\FilamentLogViewer\Exceptions\TimezoneNotValidException;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\UseCases\ClearLogUseCase;
@@ -14,6 +15,7 @@ use Boquizo\FilamentLogViewer\UseCases\DownloadZipUseCase;
 use Boquizo\FilamentLogViewer\UseCases\ExtractLogByDateUseCase;
 use Boquizo\FilamentLogViewer\Utils\Stats;
 use Closure;
+use DateTimeZone;
 use Filament\Contracts\Plugin;
 use Filament\FilamentManager;
 use Filament\Panel;
@@ -39,6 +41,8 @@ class FilamentLogViewerPlugin implements Plugin
     protected string|Closure|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected string|Closure|null $navigationLabel = null;
+
+    protected ?string $timezone = null;
 
     public function getId(): string
     {
@@ -189,6 +193,22 @@ class FilamentLogViewerPlugin implements Plugin
     public function getLogViewerRecord(string $date): Log
     {
         return ExtractLogByDateUseCase::execute($date);
+    }
+
+    public function timezone(string $timezone): static
+    {
+        if (! in_array($timezone, DateTimeZone::listIdentifiers(), true)) {
+            throw new TimezoneNotValidException($timezone);
+        }
+
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getTimezone(): string
+    {
+        return $this->timezone ?? Config::get('app.timezone');
     }
 
     /**

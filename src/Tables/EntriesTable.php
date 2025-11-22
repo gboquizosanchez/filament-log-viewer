@@ -63,6 +63,7 @@ class EntriesTable
                 ->getLogViewerRecord(
                     $livewire->record->date,
                 ),
+            'timezone' => Config::string('app.timezone'),
         ]);
     }
 

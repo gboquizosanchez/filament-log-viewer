@@ -93,6 +93,7 @@ FILAMENT_LOG_VIEWER_DRIVER=raw
         ->navigationSort(2)
         ->navigationIcon(Heroicon::OutlinedDocumentText)
         ->navigationLabel('Log Viewer')
+        ->timezone('Europe/Madrid')
         ->authorize(fn (): bool => auth()->user()->can('view-logs')),
     // Other plugins
 ])
@@ -169,6 +170,7 @@ Then register your custom pages in the plugin configuration:
         ->navigationSort(2)
         ->navigationIcon(Heroicon::DocumentText)
         ->navigationLabel('System Logs')
+        ->timezone('Pacific/Auckland')
         ->authorize(function (): bool {
             return auth()->user()->hasAnyRole(['admin', 'developer']);
         }),
@@ -182,14 +184,14 @@ Then register your custom pages in the plugin configuration:
 
 ### PHP dependencies 📦
 - Owenvoke Blade Fontawesome [![Latest Stable Version](https://img.shields.io/badge/stable-v2.9.1-blue)](https://packagist.org/packages/owenvoke/blade-fontawesome)
+- Symfony Polyfill Php83 [![Latest Stable Version](https://img.shields.io/badge/stable-v1.33.0-blue)](https://packagist.org/packages/symfony/polyfill-php83)
 
 #### Develop dependencies 🔧
-- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.85.1-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
+- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.90.0-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
 - Hermes Dependencies [![Latest Stable Version](https://img.shields.io/badge/stable-1.2.0-blue)](https://packagist.org/packages/hermes/dependencies)
 - Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.2-blue)](https://packagist.org/packages/larastan/larastan)
-- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.14.0-blue)](https://packagist.org/packages/orchestra/testbench)
-- Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.2-blue)](https://packagist.org/packages/pestphp/pest)
-
+- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.15.0-blue)](https://packagist.org/packages/orchestra/testbench)
+- Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.4-blue)](https://packagist.org/packages/pestphp/pest)
 
 ## Problems? 🚨
 

@@ -6,7 +6,6 @@ use Boquizo\FilamentLogViewer\Widgets\IconsWidget;
 use Boquizo\FilamentLogViewer\Widgets\StatsOverviewWidget;
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
