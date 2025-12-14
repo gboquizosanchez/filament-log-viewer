@@ -84,6 +84,8 @@ class ViewLog extends Page implements HasTable
         $this->record = (object) FilamentLogViewerPlugin::get()
             ->getLogsTableFiltered($record);
 
+        abort_if((array) $this->record === [], 404);
+
         $this->loadDefaultActiveTab();
     }
 
