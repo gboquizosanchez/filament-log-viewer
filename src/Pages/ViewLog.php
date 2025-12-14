@@ -74,6 +74,8 @@ class ViewLog extends Page implements HasTable
 
         Session::put('filament-log-viewer-record', $this->record->date);
 
+        abort_if((array) $this->record === [], 404);
+
         $this->loadDefaultActiveTab();
     }
 
