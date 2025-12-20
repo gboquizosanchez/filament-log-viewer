@@ -12,14 +12,14 @@ class ExtractLogPathUseCase
 {
     public static function execute(string $name): false|string
     {
-        return (new self())($name);
+        return (new self)($name);
     }
 
     public function __invoke(string $name): false|string
     {
         $path = $this->path($name);
 
-        if ( ! file_exists($path)) {
+        if (! file_exists($path)) {
             throw new RuntimeException(
                 "The log(s) could not be located at: {$path}",
             );

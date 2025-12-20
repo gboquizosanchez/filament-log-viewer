@@ -14,7 +14,7 @@ class DeleteLogUseCase
      */
     public static function execute(string $date): true
     {
-        return (new self())($date);
+        return (new self)($date);
     }
 
     /**
@@ -24,7 +24,7 @@ class DeleteLogUseCase
     {
         $path = ExtractLogPathUseCase::execute($date);
 
-        $system = new Filesystem();
+        $system = new Filesystem;
 
         throw_unless(
             $system->delete($path),

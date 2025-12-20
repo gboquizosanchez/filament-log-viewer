@@ -70,7 +70,7 @@ CSS;
 
     private static function getResetProgressBarStyle(): string
     {
-        return <<<CSS
+        return <<<'CSS'
 .fi-wi-stats-overview-stat-description {
     display: inherit !important;
 }

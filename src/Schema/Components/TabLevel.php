@@ -24,12 +24,12 @@ class TabLevel
                 'wire:click' => self::buildWireClickActions($value),
             ]);
     }
+
     private static function buildWireClickActions(string $value): string
     {
         $setActiveTab = "\$set('activeTab', '{$value}')";
         $filterValue = $value === Level::ALL ? 'null' : "'{$value}'";
         $setFilterLevel = "\$set('tableFilters.level.value', {$filterValue})";
-
 
         return "{$setActiveTab}; {$setFilterLevel};";
     }

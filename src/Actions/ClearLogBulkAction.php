@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
-use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Filament\Actions\BulkAction;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
@@ -37,7 +36,7 @@ class ClearLogBulkAction
             ->deselectRecordsAfterCompletion();
     }
 
-    private static function getAction(Collection $records,): void
+    private static function getAction(Collection $records): void
     {
         $records->each(self::clear(...));
     }

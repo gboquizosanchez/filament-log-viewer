@@ -8,6 +8,4 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
 
-abstract class Entity implements Arrayable, Jsonable, JsonSerializable
-{
-}
+abstract class Entity implements Arrayable, Jsonable, JsonSerializable {}

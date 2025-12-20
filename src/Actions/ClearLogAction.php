@@ -55,7 +55,6 @@ class ClearLogAction
         ]);
     }
 
-
     private static function getAction(
         Action $action,
         ViewLog|ListLogs $livewire,

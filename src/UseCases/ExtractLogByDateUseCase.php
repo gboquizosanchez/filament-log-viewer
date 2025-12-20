@@ -12,7 +12,7 @@ class ExtractLogByDateUseCase
 {
     public static function execute(string $date): Log
     {
-        return (new self())($date);
+        return (new self)($date);
     }
 
     public function __invoke(string $date): Log
@@ -20,7 +20,7 @@ class ExtractLogByDateUseCase
         $file = Arr::last(explode('\\', $date));
         $dates = ExtractNamesUseCase::execute();
 
-        if (!isset($dates[$file])) {
+        if (! isset($dates[$file])) {
             throw new RuntimeException("Log not found in [{$file}]");
         }
 
