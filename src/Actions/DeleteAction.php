@@ -9,8 +9,8 @@ use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Exception;
-use Filament\Tables\Actions\DeleteAction as FilamentDeleteTableAction;
 use Filament\Actions\DeleteAction as FilamentDeleteAction;
+use Filament\Tables\Actions\DeleteAction as FilamentDeleteTableAction;
 
 class DeleteAction
 {

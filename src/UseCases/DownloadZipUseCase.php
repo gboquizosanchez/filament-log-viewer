@@ -12,7 +12,7 @@ class DownloadZipUseCase
 {
     public static function execute(array $files): BinaryFileResponse
     {
-        return (new self())($files);
+        return (new self)($files);
     }
 
     /**
@@ -20,7 +20,7 @@ class DownloadZipUseCase
      */
     public function __invoke(array $files): BinaryFileResponse
     {
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
         $filename = 'logs.zip';
         $zipPath = storage_path("logs/{$filename}");
 

@@ -100,6 +100,7 @@ class Entry extends Entity
     {
         return json_encode($this->toArray(), $options);
     }
+
     public function jsonSerialize(): array
     {
         return $this->toArray();

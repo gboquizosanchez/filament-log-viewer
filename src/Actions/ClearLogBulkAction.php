@@ -37,7 +37,7 @@ class ClearLogBulkAction
             ->deselectRecordsAfterCompletion();
     }
 
-    private static function getAction(Collection $records,): void
+    private static function getAction(Collection $records): void
     {
         $records->each(self::clear(...));
     }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\Infolists\Components\StackTextEntry;
-use Boquizo\FilamentLogViewer\Models\Log;
 use Filament\Tables\Actions\Action;
 
 class StackAction

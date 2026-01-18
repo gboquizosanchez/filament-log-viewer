@@ -170,7 +170,7 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getViewerStatsTable(): Stats
     {
-        return Stats::make((new LogCollection())->stats());
+        return Stats::make((new LogCollection)->stats());
     }
 
     public function getLogViewerRecord(): Log

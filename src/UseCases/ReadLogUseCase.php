@@ -12,13 +12,13 @@ class ReadLogUseCase
 {
     public static function execute(string $date): string
     {
-        return (new self())($date);
+        return (new self)($date);
     }
 
     public function __invoke(string $date): string
     {
         try {
-            $log = (new Filesystem())->get(
+            $log = (new Filesystem)->get(
                 ExtractLogPathUseCase::execute($date)
             );
         } catch (FileNotFoundException $e) {

@@ -10,7 +10,7 @@ class DownloadLogUseCase
 {
     public static function execute(string $file): BinaryFileResponse
     {
-        return (new self())($file);
+        return (new self)($file);
     }
 
     public function __invoke(

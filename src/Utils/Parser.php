@@ -9,8 +9,10 @@ use Illuminate\Support\Str;
 class Parser
 {
     public const DATE_PATTERN = '\d{4}(-\d{2}){2}';
+
     public const TIME_PATTERN = '\d{2}(:\d{2}){2}';
-    public const DATETIME_PATTERN = self::DATE_PATTERN . ' ' . self::TIME_PATTERN;
+
+    public const DATETIME_PATTERN = self::DATE_PATTERN.' '.self::TIME_PATTERN;
 
     protected static array $parsed = [];
 
@@ -70,7 +72,7 @@ class Parser
                 static::$parsed[] = [
                     'level' => $level->value,
                     'header' => $heading[$key],
-                    'stack' => $data[$key]
+                    'stack' => $data[$key],
                 ];
             }
         }

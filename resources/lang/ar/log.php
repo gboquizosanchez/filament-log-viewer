@@ -12,14 +12,14 @@ return [
     'navigation' => [
         'group' => 'السجلات',
         'label' => 'عارض السجلات',
-        'sort'  => 100,
+        'sort' => 100,
     ],
     'table' => [
         'columns' => [
-            'date'    => [
+            'date' => [
                 'label' => 'التاريخ',
             ],
-            'level'   => [
+            'level' => [
                 'label' => 'المستوى',
             ],
             'message' => [
@@ -35,16 +35,16 @@ return [
             ],
             'download' => [
                 'label' => 'تحميل السجل :log',
-                'bulk'  => [
+                'bulk' => [
                     'label' => 'تحميل السجلات',
                     'error' => 'خطأ في تحميل السجلات',
                 ],
             ],
             'delete' => [
-                'label'   => 'حذف السجل :log',
+                'label' => 'حذف السجل :log',
                 'success' => 'تم حذف السجل بنجاح',
-                'error'   => 'خطأ في حذف السجل',
-                'bulk'    => [
+                'error' => 'خطأ في حذف السجل',
+                'bulk' => [
                     'label' => 'حذف السجلات المحددة',
                 ],
             ],
@@ -62,23 +62,23 @@ return [
             ],
         ],
         'detail' => [
-            'title'         => 'التفاصيل',
-            'file_path'     => 'مسار الملف',
-            'log_entries'   => 'المداخل',
-            'size'          => 'الحجم',
-            'created_at'    => 'تاريخ الإنشاء',
-            'updated_at'    => 'آخر تعديل',
+            'title' => 'التفاصيل',
+            'file_path' => 'مسار الملف',
+            'log_entries' => 'المداخل',
+            'size' => 'الحجم',
+            'created_at' => 'تاريخ الإنشاء',
+            'updated_at' => 'آخر تعديل',
         ],
     ],
     'levels' => [
-        'all'       => 'الكل',
+        'all' => 'الكل',
         'emergency' => 'حالة طوارئ',
-        'alert'     => 'تنبيه',
-        'critical'  => 'حرج',
-        'error'     => 'خطأ',
-        'warning'   => 'تحذير',
-        'notice'    => 'إشعار',
-        'info'      => 'معلومات',
-        'debug'     => 'تصحيح الأخطاء',
+        'alert' => 'تنبيه',
+        'critical' => 'حرج',
+        'error' => 'خطأ',
+        'warning' => 'تحذير',
+        'notice' => 'إشعار',
+        'info' => 'معلومات',
+        'debug' => 'تصحيح الأخطاء',
     ],
 ];
