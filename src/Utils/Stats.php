@@ -46,7 +46,7 @@ class Stats
 
         foreach ($this->data as $date => $levels) {
             foreach ($levels as $level => $count) {
-                if (!isset($footer[$level])) {
+                if (! isset($footer[$level])) {
                     $footer[$level] = 0;
                 }
 
@@ -72,5 +72,4 @@ class Stats
 
         return $totals;
     }
-
 }

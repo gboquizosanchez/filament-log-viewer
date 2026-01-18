@@ -14,7 +14,7 @@ class ExtractNamesUseCase
     /** @return array<string, string> */
     public static function execute(): array
     {
-        return (new self())();
+        return (new self)();
     }
 
     /** @return array<string, string> */
@@ -30,8 +30,7 @@ class ExtractNamesUseCase
     }
 
     /**
-     * @param list<string> $files
-     *
+     * @param  list<string>  $files
      * @return array<string, string>
      */
     private function extractNames(array $files): array
