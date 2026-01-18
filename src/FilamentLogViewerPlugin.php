@@ -23,6 +23,7 @@ use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use UnitEnum;
 
 class FilamentLogViewerPlugin implements Plugin
 {
@@ -34,7 +35,7 @@ class FilamentLogViewerPlugin implements Plugin
 
     protected string $listLogs = ListLogs::class;
 
-    protected string|Closure|null $navigationGroup = null;
+    protected string|Closure|UnitEnum|null $navigationGroup = null;
 
     protected int|Closure $navigationSort = 1;
 
@@ -119,7 +120,7 @@ class FilamentLogViewerPlugin implements Plugin
         return $this->evaluate($this->viewLog);
     }
 
-    public function navigationGroup(string|Closure|null $navigationGroup): static
+    public function navigationGroup(string|Closure|UnitEnum|null $navigationGroup): static
     {
         $this->navigationGroup = $navigationGroup;
 
@@ -128,7 +129,21 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getNavigationGroup(): string
     {
-        return $this->evaluate($this->navigationGroup) ?? __('filament-log-viewer::log.navigation.group');
+        $group = $this->evaluate($this->navigationGroup);
+
+        if ($group instanceof UnitEnum) {
+            if (method_exists($group, 'getLabel')) {
+                return $group->getLabel();
+            }
+
+            return $group->name;
+        }
+
+        if (is_string($group)) {
+            return $group;
+        }
+
+        return __('filament-log-viewer::log.navigation.group');
     }
 
     public function navigationSort(int|Closure $navigationSort): static
