@@ -18,10 +18,10 @@ Based on [ARCANEDEV LogViewer](https://github.com/ARCANEDEV/LogViewer).
 - PHP version 8.2 or higher.
 
 ## Versions 🔖
-| Plugin | Filament |
-| -------| ---------|
-|  1.x   |    3.x   |
-|  2.x   |    4.x   |
+| Plugin | Filament  |
+|--------|-----------|
+| 1.x    | 3.x       |
+| 2.x    | 4.x - 5.x |
 
 ## Running 🛠️
 

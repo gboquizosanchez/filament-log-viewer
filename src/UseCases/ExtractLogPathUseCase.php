@@ -39,7 +39,7 @@ class ExtractLogPathUseCase
         return match (FilamentLogViewerPlugin::get()->driver()) {
             'daily' => $basePath.$prefix.$name.$extension,
             'single' => $basePath.rtrim($prefix, '-').$extension,
-            'raw' => $basePath.$name,
+            'raw' => str_starts_with($name, '/') ? $name : $basePath.$name,
         };
     }
 }
