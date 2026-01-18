@@ -1,35 +1,28 @@
-name: Fix Code Style
+name: Fix PHP code style issues
 
-on: [push]
+on:
+  push:
+    paths:
+      - '**.php'
+
+permissions:
+  contents: write
 
 jobs:
-  lint:
+  php-code-styling:
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: true
-
-      matrix:
-        php: [8.4]
+    timeout-minutes: 5
 
     steps:
       - name: Checkout code
-
-        uses: actions/checkout@v5
-
-      - name: Setup PHP
-
-        uses: shivammathur/setup-php@v2
-
+        uses: actions/checkout@v6
         with:
-          php-version: ${{ matrix.php }}
+          ref: ${{ github.head_ref }}
 
-          tools: pint
+      - name: Fix PHP code style issues
+        uses: aglipanci/laravel-pint-action@2.6
 
-      - name: Run Pint
-
-        run: pint
-
-      - name: Commit linted files
-
-        uses: stefanzweifel/git-auto-commit-action@v6
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "chore: 🎨 fix styling"
