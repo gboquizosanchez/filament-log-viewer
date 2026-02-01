@@ -22,7 +22,7 @@ class LogCollection extends LazyCollection
                 $storagePath = Config::string('filament-log-viewer.storage_path', storage_path('logs'));
 
                 foreach (ExtractNamesUseCase::execute() as $date => $path) {
-                    $path = Str::replace("{$storagePath}\\", '', $path);
+                    $path = Str::replace($storagePath . DIRECTORY_SEPARATOR, '', $path);
                     $mode = $driver === 'raw' ? $path : $date;
 
                     yield $mode => Log::make(
