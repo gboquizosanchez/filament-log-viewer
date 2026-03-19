@@ -64,7 +64,7 @@
                     <input
                         type="search"
                         x-model="search"
-                        placeholder="{{ __('filament-log-viewer::log.modal.search_placeholder') }}"
+                        placeholder="{{ __('filament-log-viewer::log.table.modal.search_placeholder') }}"
                         class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 text-sm px-4 py-2.5 focus:border-primary-500 focus:ring-primary-500"
                     />
                 </div>
@@ -72,24 +72,24 @@
                     type="button"
                     @click="scrollToTop"
                     class="shrink-0 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    title="{{ __('filament-log-viewer::log.modal.go_to_top') }}"
+                    title="{{ __('filament-log-viewer::log.table.modal.go_to_top') }}"
                 >
-                    ↑ {{ __('filament-log-viewer::log.modal.top') }}
+                    ↑ {{ __('filament-log-viewer::log.table.modal.top') }}
                 </button>
                 <button
                     type="button"
                     @click="scrollToBottom"
                     class="shrink-0 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-                    title="{{ __('filament-log-viewer::log.modal.go_to_bottom') }}"
+                    title="{{ __('filament-log-viewer::log.table.modal.go_to_bottom') }}"
                 >
-                    ↓ {{ __('filament-log-viewer::log.modal.bottom') }}
+                    ↓ {{ __('filament-log-viewer::log.table.modal.bottom') }}
                 </button>
             </div>
             <div
                 x-ref="scrollContainer"
                 class="max-h-[32rem] overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700"
             >
-                <div x-show="filteredEntries.length === 0" class="p-8 text-center text-sm text-gray-500 dark:text-gray-400" x-text="search ? '{{ __('filament-log-viewer::log.modal.no_matching_entries') }}' : '{{ __('filament-log-viewer::log.modal.no_entries') }}'"></div>
+                <div x-show="filteredEntries.length === 0" class="p-8 text-center text-sm text-gray-500 dark:text-gray-400" x-text="search ? '{{ __('filament-log-viewer::log.table.modal.no_matching_entries') }}' : '{{ __('filament-log-viewer::log.table.modal.no_entries') }}'"></div>
                 <template x-for="(entry, index) in filteredEntries" :key="index">
                     <div class="p-5 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                         <div class="flex flex-col gap-4">
@@ -105,7 +105,7 @@
                             <template x-if="entry.context">
                                 <details>
                                     <summary class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
-                                        {{ __('filament-log-viewer::log.modal.context') }}
+                                        {{ __('filament-log-viewer::log.table.modal.context') }}
                                     </summary>
                                     <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words" x-text="entry.context"></pre>
                                 </details>
@@ -113,7 +113,7 @@
                             <template x-if="entry.stack">
                                 <details>
                                     <summary class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
-                                        {{ __('filament-log-viewer::log.modal.stack_trace') }}
+                                        {{ __('filament-log-viewer::log.table.modal.stack_trace') }}
                                     </summary>
                                     <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words" x-text="entry.stack"></pre>
                                 </details>
