@@ -61,6 +61,17 @@ return [
                 'label' => 'Zurück',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Logs durchsuchen…',
+            'go_to_top' => 'Nach oben',
+            'go_to_bottom' => 'Nach unten',
+            'top' => 'Oben',
+            'bottom' => 'Unten',
+            'no_matching_entries' => 'Keine passenden Log-Einträge.',
+            'no_entries' => 'Keine Log-Einträge.',
+            'context' => 'Kontext',
+            'stack_trace' => 'Stack-Trace',
+        ],
         'detail' => [
             'title' => 'Detail',
             'file_path' => 'Dateipfad',

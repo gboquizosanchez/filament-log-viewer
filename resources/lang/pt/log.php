@@ -61,6 +61,17 @@ return [
                 'label' => 'Voltar',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Pesquisar nos logs…',
+            'go_to_top' => 'Ir para o topo',
+            'go_to_bottom' => 'Ir para o final',
+            'top' => 'Topo',
+            'bottom' => 'Final',
+            'no_matching_entries' => 'Nenhuma entrada de log correspondente.',
+            'no_entries' => 'Nenhuma entrada de log.',
+            'context' => 'Contexto',
+            'stack_trace' => 'Rastreamento da pilha',
+        ],
         'detail' => [
             'title' => 'Detalhes',
             'file_path' => 'Caminho do arquivo',

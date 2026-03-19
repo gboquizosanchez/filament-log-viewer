@@ -61,6 +61,17 @@ return [
                 'label' => 'Volver',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Buscar en logs…',
+            'go_to_top' => 'Ir arriba',
+            'go_to_bottom' => 'Ir abajo',
+            'top' => 'Arriba',
+            'bottom' => 'Abajo',
+            'no_matching_entries' => 'No hay entradas de log coincidentes.',
+            'no_entries' => 'No hay entradas de log.',
+            'context' => 'Contexto',
+            'stack_trace' => 'Seguimiento de pila',
+        ],
         'detail' => [
             'title' => 'Detalle',
             'file_path' => 'Ruta del archivo',

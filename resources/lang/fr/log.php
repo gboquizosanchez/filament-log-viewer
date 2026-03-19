@@ -61,6 +61,17 @@ return [
                 'label' => 'Retour',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Rechercher dans les logs…',
+            'go_to_top' => 'Aller en haut',
+            'go_to_bottom' => 'Aller en bas',
+            'top' => 'Haut',
+            'bottom' => 'Bas',
+            'no_matching_entries' => 'Aucune entrée de journal correspondante.',
+            'no_entries' => 'Aucune entrée de journal.',
+            'context' => 'Contexte',
+            'stack_trace' => 'Trace de la pile',
+        ],
         'detail' => [
             'title' => 'Détail',
             'file_path' => 'Chemin du fichier',

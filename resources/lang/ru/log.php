@@ -61,6 +61,17 @@ return [
                 'label' => 'Назад',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Поиск в логах…',
+            'go_to_top' => 'Перейти в начало',
+            'go_to_bottom' => 'Перейти в конец',
+            'top' => 'Вверх',
+            'bottom' => 'Вниз',
+            'no_matching_entries' => 'Нет подходящих записей в логе.',
+            'no_entries' => 'Нет записей в логе.',
+            'context' => 'Контекст',
+            'stack_trace' => 'Трассировка стека',
+        ],
         'detail' => [
             'title' => 'Детали',
             'file_path' => 'Путь к файлу',

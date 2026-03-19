@@ -24,6 +24,16 @@ return [
     ],
 
     /* -----------------------------------------------------------------
+    | View log in modal
+    | -----------------------------------------------------------------
+    | When true, clicking "View" opens the log in a modal instead of a
+    | separate page. Set to false to use the full-page ViewLog page.
+    | -----------------------------------------------------------------
+     */
+
+    'view_in_modal' => env('FILAMENT_LOG_VIEWER_VIEW_IN_MODAL', false),
+
+    /* -----------------------------------------------------------------
     | Logs files can be cleared
     | -----------------------------------------------------------------
     */

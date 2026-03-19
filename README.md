@@ -84,6 +84,35 @@ LOG_CHANNEL=daily
 FILAMENT_LOG_VIEWER_DRIVER=raw
 ```
 
+### View in modal
+
+By default, clicking "View" opens the log in a full page. You can enable view-in-modal mode to show logs in a modal instead:
+
+**Via config** (`.env`):
+
+```
+FILAMENT_LOG_VIEWER_VIEW_IN_MODAL=true
+```
+
+**Or programmatically** (in your panel provider):
+
+```php
+->plugins([
+    \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
+        ->viewInModal(),
+])
+```
+
+When using modal view, you may want to hide the ViewLog page from direct URL access by passing a custom page that denies access:
+
+```php
+->plugins([
+    \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
+        ->viewInModal()
+        ->viewLog(\App\Filament\LogViewer\Pages\ViewLogDenied::class),
+])
+```
+
 ### Others configurations
 
 ```php

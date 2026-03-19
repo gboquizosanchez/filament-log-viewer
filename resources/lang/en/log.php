@@ -61,6 +61,17 @@ return [
                 'label' => 'Back',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Search logs…',
+            'go_to_top' => 'Go to top',
+            'go_to_bottom' => 'Go to bottom',
+            'top' => 'Top',
+            'bottom' => 'Bottom',
+            'no_matching_entries' => 'No matching log entries.',
+            'no_entries' => 'No log entries.',
+            'context' => 'Context',
+            'stack_trace' => 'Stack trace',
+        ],
         'detail' => [
             'title' => 'Detail',
             'file_path' => 'File Path',

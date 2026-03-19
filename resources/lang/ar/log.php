@@ -61,6 +61,17 @@ return [
                 'label' => 'رجوع',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'البحث في السجلات…',
+            'go_to_top' => 'الانتقال إلى الأعلى',
+            'go_to_bottom' => 'الانتقال إلى الأسفل',
+            'top' => 'أعلى',
+            'bottom' => 'أسفل',
+            'no_matching_entries' => 'لا توجد إدخالات سجل مطابقة.',
+            'no_entries' => 'لا توجد إدخالات سجل.',
+            'context' => 'السياق',
+            'stack_trace' => 'تتبع المكدس',
+        ],
         'detail' => [
             'title' => 'التفاصيل',
             'file_path' => 'مسار الملف',

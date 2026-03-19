@@ -115,6 +115,13 @@ class FilamentLogViewerPlugin implements Plugin
         return $this;
     }
 
+    public function viewInModal(bool $viewInModal = true): static
+    {
+        Config::set('filament-log-viewer.view_in_modal', $viewInModal);
+
+        return $this;
+    }
+
     public function getViewLog(): string
     {
         return $this->evaluate($this->viewLog);

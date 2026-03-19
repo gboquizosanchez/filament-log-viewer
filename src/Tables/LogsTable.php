@@ -11,6 +11,7 @@ use Boquizo\FilamentLogViewer\Actions\DeleteBulkAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadAction;
 use Boquizo\FilamentLogViewer\Actions\DownloadBulkAction;
 use Boquizo\FilamentLogViewer\Actions\ViewLogAction;
+use Boquizo\FilamentLogViewer\Actions\ViewLogModalAction;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\NameColumn;
@@ -47,7 +48,9 @@ class LogsTable
                 LevelColumn::make(Level::Debug),
             ])
             ->recordActions([
-                ViewLogAction::make(),
+                Config::get('filament-log-viewer.view_in_modal', false)
+                    ? ViewLogModalAction::make()
+                    : ViewLogAction::make(),
                 DownloadAction::make(),
                 ClearLogAction::make(),
                 DeleteAction::make(),
