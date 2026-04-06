@@ -1,102 +1,115 @@
-# Filament Log Viewer
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f4cb.svg" width="100" alt="Log Viewer">
+
+# `gboquizosanchez/filament-log-viewer`
+
+**Log Viewer plugin for Filament panels**
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/gboquizosanchez/filament-log-viewer.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
-[![Software License](https://img.shields.io/badge/license-MIT-red.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 [![Total Downloads](https://img.shields.io/packagist/dt/gboquizosanchez/filament-log-viewer.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
+[![PHP](https://img.shields.io/badge/PHP-%5E8.2-777BB4?logo=php&logoColor=white)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22C55E.svg)](LICENSE.md)
+[![Tests](https://img.shields.io/badge/Tests-Pest%20v3-9C27B0)](https://pestphp.com/)
 
-## Summary
+---
 
-This package allows you to manage and keep track of each one of your log files in Filament panels.
+*Browse, filter, and manage your Laravel log files directly inside your Filament panel.*
+
+</div>
+
+---
+
+## Overview
+
+This plugin integrates a full-featured log viewer into any Filament panel. Browse log entries by level, filter by date, and inspect stack traces — all without leaving your admin interface.
 
 Based on [ARCANEDEV LogViewer](https://github.com/ARCANEDEV/LogViewer).
 
-## Starting 🚀
+![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
 
-### Prerequisites 📋
+---
 
-- Composer.
-- PHP version 8.2 or higher.
+## Version compatibility
 
-## Versions 🔖
 | Plugin | Filament  |
 |--------|-----------|
 | 1.x    | 3.x       |
-| 2.x    | 4.x - 5.x |
+| 2.x    | 4.x – 5.x |
 
-## Running 🛠️
+---
 
-Install the package via composer:
+## 📦 Installation
 
-```shell
+```bash
 composer require gboquizosanchez/filament-log-viewer
 ```
 
-And register the plugin on `/app/Providers/Filament/AdminPanelProvider.php`
+Register the plugin in your panel provider (`app/Providers/Filament/AdminPanelProvider.php`):
 
 ```php
 ->plugin(\Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make())
 ```
 
-You can also publish the configuration file to customize the package:
+Optionally, publish the configuration file:
 
-```shell
+```bash
 php artisan vendor:publish --provider="Boquizo\FilamentLogViewer\FilamentLogViewerServiceProvider"
 ```
 
-### 🔧 Drivers
+> [!IMPORTANT]
+> **Filament v4+ requires a custom theme.** Follow the [Filament docs](https://filamentphp.com/docs/4.x/styling/overview#creating-a-custom-theme) to set one up, then add this line to your theme's CSS source:
+>
+> ```css
+> @source '../../../../vendor/gboquizosanchez/filament-log-viewer/resources/views/**/*.blade.php';
+> ```
 
-By default, the plugin uses **LOG_CHANNEL** as the driver.  
-To override this behavior, set the environment variable in your `.env` file:
+---
 
-```
+## 🔧 Drivers
+
+By default, the plugin reads from the `LOG_CHANNEL` defined in your `.env`. You can override this with a dedicated environment variable:
+
+```env
 FILAMENT_LOG_VIEWER_DRIVER=raw
 ```
 
-#### 📌 Available Drivers
-| Driver | Description                                                                          |
-|--------|--------------------------------------------------------------------------------------|
-| daily  | Default driver used by the plugin                                                    |
-| single | Standard Laravel single driver                                                       |
-| raw    | Only available when explicitly using FILAMENT_LOG_VIEWER_DRIVER; shows all log files |
+| Driver   | Description |
+|----------|-------------|
+| `daily`  | Default — mirrors your `LOG_CHANNEL=daily` setting |
+| `single` | Standard Laravel single-file driver |
+| `raw`    | Shows **all** log files; only available via `FILAMENT_LOG_VIEWER_DRIVER` |
 
-👉 **Note:**  
-If `FILAMENT_LOG_VIEWER_DRIVER` is not defined, the plugin will continue using `LOG_CHANNEL`.
+> If `FILAMENT_LOG_VIEWER_DRIVER` is not set, the plugin falls back to `LOG_CHANNEL`.
 
-#### Example `.env` configuration
-**Use the default LOG_CHANNEL (daily):**
+---
 
-```
-LOG_CHANNEL=daily
-```
+## ⚙️ Configuration
 
-**Or override to use raw with FILAMENT_LOG_VIEWER_DRIVER:**
-
-```
-FILAMENT_LOG_VIEWER_DRIVER=raw
-```
-
-### Others configurations
+All plugin options are chainable:
 
 ```php
 ->plugins([
     \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
         ->navigationGroup('System')
         ->navigationSort(2)
-        ->navigationIcon('heroicon-s-document-text')
+        ->navigationIcon(Heroicon::OutlinedDocumentText)
         ->navigationLabel('Log Viewer')
         ->timezone('Europe/Madrid')
         ->authorize(fn (): bool => auth()->user()->can('view-logs')),
-    // Other plugins
 ])
 ```
 
-### Custom Pages Configuration
+---
 
-You can customize the plugin pages by extending the base classes:
+## 🧩 Custom Pages
+
+You can extend the built-in pages to add your own behaviour.
+
+**Custom log list** — e.g. auto-refresh every 30 seconds:
 
 ```php
 // app/Filament/Pages/CustomListLogs.php
-<?php
 
 namespace App\Filament\Pages;
 
@@ -106,42 +119,40 @@ use Filament\Tables\Table;
 class CustomListLogs extends BaseListLogs
 {
     protected static ?string $navigationLabel = 'Application Logs';
-    
     protected static ?string $navigationGroup = 'Monitoring';
-    
+
     public function table(Table $table): Table
     {
         return parent::table($table)
             ->defaultPaginationPageOption(25)
-            ->poll('30s'); // Auto-refresh every 30 seconds
+            ->poll('30s');
     }
 }
 ```
 
+**Custom log viewer** — e.g. add an export action:
+
 ```php
 // app/Filament/Pages/CustomViewLog.php
-<?php
 
 namespace App\Filament\Pages;
 
 use Boquizo\FilamentLogViewer\Pages\ViewLog as BaseViewLog;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class CustomViewLog extends BaseViewLog
 {
     protected function getHeaderActions(): array
     {
-        return array_merge(
-            parent::getHeaderActions(),
-            [
-                Action::make('export')
-                    ->label('Export to CSV')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->action(fn () => $this->exportToCsv()),
-            ],
-        );
+        return array_merge(parent::getHeaderActions(), [
+            Action::make('export')
+                ->label('Export to CSV')
+                ->icon(Heroicon::OutlinedArrowDownTray)
+                ->action(fn () => $this->exportToCsv()),
+        ]);
     }
-    
+
     private function exportToCsv(): void
     {
         // Custom export logic
@@ -149,7 +160,7 @@ class CustomViewLog extends BaseViewLog
 }
 ```
 
-Then register your custom pages in the plugin configuration:
+Then register your custom pages in the plugin:
 
 ```php
 ->plugins([
@@ -158,42 +169,41 @@ Then register your custom pages in the plugin configuration:
         ->viewLog(\App\Filament\Pages\CustomViewLog::class)
         ->navigationGroup('System')
         ->navigationSort(2)
-        ->navigationIcon('heroicon-s-document-text')
+        ->navigationIcon(Heroicon::DocumentText)
         ->navigationLabel('System Logs')
         ->timezone('Pacific/Auckland')
-        ->authorize(function (): bool {
-            return auth()->user()->hasAnyRole(['admin', 'developer']);
-        }),
-    // Other plugins like FilamentEmailPlugin, etc.
+        ->authorize(fn (): bool => auth()->user()->hasAnyRole(['admin', 'developer'])),
 ])
 ```
 
-## Screenshots 💄
+---
 
-![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
+## 🧪 Testing
 
-### PHP dependencies 📦
-- Calebporzio Sushi [![Latest Stable Version](https://img.shields.io/badge/stable-v2.5.3-blue)](https://packagist.org/packages/calebporzio/sushi)
-- Eightynine Filament Advanced Widgets [![Latest Stable Version](https://img.shields.io/badge/stable-3.0.1-blue)](https://packagist.org/packages/eightynine/filament-advanced-widgets)
-- Owenvoke Blade Fontawesome [![Latest Stable Version](https://img.shields.io/badge/stable-v2.9.1-blue)](https://packagist.org/packages/owenvoke/blade-fontawesome)
-- Symfony Polyfill Php83 [![Latest Stable Version](https://img.shields.io/badge/stable-v1.33.0-blue)](https://packagist.org/packages/symfony/polyfill-php83)
+```bash
+composer test
+```
 
-#### Develop dependencies 🔧
-- Friendsofphp Php Cs Fixer [![Latest Stable Version](https://img.shields.io/badge/stable-v3.90.0-blue)](https://packagist.org/packages/friendsofphp/php-cs-fixer)
-- Hermes Dependencies [![Latest Stable Version](https://img.shields.io/badge/stable-1.2.0-blue)](https://packagist.org/packages/hermes/dependencies)
-- Larastan Larastan [![Latest Stable Version](https://img.shields.io/badge/stable-v2.11.2-blue)](https://packagist.org/packages/larastan/larastan)
-- Orchestra Testbench [![Latest Stable Version](https://img.shields.io/badge/stable-v9.15.0-blue)](https://packagist.org/packages/orchestra/testbench)
-- Pestphp Pest [![Latest Stable Version](https://img.shields.io/badge/stable-v3.8.4-blue)](https://packagist.org/packages/pestphp/pest)
+---
 
-## Problems? 🚨
+## Contributing
 
-Let me know about yours by [opening an issue](https://github.com/gboquizosanchez/filament-log-viewer/issues/new)!
+Contributions are welcome!
 
-## Credits 🧑‍💻
+- 🐛 **Report bugs** via [GitHub Issues](https://github.com/gboquizosanchez/filament-log-viewer/issues/new)
+- 💡 **Suggest features** or improvements
+- 🔧 **Submit pull requests** with fixes or enhancements
 
-- [Germán Boquizo Sánchez](mailto:germanboquizosanchez@gmail.com)
-- [All Contributors](../../contributors)
+---
 
-## License 📄
+## Credits
 
-MIT License (MIT). See [License File](LICENSE.md).
+- **Author**: [Germán Boquizo Sánchez](mailto:germanboquizosanchez@gmail.com)
+- **Based on**: [ARCANEDEV LogViewer](https://github.com/ARCANEDEV/LogViewer)
+- **Contributors**: [View all contributors](../../contributors)
+
+---
+
+## 📄 License
+
+This package is open-source software licensed under the [MIT License](LICENSE.md).
