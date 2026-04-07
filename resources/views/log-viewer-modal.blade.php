@@ -54,6 +54,19 @@
                 scrollContainer: null,
                 colors: {{ json_encode($colors) }},
                 icons: {{ json_encode($icons) }},
+                formatStack(stack) {
+                    if (!stack) {
+                        return '';
+                    }
+                    let safe = stack.replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+
+                    return safe.replace(
+                        /(.*vendor.*)/gm,
+                        '<span class=\'opacity-40 text-gray-400\'>$1</span>',
+                    );
+                },
                 get filteredEntries() {
                     const term = this.search.toLowerCase();
                     if (!term) {
@@ -65,7 +78,7 @@
                                 e.level ?? '',
                                 e.datetime ?? '',
                                 e.header ?? '',
-                                e.stack ?? '',
+                                this.formatStack(e.stack) ?? '',
                                 e.context ?? ''
                             ]
                         .join(' ')
@@ -154,7 +167,7 @@
                                     <summary class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
                                         {{ __('filament-log-viewer::log.table.modal.stack_trace') }}
                                     </summary>
-                                    <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words" x-text="entry.stack"></pre>
+                                    <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words" x-html="formatStack(entry.stack)"></pre>
                                 </details>
                             </template>
                         </div>
@@ -164,5 +177,7 @@
         </div>
     </div>
 @else
-    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('filament-log-viewer::log.table.detail.title') }}</p>
+    <p class="text-sm text-gray-500 dark:text-gray-400">
+        {{ __('filament-log-viewer::log.table.detail.title') }}
+    </p>
 @endif
