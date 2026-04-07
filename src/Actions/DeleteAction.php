@@ -30,7 +30,7 @@ class DeleteAction
             ->failureNotificationTitle(
                 __('filament-log-viewer::log.table.actions.delete.error'),
             )
-            ->icon('fas-trash')
+            ->icon('heroicon-s-trash')
             ->requiresConfirmation()
             ->action(self::getAction(...))
             // I have to set this manually because the default is not working

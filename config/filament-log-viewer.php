@@ -78,15 +78,15 @@ return [
      */
 
     'icons' => [
-        'all' => 'fas-list', // http://fontawesome.io/icon/list/
-        'emergency' => 'fas-bug', // http://fontawesome.io/icon/bug/
-        'alert' => 'fas-bullhorn', // http://fontawesome.io/icon/bullhorn/
-        'critical' => 'fas-heartbeat', // http://fontawesome.io/icon/heartbeat/
-        'error' => 'fas-times-circle', // http://fontawesome.io/icon/times-circle/
-        'warning' => 'fas-exclamation-triangle', // http://fontawesome.io/icon/exclamation-triangle/
-        'notice' => 'fas-exclamation-circle', // http://fontawesome.io/icon/exclamation-circle/
-        'info' => 'fas-info-circle', // http://fontawesome.io/icon/info-circle/
-        'debug' => 'fas-life-ring', // http://fontawesome.io/icon/life-ring/
+        'all' => 'heroicon-s-list-bullet',
+        'emergency' => 'heroicon-s-bug-ant',
+        'alert' => 'heroicon-s-megaphone',
+        'critical' => 'heroicon-s-fire',
+        'error' => 'heroicon-s-x-circle',
+        'warning' => 'heroicon-s-exclamation-triangle',
+        'notice' => 'heroicon-s-exclamation-circle',
+        'info' => 'heroicon-s-information-circle',
+        'debug' => 'heroicon-s-command-line',
     ],
 
     /* -----------------------------------------------------------------

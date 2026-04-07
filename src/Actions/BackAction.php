@@ -17,7 +17,7 @@ class BackAction
             ->tooltip(__('filament-log-viewer::log.table.actions.close.label'))
             ->button()
             ->color('primary')
-            ->icon('fas-arrow-left')
+            ->icon('heroicon-s-arrow-left')
             ->action(self::getAction(...));
     }
 

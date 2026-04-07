@@ -32,7 +32,7 @@ class ClearLogAction
             ->failureNotificationTitle(
                 __('filament-log-viewer::log.table.actions.clear.error'),
             )
-            ->icon('fas-broom')
+            ->icon('heroicon-s-archive-box-x-mark')
             ->requiresConfirmation()
             ->action(self::getAction(...));
 

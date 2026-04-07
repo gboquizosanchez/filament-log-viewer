@@ -22,7 +22,7 @@ class DownloadAction
             ->label(__('filament-log-viewer::log.table.actions.download.label'))
             ->modalHeading(self::getTitle(...))
             ->color('success')
-            ->icon('fas-download')
+            ->icon('heroicon-s-arrow-down-tray')
             ->requiresConfirmation()
             ->action(self::getAction(...));
 

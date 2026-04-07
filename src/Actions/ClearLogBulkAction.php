@@ -22,7 +22,7 @@ class ClearLogBulkAction
             )
             ->visible($driver === 'single' || Config::boolean('filament-log-viewer.clearable'))
             ->color('warning')
-            ->icon('fas-broom')
+            ->icon('heroicon-s-archive-box-x-mark')
             ->requiresConfirmation()
             ->modalHeading(
                 __('filament-log-viewer::log.table.actions.clear.bulk.label'),

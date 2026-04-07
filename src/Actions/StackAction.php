@@ -14,7 +14,7 @@ class StackAction
         return Action::make('stack')
             ->button()
             ->hidden(self::getHidden(...))
-            ->icon('fas-toggle-on')
+            ->icon('heroicon-s-information-circle')
             ->color('gray')
             ->infolist([
                 StackTextEntry::make(),

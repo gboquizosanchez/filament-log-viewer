@@ -15,7 +15,7 @@ class ViewLogAction
         return ViewAction::make()
             ->hiddenLabel()
             ->button()
-            ->icon('fas-search')
+            ->icon('heroicon-s-magnifying-glass')
             ->url(self::getUrl(...))
             ->label(__('filament-log-viewer::log.table.actions.view.label'))
             ->color('info');

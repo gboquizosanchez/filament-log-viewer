@@ -19,7 +19,7 @@ class DownloadBulkAction
                 __('filament-log-viewer::log.table.actions.download.bulk.label'),
             )
             ->color('success')
-            ->icon('fas-download')
+            ->icon('heroicon-s-arrow-down-tray')
             ->requiresConfirmation()
             ->modalHeading(
                 __('filament-log-viewer::log.table.actions.download.bulk.label'),

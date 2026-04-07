@@ -15,7 +15,7 @@ class ContextAction
         return Action::make('context')
             ->button()
             ->hidden(self::getHidden(...))
-            ->icon('fas-toggle-on')
+            ->icon('heroicon-s-information-circle')
             ->color('gray')
             ->infolist([
                 ContextTextEntry::make(),
