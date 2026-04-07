@@ -16,6 +16,7 @@ use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Tables\Columns\LevelColumn;
 use Boquizo\FilamentLogViewer\Tables\Columns\NameColumn;
 use Boquizo\FilamentLogViewer\Utils\Level;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -48,9 +49,7 @@ class LogsTable
                 LevelColumn::make(Level::Debug),
             ])
             ->recordActions([
-                Config::get('filament-log-viewer.view_in_modal', false)
-                    ? ViewLogModalAction::make()
-                    : ViewLogAction::make(),
+                self::getViewAction(),
                 DownloadAction::make(),
                 ClearLogAction::make(),
                 DeleteAction::make(),
@@ -125,5 +124,14 @@ class LogsTable
         $firstRecord = collect($data->first());
 
         return $data->count() === 1 && $firstRecord->filter()->count() === 1;
+    }
+
+    private static function getViewAction(): Action
+    {
+        if (Config::get('filament-log-viewer.view_in_modal', false)) {
+            return ViewLogModalAction::make();
+        }
+
+        return ViewLogAction::make();
     }
 }

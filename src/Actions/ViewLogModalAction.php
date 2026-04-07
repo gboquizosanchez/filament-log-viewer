@@ -7,6 +7,8 @@ namespace Boquizo\FilamentLogViewer\Actions;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Filament\Actions\Action;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Config;
 
@@ -14,14 +16,14 @@ class ViewLogModalAction
 {
     public static function make(): Action
     {
-        return Action::make('viewLog')
+        return Action::make('view-log')
             ->hiddenLabel()
             ->button()
-            ->icon('heroicon-o-eye')
+            ->icon(Heroicon::MagnifyingGlass)
             ->label(__('filament-log-viewer::log.table.actions.view.label'))
             ->color('info')
             ->modalHeading(self::getHeading(...))
-            ->modalWidth('7xl')
+            ->modalWidth(Width::SevenExtraLarge)
             ->modalSubmitAction(false)
             ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
             ->modalContent(self::getModalContent(...));
