@@ -61,6 +61,17 @@ return [
                 'label' => 'Powrót',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Szukaj w logach…',
+            'go_to_top' => 'Idź do góry',
+            'go_to_bottom' => 'Idź na dół',
+            'top' => 'Góra',
+            'bottom' => 'Dół',
+            'no_matching_entries' => 'Brak pasujących wpisów w logu.',
+            'no_entries' => 'Brak wpisów w logu.',
+            'context' => 'Kontekst',
+            'stack_trace' => 'Ślad stosu',
+        ],
         'detail' => [
             'title' => 'Szczegóły',
             'file_path' => 'Ścieżka pliku',

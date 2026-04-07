@@ -61,6 +61,17 @@ return [
                 'label' => 'Indietro',
             ],
         ],
+        'modal' => [
+            'search_placeholder' => 'Cerca nei log…',
+            'go_to_top' => 'Vai in alto',
+            'go_to_bottom' => 'Vai in basso',
+            'top' => 'Alto',
+            'bottom' => 'Basso',
+            'no_matching_entries' => 'Nessuna voce di log corrispondente.',
+            'no_entries' => 'Nessuna voce di log.',
+            'context' => 'Contesto',
+            'stack_trace' => 'Traccia dello stack',
+        ],
         'detail' => [
             'title' => 'Dettaglio',
             'file_path' => 'Percorso del file',
