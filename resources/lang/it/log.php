@@ -62,7 +62,7 @@ return [
             ],
         ],
         'modal' => [
-            'search_placeholder' => 'Cerca nei log…',
+            'search_placeholder' => 'Cerca nei log...',
             'go_to_top' => 'Vai in alto',
             'go_to_bottom' => 'Vai in basso',
             'top' => 'Alto',

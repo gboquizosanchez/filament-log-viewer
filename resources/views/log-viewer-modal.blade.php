@@ -5,7 +5,7 @@
     $log = $log ?? null;
     $timezone = $timezone ?? Config::string('app.timezone', 'UTC');
     $entries = $log?->toModel() ?? [];
-    $levelColors = Config::array('filament-log-viewer.colors.levels', []);
+    $colors = Config::array('filament-log-viewer.colors.levels', []);
     $icons = collect(Config::array('filament-log-viewer.icons', []))
         ->map(fn (string|ScalableIcon $icon, string $key) => (string) Icons::get($key, IconSize::Small));
 @endphp
@@ -14,20 +14,36 @@
         <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-4">
             <dl class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm">
                 <div>
-                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('filament-log-viewer::log.table.detail.file_path') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100 break-all">{{ $log->path() }}</dd>
+                    <dt class="font-medium text-gray-500 dark:text-gray-400">
+                        {{ __('filament-log-viewer::log.table.detail.file_path') }}
+                    </dt>
+                    <dd class="mt-1 text-gray-900 dark:text-gray-100 break-all">
+                        {{ $log->path() }}
+                    </dd>
                 </div>
                 <div>
-                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('filament-log-viewer::log.table.detail.log_entries') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">{{ $log->entries()->count() }}</dd>
+                    <dt class="font-medium text-gray-500 dark:text-gray-400">
+                        {{ __('filament-log-viewer::log.table.detail.log_entries') }}
+                    </dt>
+                    <dd class="mt-1 text-gray-900 dark:text-gray-100">
+                        {{ $log->entries()->count() }}
+                    </dd>
                 </div>
                 <div>
-                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('filament-log-viewer::log.table.detail.size') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">{{ $log->size() }}</dd>
+                    <dt class="font-medium text-gray-500 dark:text-gray-400">
+                        {{ __('filament-log-viewer::log.table.detail.size') }}
+                    </dt>
+                    <dd class="mt-1 text-gray-900 dark:text-gray-100">
+                        {{ $log->size() }}
+                    </dd>
                 </div>
                 <div>
-                    <dt class="font-medium text-gray-500 dark:text-gray-400">{{ __('filament-log-viewer::log.table.detail.updated_at') }}</dt>
-                    <dd class="mt-1 text-gray-900 dark:text-gray-100">{{ $log->updatedAt() }} <span class="text-gray-400">({{ $timezone }})</span></dd>
+                    <dt class="font-medium text-gray-500 dark:text-gray-400">
+                        {{ __('filament-log-viewer::log.table.detail.updated_at') }}
+                    </dt>
+                    <dd class="mt-1 text-gray-900 dark:text-gray-100">
+                        {{ $log->updatedAt() }} <span class="text-gray-400">({{ $timezone }})</span>
+                    </dd>
                 </div>
             </dl>
         </div>
@@ -36,27 +52,32 @@
             x-data="{
                 search: '',
                 scrollContainer: null,
-                levelColors: {{ json_encode($levelColors) }},
+                colors: {{ json_encode($colors) }},
                 icons: {{ json_encode($icons) }},
                 get filteredEntries() {
                     const term = this.search.toLowerCase();
-                    if (!term) return {{ json_encode($entries) }};
-                    return {{ json_encode($entries) }}.filter(e => {
-                        const text = [
-                            e.level ?? '',
-                            e.datetime ?? '',
-                            e.header ?? '',
-                            e.stack ?? '',
-                            e.context ?? ''
-                        ].join(' ').toLowerCase();
+                    if (!term) {
+                        return {{ json_encode($entries) }};
+                    }
+                    return {{ json_encode($entries) }}
+                        .filter(e => {
+                            const text = [
+                                e.level ?? '',
+                                e.datetime ?? '',
+                                e.header ?? '',
+                                e.stack ?? '',
+                                e.context ?? ''
+                            ]
+                        .join(' ')
+                        .toLowerCase();
+
                         return text.includes(term);
                     });
                 },
                 getColor(level) {
-                    return this.levelColors[level] ?? this.levelColors['info'];
+                    return this.colors[level] ?? this.colors['info'];
                 },
                 getIcon(level) {
-                console.log(this.icons[level] ?? this.icons['info']);
                     return this.icons[level] ?? this.icons['info'];
                 },
                 scrollToTop() {
@@ -64,7 +85,9 @@
                 },
                 scrollToBottom() {
                     const el = this.$refs.scrollContainer;
-                    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+                    if (el) {
+                        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+                    }
                 }
             }"
             class="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
@@ -99,7 +122,11 @@
                 x-ref="scrollContainer"
                 class="max-h-[32rem] overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700"
             >
-                <div x-show="filteredEntries.length === 0" class="p-8 text-center text-sm text-gray-500 dark:text-gray-400" x-text="search ? '{{ __('filament-log-viewer::log.table.modal.no_matching_entries') }}' : '{{ __('filament-log-viewer::log.table.modal.no_entries') }}'"></div>
+                <div
+                    x-show="filteredEntries.length === 0"
+                    class="p-8 text-center text-sm text-gray-500 dark:text-gray-400"
+                    x-text="search ? '{{ __('filament-log-viewer::log.table.modal.no_matching_entries') }}' : '{{ __('filament-log-viewer::log.table.modal.no_entries') }}'">
+                </div>
                 <template x-for="(entry, index) in filteredEntries" :key="index">
                     <div class="p-5 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                         <div class="flex flex-col gap-4">

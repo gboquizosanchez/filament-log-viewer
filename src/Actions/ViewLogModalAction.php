@@ -8,6 +8,7 @@ use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Filament\Actions\Action;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Config;
 
 class ViewLogModalAction
 {
@@ -19,16 +20,11 @@ class ViewLogModalAction
             ->icon('heroicon-o-eye')
             ->label(__('filament-log-viewer::log.table.actions.view.label'))
             ->color('info')
-            ->modalHeading(fn (Action $action): string => (string) ParseDateUseCase::execute(
-                self::getRecordDate($action)
-            ))
+            ->modalHeading(self::getHeading(...))
             ->modalWidth('7xl')
             ->modalSubmitAction(false)
             ->modalCancelActionLabel(__('filament-log-viewer::log.table.actions.close.label'))
-            ->modalContent(fn (Action $action): View => view('filament-log-viewer::log-viewer-modal', [
-                'log' => FilamentLogViewerPlugin::get()->getLogViewerRecord(self::getRecordDate($action)),
-                'timezone' => config('app.timezone'),
-            ]));
+            ->modalContent(self::getModalContent(...));
     }
 
     private static function getRecordDate(Action $action): string
@@ -40,5 +36,23 @@ class ViewLogModalAction
         }
 
         return $record?->date ?? '';
+    }
+
+    private static function getHeading(Action $action): string
+    {
+        return ParseDateUseCase::execute(
+            self::getRecordDate($action)
+        );
+    }
+
+    private static function getModalContent(Action $action): View
+    {
+        $record = FilamentLogViewerPlugin::get()
+            ->getLogViewerRecord(self::getRecordDate($action));
+
+        return view('filament-log-viewer::log-viewer-modal', [
+            'log' => $record,
+            'timezone' => Config::string('app.timezone'),
+        ]);
     }
 }

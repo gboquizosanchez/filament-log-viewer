@@ -62,7 +62,7 @@ return [
             ],
         ],
         'modal' => [
-            'search_placeholder' => 'Поиск в логах…',
+            'search_placeholder' => 'Поиск в логах...',
             'go_to_top' => 'Перейти в начало',
             'go_to_bottom' => 'Перейти в конец',
             'top' => 'Вверх',
