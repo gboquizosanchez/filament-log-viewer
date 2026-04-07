@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Filament\Actions\ViewAction;
+use Filament\Support\Icons\Heroicon;
 
 class ViewLogAction
 {
@@ -14,7 +15,7 @@ class ViewLogAction
         return ViewAction::make()
             ->hiddenLabel()
             ->button()
-            ->icon('fas-search')
+            ->icon(Heroicon::MagnifyingGlass)
             ->url(self::getUrl(...))
             ->label(__('filament-log-viewer::log.table.actions.view.label'))
             ->color('info');

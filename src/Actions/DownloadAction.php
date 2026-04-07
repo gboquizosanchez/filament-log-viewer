@@ -9,6 +9,7 @@ use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadAction
@@ -21,7 +22,7 @@ class DownloadAction
             ->label(__('filament-log-viewer::log.table.actions.download.label'))
             ->modalHeading(self::getTitle(...))
             ->color('success')
-            ->icon('fas-download')
+            ->icon(Heroicon::ArrowDownTray)
             ->requiresConfirmation()
             ->action(self::getAction(...));
 

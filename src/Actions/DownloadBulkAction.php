@@ -7,6 +7,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Exception;
 use Filament\Actions\BulkAction;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -19,7 +20,7 @@ class DownloadBulkAction
                 __('filament-log-viewer::log.table.actions.download.bulk.label'),
             )
             ->color('success')
-            ->icon('fas-download')
+            ->icon(Heroicon::ArrowDownTray)
             ->requiresConfirmation()
             ->modalHeading(
                 __('filament-log-viewer::log.table.actions.download.bulk.label'),

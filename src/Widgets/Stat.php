@@ -20,7 +20,7 @@ class Stat
 
         return FilamentStat::make($label, $value)
             ->label(self::getLabel($label, $progressColor))
-            ->icon(Config::string("filament-log-viewer.icons.{$level}"))
+            ->icon(Config::get("filament-log-viewer.icons.{$level}"))
             ->description(self::getDescription([
                 'progressColor' => $progressColor,
                 'style' => self::getStyle($level, $progressColor),

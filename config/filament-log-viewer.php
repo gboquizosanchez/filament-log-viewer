@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Filament\Support\Icons\Heroicon;
+
 return [
 
     /* -----------------------------------------------------------------
@@ -88,15 +90,15 @@ return [
      */
 
     'icons' => [
-        'all' => 'fas-list', // http://fontawesome.io/icon/list/
-        'emergency' => 'fas-bug', // http://fontawesome.io/icon/bug/
-        'alert' => 'fas-bullhorn', // http://fontawesome.io/icon/bullhorn/
-        'critical' => 'fas-heartbeat', // http://fontawesome.io/icon/heartbeat/
-        'error' => 'fas-times-circle', // http://fontawesome.io/icon/times-circle/
-        'warning' => 'fas-exclamation-triangle', // http://fontawesome.io/icon/exclamation-triangle/
-        'notice' => 'fas-exclamation-circle', // http://fontawesome.io/icon/exclamation-circle/
-        'info' => 'fas-info-circle', // http://fontawesome.io/icon/info-circle/
-        'debug' => 'fas-life-ring', // http://fontawesome.io/icon/life-ring/
+        'all' => Heroicon::ListBullet,
+        'emergency' => Heroicon::BugAnt,
+        'alert' => Heroicon::Megaphone,
+        'critical' => Heroicon::Fire,
+        'error' => Heroicon::XCircle,
+        'warning' => Heroicon::ExclamationTriangle,
+        'notice' => Heroicon::ExclamationCircle,
+        'info' => Heroicon::InformationCircle,
+        'debug' => Heroicon::CommandLine,
     ],
 
     /* -----------------------------------------------------------------

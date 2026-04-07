@@ -10,6 +10,7 @@ use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Exception;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Config;
 
 class ClearLogAction
@@ -31,7 +32,7 @@ class ClearLogAction
             ->failureNotificationTitle(
                 __('filament-log-viewer::log.table.actions.clear.error'),
             )
-            ->icon('fas-broom')
+            ->icon(Heroicon::ArchiveBoxXMark)
             ->requiresConfirmation()
             ->action(self::getAction(...));
 

@@ -29,7 +29,6 @@
   "require": {
     "ext-zip": "*",
     "php": "^8.2|^8.3|^8.4",
-    "owenvoke/blade-fontawesome": "^2.9",
     "symfony/polyfill-php83": "^1.33"
   },
   "require-dev": {

@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\Infolists\Components\StackTextEntry;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class StackAction
 {
@@ -14,7 +15,7 @@ class StackAction
         return Action::make('stack')
             ->button()
             ->hidden(self::getHidden(...))
-            ->icon('fas-toggle-on')
+            ->icon(Heroicon::InformationCircle)
             ->color('gray')
             ->schema([
                 StackTextEntry::make(),

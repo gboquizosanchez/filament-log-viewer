@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\Infolists\Components\ContextTextEntry;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class ContextAction
 {
@@ -14,7 +15,7 @@ class ContextAction
         return Action::make('context')
             ->button()
             ->hidden(self::getHidden(...))
-            ->icon('fas-toggle-on')
+            ->icon(Heroicon::InformationCircle)
             ->color('gray')
             ->schema([
                 ContextTextEntry::make(),

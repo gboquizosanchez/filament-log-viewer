@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Filament\Actions\BulkAction;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 
@@ -21,7 +22,7 @@ class ClearLogBulkAction
             )
             ->visible($driver === 'single' || Config::boolean('filament-log-viewer.clearable'))
             ->color('warning')
-            ->icon('fas-broom')
+            ->icon(Heroicon::ArchiveBoxXMark)
             ->requiresConfirmation()
             ->modalHeading(
                 __('filament-log-viewer::log.table.actions.clear.bulk.label'),

@@ -10,6 +10,7 @@ use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Boquizo\FilamentLogViewer\UseCases\ParseDateUseCase;
 use Exception;
 use Filament\Actions\DeleteAction as FilamentDeleteAction;
+use Filament\Support\Icons\Heroicon;
 
 class DeleteAction
 {
@@ -29,7 +30,7 @@ class DeleteAction
             ->failureNotificationTitle(
                 __('filament-log-viewer::log.table.actions.delete.error'),
             )
-            ->icon('fas-trash')
+            ->icon(Heroicon::Trash)
             ->requiresConfirmation()
             ->action(self::getAction(...))
             // I have to set this manually because the default is not working

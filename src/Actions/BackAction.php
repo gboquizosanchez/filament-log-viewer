@@ -7,6 +7,7 @@ namespace Boquizo\FilamentLogViewer\Actions;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class BackAction
 {
@@ -17,7 +18,7 @@ class BackAction
             ->tooltip(__('filament-log-viewer::log.table.actions.close.label'))
             ->button()
             ->color('primary')
-            ->icon('fas-arrow-left')
+            ->icon(Heroicon::ArrowLeft)
             ->action(self::getAction(...));
     }
 

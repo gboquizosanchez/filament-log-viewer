@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Utils;
 
+use Filament\Support\Contracts\ScalableIcon;
 use Filament\Support\Enums\IconSize;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
@@ -16,11 +17,17 @@ class Icons
         $colors = Config::array('filament-log-viewer.colors.levels');
         $icons = Config::array('filament-log-viewer.icons');
 
+        $icon = $icons[$name];
+
+        if ($icon instanceof ScalableIcon) {
+            $icon = $icon->getIconForSize($size);
+        }
+
         return new HtmlString(
             Blade::render(
                 sprintf('
                     <x-%s class="%s" style="color: %s"/>',
-                    $icons[$name],
+                    $icon,
                     self::size($size),
                     $colors[$name],
                 ),
