@@ -1,8 +1,13 @@
+@use(Boquizo\FilamentLogViewer\Utils\Icons)
+@use(Filament\Support\Contracts\ScalableIcon)
+@use(Filament\Support\Enums\IconSize)
 @php
     $log = $log ?? null;
-    $timezone = $timezone ?? config('app.timezone');
+    $timezone = $timezone ?? Config::string('app.timezone', 'UTC');
     $entries = $log?->toModel() ?? [];
-    $levelColors = config('filament-log-viewer.colors.levels', []);
+    $levelColors = Config::array('filament-log-viewer.colors.levels', []);
+    $icons = collect(Config::array('filament-log-viewer.icons', []))
+        ->map(fn (string|ScalableIcon $icon, string $key) => (string) Icons::get($key, IconSize::Small));
 @endphp
 @if ($log)
     <div class="space-y-4">
@@ -32,6 +37,7 @@
                 search: '',
                 scrollContainer: null,
                 levelColors: {{ json_encode($levelColors) }},
+                icons: {{ json_encode($icons) }},
                 get filteredEntries() {
                     const term = this.search.toLowerCase();
                     if (!term) return {{ json_encode($entries) }};
@@ -47,7 +53,11 @@
                     });
                 },
                 getColor(level) {
-                    return this.levelColors[level] ?? '#6B7280';
+                    return this.levelColors[level] ?? this.levelColors['info'];
+                },
+                getIcon(level) {
+                console.log(this.icons[level] ?? this.icons['info']);
+                    return this.icons[level] ?? this.icons['info'];
                 },
                 scrollToTop() {
                     this.$refs.scrollContainer?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -94,11 +104,13 @@
                     <div class="p-5 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center gap-2">
-                                <span
-                                    class="inline-flex items-center rounded px-2 py-0.5 text-xs font-medium shrink-0"
-                                    :style="`background-color: ${getColor(entry.level || 'info')}20; color: ${getColor(entry.level || 'info')}`"
-                                    x-text="(entry.level || 'info').toUpperCase()"
-                                ></span>
+                                    <span
+                                        class="inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-xs font-medium shrink-0"
+                                        :style="`background-color: ${getColor(entry.level || 'info')}20; color: ${getColor(entry.level || 'info')}`"
+                                    >
+                                    <span x-html="getIcon(entry.level || 'info')"></span>
+                                    <span x-text="(entry.level || 'info').toUpperCase()"></span>
+                                </span>
                                 <span class="text-xs text-gray-500 dark:text-gray-400" x-text="entry.datetime || ''"></span>
                             </div>
                             <p class="text-sm text-gray-900 dark:text-gray-100 break-words" x-text="entry.header || ''"></p>
