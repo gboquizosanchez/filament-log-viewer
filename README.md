@@ -37,6 +37,8 @@ Based on [ARCANEDEV LogViewer](https://github.com/ARCANEDEV/LogViewer).
 | 1.x    | 3.x       |
 | 2.x    | 4.x – 5.x |
 
+> [!IMPORTANT]
+> Version 1.x **won't receive** any further updates.
 ---
 
 ## 📦 Installation
