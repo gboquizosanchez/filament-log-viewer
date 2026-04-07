@@ -6,6 +6,7 @@ namespace Boquizo\FilamentLogViewer\Models;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Sushi\Sushi;
 
 /**
@@ -20,8 +21,8 @@ use Sushi\Sushi;
  * @property int $notice
  * @property int $info
  * @property int $debug
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|LogStat newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LogStat newQuery()

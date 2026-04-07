@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Boquizo\FilamentLogViewer\Models;
 
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
@@ -43,7 +44,7 @@ class Log extends Model
     /** @return array<string, array{
      *     env: string,
      *     level: string,
-     *     datetime: \Carbon\Carbon::class,
+     *     datetime: Carbon::class,
      *     header: string,
      *     stack: string,
      *     context: string
