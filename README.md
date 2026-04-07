@@ -95,7 +95,7 @@ All plugin options are chainable:
     \Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()
         ->navigationGroup('System')
         ->navigationSort(2)
-        ->navigationIcon(Heroicon::OutlinedDocumentText)
+        ->navigationIcon('heroicon-o-document-text')
         ->navigationLabel('Log Viewer')
         ->timezone('Europe/Madrid')
         ->authorize(fn (): bool => auth()->user()->can('view-logs')),
@@ -141,7 +141,6 @@ namespace App\Filament\Pages;
 
 use Boquizo\FilamentLogViewer\Pages\ViewLog as BaseViewLog;
 use Filament\Actions\Action;
-use Filament\Support\Icons\Heroicon;
 
 class CustomViewLog extends BaseViewLog
 {
@@ -150,7 +149,7 @@ class CustomViewLog extends BaseViewLog
         return array_merge(parent::getHeaderActions(), [
             Action::make('export')
                 ->label('Export to CSV')
-                ->icon(Heroicon::OutlinedArrowDownTray)
+                ->icon('heroicon-o-arrow-down-tray')
                 ->action(fn () => $this->exportToCsv()),
         ]);
     }
@@ -171,7 +170,7 @@ Then register your custom pages in the plugin:
         ->viewLog(\App\Filament\Pages\CustomViewLog::class)
         ->navigationGroup('System')
         ->navigationSort(2)
-        ->navigationIcon(Heroicon::DocumentText)
+        ->navigationIcon('heroicon-s-document-text')
         ->navigationLabel('System Logs')
         ->timezone('Pacific/Auckland')
         ->authorize(fn (): bool => auth()->user()->hasAnyRole(['admin', 'developer'])),
