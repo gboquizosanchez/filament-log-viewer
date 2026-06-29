@@ -104,7 +104,8 @@ class EntriesTable
             ->when(
                 filled($level = $filters['level']['value'] ?? null),
                 fn (Collection $data): Collection => $data->where(
-                    'level', $level
+                    'level',
+                    $level,
                 ),
             );
 

@@ -35,7 +35,7 @@ class DownloadAction
 
     private static function getTitle(
         Action $action,
-        ViewLog|ListLogs $livewire,
+        ViewLog | ListLogs $livewire,
     ): string {
         $model = $action->getRecord() ?? $livewire->record;
 
@@ -48,7 +48,7 @@ class DownloadAction
 
     private static function getAction(
         Action $action,
-        ViewLog|ListLogs $livewire,
+        ViewLog | ListLogs $livewire,
     ): BinaryFileResponse {
         $model = $action->getRecord() ?? $livewire->record;
 

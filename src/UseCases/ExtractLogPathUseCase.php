@@ -10,12 +10,12 @@ use RuntimeException;
 
 class ExtractLogPathUseCase
 {
-    public static function execute(string $name): false|string
+    public static function execute(string $name): false | string
     {
         return (new self)($name);
     }
 
-    public function __invoke(string $name): false|string
+    public function __invoke(string $name): false | string
     {
         $path = $this->path($name);
 
@@ -34,12 +34,12 @@ class ExtractLogPathUseCase
         $extension = Config::string('filament-log-viewer.pattern.extension', '.log');
         $storagePath = Config::string('filament-log-viewer.storage_path', storage_path('logs'));
 
-        $basePath = $storagePath.DIRECTORY_SEPARATOR;
+        $basePath = $storagePath . DIRECTORY_SEPARATOR;
 
         return match (FilamentLogViewerPlugin::get()->driver()) {
-            'daily' => $basePath.$prefix.$name.$extension,
-            'single' => $basePath.rtrim($prefix, '-').$extension,
-            'raw' => str_starts_with($name, '/') ? $name : $basePath.$name,
+            'daily' => $basePath . $prefix . $name . $extension,
+            'single' => $basePath . rtrim($prefix, '-') . $extension,
+            'raw' => str_starts_with($name, '/') ? $name : $basePath . $name,
         };
     }
 }

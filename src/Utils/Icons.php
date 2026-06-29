@@ -25,8 +25,8 @@ class Icons
 
         return new HtmlString(
             Blade::render(
-                sprintf('
-                    <x-%s class="%s" style="color: %s"/>',
+                sprintf(
+                    '<x-%s class="%s" style="color: %s"/>',
                     $icon,
                     self::size($size),
                     $colors[$name],

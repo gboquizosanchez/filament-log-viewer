@@ -24,7 +24,7 @@ class NameColumn
             ->sortable();
     }
 
-    public static function getLabel(ListLogs|ViewLog $livewire): string|HtmlString
+    public static function getLabel(ListLogs | ViewLog $livewire): string | HtmlString
     {
         $driver = FilamentLogViewerPlugin::get()->driver();
         $timezone = FilamentLogViewerPlugin::get()->getTimezone();
@@ -44,7 +44,7 @@ class NameColumn
         return $date;
     }
 
-    public static function getFormatStateUsing(array|object $record): string
+    public static function getFormatStateUsing(array | object $record): string
     {
         $date = $record->date ?? $record['date'] ?? null;
 

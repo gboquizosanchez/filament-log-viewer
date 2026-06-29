@@ -53,15 +53,15 @@ class Stat
         $index = self::getIndex($level);
 
         $style .= <<<CSS
-.fi-sc-has-gap > div:nth-child({$index}) .fi-wi-stats-overview-stat-label-ctn > .fi-icon {
-    color: #FFFFFF;
-    background-color: {$progressColor};
-    border-radius: 5px;
-    padding: 3px;
-    width: calc(var(--spacing) * 9);
-    height: calc(var(--spacing) * 9);
-}
-CSS;
+            .fi-sc-has-gap > div:nth-child({$index}) .fi-wi-stats-overview-stat-label-ctn > .fi-icon {
+                color: #FFFFFF;
+                background-color: {$progressColor};
+                border-radius: 5px;
+                padding: 3px;
+                width: calc(var(--spacing) * 9);
+                height: calc(var(--spacing) * 9);
+            }
+            CSS;
 
         $style .= '</style>';
 
@@ -71,10 +71,10 @@ CSS;
     private static function getResetProgressBarStyle(): string
     {
         return <<<'CSS'
-.fi-wi-stats-overview-stat-description {
-    display: inherit !important;
-}
-CSS;
+            .fi-wi-stats-overview-stat-description {
+                display: inherit !important;
+            }
+            CSS;
     }
 
     private static function getIndex(string $level): int

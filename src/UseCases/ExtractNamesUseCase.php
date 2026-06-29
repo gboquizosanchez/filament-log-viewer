@@ -65,7 +65,7 @@ class ExtractNamesUseCase
         }
 
         return glob(
-            $storagePath.DIRECTORY_SEPARATOR.$this->pattern(),
+            $storagePath . DIRECTORY_SEPARATOR . $this->pattern(),
             defined('GLOB_BRACE') ? GLOB_BRACE : 0
         );
     }
@@ -75,8 +75,8 @@ class ExtractNamesUseCase
         $patterns = (object) Config::array('filament-log-viewer.pattern');
 
         return match (FilamentLogViewerPlugin::get()->driver()) {
-            'daily' => $patterns->prefix.$patterns->date.$patterns->extension,
-            'single' => rtrim($patterns->prefix, '-').$patterns->extension,
+            'daily' => $patterns->prefix . $patterns->date . $patterns->extension,
+            'single' => rtrim($patterns->prefix, '-') . $patterns->extension,
             'raw' => "*{$patterns->extension}",
         };
     }

@@ -45,7 +45,7 @@ class ClearLogAction
 
     private static function getTitle(
         Action $action,
-        ViewLog|ListLogs $livewire,
+        ViewLog | ListLogs $livewire,
     ): string {
         $model = $action->getRecord() ?? $livewire->record;
 
@@ -58,7 +58,7 @@ class ClearLogAction
 
     private static function getAction(
         Action $action,
-        ViewLog|ListLogs $livewire,
+        ViewLog | ListLogs $livewire,
     ): void {
         try {
             $model = $action->getRecord() ?? $livewire->record;

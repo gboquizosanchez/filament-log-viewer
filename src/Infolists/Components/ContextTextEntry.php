@@ -24,12 +24,12 @@ class ContextTextEntry
             ->formatStateUsing(self::getStateUsing(...));
     }
 
-    private static function getHidden(array|object $record): bool
+    private static function getHidden(array | object $record): bool
     {
         return empty($record->context ?? $record['context']);
     }
 
-    private static function getStateUsing(array|object $record): string
+    private static function getStateUsing(array | object $record): string
     {
         return sprintf(
             '<pre>%s</pre>',

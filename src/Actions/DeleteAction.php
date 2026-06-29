@@ -46,7 +46,7 @@ class DeleteAction
 
     private static function getTitle(
         FilamentDeleteAction $action,
-        ViewLog|ListLogs $livewire,
+        ViewLog | ListLogs $livewire,
     ): string {
         $model = $action->getRecord() ?? $livewire->record;
 
@@ -59,7 +59,7 @@ class DeleteAction
 
     private static function getAction(
         FilamentDeleteAction $action,
-        ViewLog|ListLogs $livewire,
+        ViewLog | ListLogs $livewire,
     ): void {
         try {
             $model = $action->getRecord() ?? $livewire->record;

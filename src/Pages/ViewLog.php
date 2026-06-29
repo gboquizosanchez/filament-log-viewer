@@ -34,11 +34,11 @@ class ViewLog extends Page implements HasTable
     use InteractsWithTable;
 
     #[Locked]
-    public array|object|string|null $record;
+    public array | object | string | null $record;
 
     protected string $view = 'filament-log-viewer::view-log';
 
-    protected static string|null|BackedEnum $navigationIcon = Heroicon::OutlinedDocumentText;
+    protected static string | null | BackedEnum $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected static bool $shouldRegisterNavigation = false;
 
@@ -103,41 +103,49 @@ class ViewLog extends Page implements HasTable
         return [
             'all' => TabLevel::make(Level::ALL),
             'emergency' => TabLevel::make(Level::Emergency)
-                ->when($this->record->emergency === 0,
+                ->when(
+                    $this->record->emergency === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'alert' => TabLevel::make(Level::Alert)
-                ->when($this->record->alert === 0,
+                ->when(
+                    $this->record->alert === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'critical' => TabLevel::make(Level::Critical)
-                ->when($this->record->critical === 0,
+                ->when(
+                    $this->record->critical === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'error' => TabLevel::make(Level::Error)
-                ->when($this->record->error === 0,
+                ->when(
+                    $this->record->error === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'warning' => TabLevel::make(Level::Warning)
-                ->when($this->record->warning === 0,
+                ->when(
+                    $this->record->warning === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'notice' => TabLevel::make(Level::Notice)
-                ->when($this->record->notice === 0,
+                ->when(
+                    $this->record->notice === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'info' => TabLevel::make(Level::Info)
-                ->when($this->record->info === 0,
+                ->when(
+                    $this->record->info === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'debug' => TabLevel::make(Level::Debug)
-                ->when($this->record->debug === 0,
+                ->when(
+                    $this->record->debug === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
         ];
     }
 
-    public function getDefaultActiveTab(): string|int|null
+    public function getDefaultActiveTab(): string | int | null
     {
         return Level::ALL;
     }

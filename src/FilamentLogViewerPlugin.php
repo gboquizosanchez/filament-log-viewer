@@ -29,19 +29,19 @@ class FilamentLogViewerPlugin implements Plugin
 {
     use EvaluatesClosures;
 
-    protected bool|Closure $authorizeUsing = true;
+    protected bool | Closure $authorizeUsing = true;
 
     protected string $viewLog = ViewLog::class;
 
     protected string $listLogs = ListLogs::class;
 
-    protected string|Closure|UnitEnum|null $navigationGroup = null;
+    protected string | Closure | UnitEnum | null $navigationGroup = null;
 
-    protected int|Closure $navigationSort = 1;
+    protected int | Closure $navigationSort = 1;
 
-    protected string|Closure|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
+    protected string | Closure | BackedEnum | null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected string|Closure|null $navigationLabel = null;
+    protected string | Closure | null $navigationLabel = null;
 
     protected ?string $timezone = null;
 
@@ -55,7 +55,7 @@ class FilamentLogViewerPlugin implements Plugin
         return app(static::class);
     }
 
-    public static function get(): Plugin|FilamentManager|static
+    public static function get(): Plugin | FilamentManager | static
     {
         return filament(app(static::class)->getId());
     }
@@ -84,7 +84,7 @@ class FilamentLogViewerPlugin implements Plugin
         };
     }
 
-    public function authorize(bool|Closure $callback = true): static
+    public function authorize(bool | Closure $callback = true): static
     {
         $this->authorizeUsing = $callback;
 
@@ -127,7 +127,7 @@ class FilamentLogViewerPlugin implements Plugin
         return $this->evaluate($this->viewLog);
     }
 
-    public function navigationGroup(string|Closure|UnitEnum|null $navigationGroup): static
+    public function navigationGroup(string | Closure | UnitEnum | null $navigationGroup): static
     {
         $this->navigationGroup = $navigationGroup;
 
@@ -153,7 +153,7 @@ class FilamentLogViewerPlugin implements Plugin
         return __('filament-log-viewer::log.navigation.group');
     }
 
-    public function navigationSort(int|Closure $navigationSort): static
+    public function navigationSort(int | Closure $navigationSort): static
     {
         $this->navigationSort = $navigationSort;
 
@@ -165,19 +165,19 @@ class FilamentLogViewerPlugin implements Plugin
         return $this->evaluate($this->navigationSort);
     }
 
-    public function navigationIcon(string|Closure|BackedEnum $navigationIcon): static
+    public function navigationIcon(string | Closure | BackedEnum $navigationIcon): static
     {
         $this->navigationIcon = $navigationIcon;
 
         return $this;
     }
 
-    public function getNavigationIcon(): string|BackedEnum|null
+    public function getNavigationIcon(): string | BackedEnum | null
     {
         return $this->evaluate($this->navigationIcon);
     }
 
-    public function navigationLabel(string|Closure|null $navigationLabel): static
+    public function navigationLabel(string | Closure | null $navigationLabel): static
     {
         $this->navigationLabel = $navigationLabel;
 

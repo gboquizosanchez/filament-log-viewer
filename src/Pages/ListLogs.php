@@ -36,7 +36,7 @@ class ListLogs extends Page implements HasTable
         return FilamentLogViewerPlugin::get()->getNavigationSort();
     }
 
-    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
     {
         return FilamentLogViewerPlugin::get()->getNavigationIcon();
     }

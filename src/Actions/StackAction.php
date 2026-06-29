@@ -28,7 +28,7 @@ class StackAction
             ->modalSubmitAction(false);
     }
 
-    private static function getHidden(array|object $record): bool
+    private static function getHidden(array | object $record): bool
     {
         return empty($record->stack ?? $record['stack']);
     }

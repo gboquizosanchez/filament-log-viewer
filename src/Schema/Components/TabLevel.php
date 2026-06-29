@@ -12,7 +12,7 @@ use Filament\Support\Enums\IconSize;
 
 class TabLevel
 {
-    public static function make(Level|string $level): Tab
+    public static function make(Level | string $level): Tab
     {
         $value = is_string($level) ? $level : $level->value;
 

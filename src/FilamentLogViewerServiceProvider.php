@@ -26,7 +26,7 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('gboquizosanchez/filament-log-viewer');
             });
 
-        if (file_exists($package->basePath('/../config/'.static::$name.'.php'))) {
+        if (file_exists($package->basePath('/../config/' . static::$name . '.php'))) {
             $package->hasConfigFile(static::$name);
         }
 
