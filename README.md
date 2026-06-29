@@ -10,7 +10,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/gboquizosanchez/filament-log-viewer.svg)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 [![PHP](https://img.shields.io/badge/PHP-%5E8.2-777BB4?logo=php&logoColor=white)](https://packagist.org/packages/gboquizosanchez/filament-log-viewer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22C55E.svg)](LICENSE.md)
-[![Tests](https://img.shields.io/badge/Tests-Pest%20v3-9C27B0)](https://pestphp.com/)
+[![Tests](https://img.shields.io/badge/Tests-Pest%20v4-9C27B0)](https://pestphp.com/)
 
 ---
 
@@ -26,7 +26,7 @@ This plugin integrates a full-featured log viewer into any Filament panel. Brows
 
 Based on [ARCANEDEV LogViewer](https://github.com/ARCANEDEV/LogViewer).
 
-![Panel](https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg)
+<img src="https://raw.githubusercontent.com/gboquizosanchez/filament-log-viewer/refs/heads/main/arts/panel.jpg" alt="Panel" class="filament-hidden">
 
 ---
 
@@ -212,7 +212,9 @@ Then register your custom pages in the plugin:
 ## 🧪 Testing
 
 ```bash
-composer test
+composer fix        # fix code style
+composer static     # PHPStan analysis
+composer coverage   # run tests with coverage
 ```
 
 ---

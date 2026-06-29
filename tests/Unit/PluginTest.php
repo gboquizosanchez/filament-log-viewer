@@ -9,6 +9,8 @@ use Boquizo\FilamentLogViewer\Utils\Stats;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Filament\PanelRegistry;
+use Boquizo\FilamentLogViewer\Tests\Unit\FakeGroup;
+use Boquizo\FilamentLogViewer\Tests\Unit\FakeGroupLabelled;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 beforeEach(function () {
@@ -24,22 +26,6 @@ beforeEach(function () {
     Filament::setCurrentPanel(Filament::getPanel('test'));
 });
 
-// Pure UnitEnum — no backing type, no getLabel() → uses ->name
-enum FakeGroup
-{
-    case Admin;
-}
-
-// UnitEnum with getLabel() → uses getLabel()
-enum FakeGroupLabelled: string
-{
-    case Admin = 'admin';
-
-    public function getLabel(): string
-    {
-        return 'Admin Label';
-    }
-}
 
 it('getId() returns plugin identifier', function () {
     expect(FilamentLogViewerPlugin::make()->getId())->toBe('filament-log-viewer');

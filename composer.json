@@ -28,20 +28,21 @@
   },
   "require": {
     "ext-zip": "*",
-    "php": "^8.2|^8.3|^8.4",
+    "php": "^8.2|^8.3|^8.4|^8.5",
     "symfony/polyfill-php83": "^1.33"
   },
   "require-dev": {
-    "filament/filament": "^4.0",
-    "larastan/larastan": "^2.9",
+    "filament/filament": "^4.0|^5.0",
+    "larastan/larastan": "^3.0",
     "laravel/pint": "^1.29",
-    "orchestra/testbench": "^9.1",
-    "pestphp/pest": "^3.5",
-    "pestphp/pest-plugin-livewire": "^3.0"
+    "orchestra/testbench": "^10.0",
+    "pestphp/pest": "^4.0",
+    "pestphp/pest-plugin-livewire": "^4.0"
   },
   "scripts": {
-    "fix": "./vendor/bin/php-cs-fixer fix",
+    "fix": "./vendor/bin/pint .",
     "static": "./vendor/bin/phpstan analyse",
+    "coverage": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage",
     "all": [
       "@fix",
       "@static"
