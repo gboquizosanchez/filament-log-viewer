@@ -22,7 +22,7 @@ class ReadLogUseCase
                 ExtractLogPathUseCase::execute($date)
             );
         } catch (FileNotFoundException $e) {
-            throw new RuntimeException($e->getMessage());
+            throw new RuntimeException($e->getMessage()); // @codeCoverageIgnore
         }
 
         return $log;

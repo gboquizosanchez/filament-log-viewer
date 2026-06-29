@@ -1,0 +1,17 @@
+[2024-01-15 10:30:45] production.EMERGENCY: Emergency message [] []
+
+[2024-01-15 10:30:46] production.ALERT: Alert message [] []
+
+[2024-01-15 10:30:47] production.CRITICAL: Critical message [] []
+
+[2024-01-15 10:30:48] production.ERROR: Error with context {"key":"value","num":42} []
+#0 /var/www/app/Exceptions/Handler.php(50): App\Http\Controllers\HomeController->index()
+#1 /var/www/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(168): run()
+
+[2024-01-15 10:30:49] production.WARNING: Warning message [] []
+
+[2024-01-15 10:30:50] production.NOTICE: Notice message [] []
+
+[2024-01-15 10:30:51] production.INFO: Info message [] []
+
+[2024-01-15 10:30:52] production.DEBUG: Debug message [] []

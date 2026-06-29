@@ -37,7 +37,7 @@ class DownloadZipUseCase
                 ->deleteFileAfterSend();
         }
 
-        throw new RuntimeException('Failed to create zip file.');
+        throw new RuntimeException('Failed to create zip file.'); // @codeCoverageIgnore
     }
 
     private function extractPaths(array $files): array

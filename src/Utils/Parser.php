@@ -23,7 +23,7 @@ class Parser
         [$headings, $data] = static::parseRawData($raw);
 
         if (! is_array($headings)) {
-            return static::$parsed;
+            return static::$parsed; // @codeCoverageIgnore — preg_match_all always sets $headings to array
         }
 
         foreach ($headings as $heading) {

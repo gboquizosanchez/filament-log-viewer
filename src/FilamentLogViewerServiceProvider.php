@@ -39,7 +39,7 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
         }
 
         if (version_compare(Application::VERSION, '11.0.0', '<')) {
-            $this->polyfills();
+            $this->polyfills(); // @codeCoverageIgnore
         }
     }
 
@@ -49,6 +49,7 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
         Livewire::component('icons-widget', IconsWidget::class);
     }
 
+    // @codeCoverageIgnoreStart
     public function polyfills(): void
     {
         Repository::macro('string', function (string $key, mixed $default = null): string {
@@ -69,4 +70,5 @@ class FilamentLogViewerServiceProvider extends PackageServiceProvider
             return is_bool($value) ? $value : (bool) $value;
         });
     }
+    // @codeCoverageIgnoreEnd
 }

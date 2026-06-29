@@ -1,0 +1,2 @@
+[2024-01-01 10:00:00] production.ERROR: Only errors here {"key":"value"} []
+#0 /var/www/app/Handler.php(50): run()
