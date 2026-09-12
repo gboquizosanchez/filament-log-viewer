@@ -87,6 +87,12 @@ class ViewLog extends Page implements HasTable
         abort_if((array) $this->record === [], 404);
 
         $this->loadDefaultActiveTab();
+
+        $this->tableFilters ??= [
+            'level' => [
+                'value' => null,
+            ],
+        ];
     }
 
     /** @return array<string, Tab> */

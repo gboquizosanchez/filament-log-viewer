@@ -52,7 +52,8 @@ class EntriesTable
             ->filters([
                 SelectFilter::make('level')
                     ->label(__('filament-log-viewer::log.table.columns.level.label'))
-                    ->options(Level::options(withoutAll: true)),
+                    ->options(Level::options(withoutAll: true))
+                    ->hidden(),
             ]);
     }
 
@@ -69,7 +70,7 @@ class EntriesTable
 
     private static function getRecords(
         ViewLog $livewire,
-        array $filters,
+        ?array $filters,
         ?string $sortColumn,
         ?string $sortDirection,
         ?string $search,
