@@ -98,6 +98,12 @@ class EntriesTable
                     ) || Str::contains(
                         Str::lower($record['header'] ?? ''),
                         Str::lower($search),
+                    ) || Str::contains(
+                        Str::lower($record['stack'] ?? ''),
+                        Str::lower($search),
+                    ) || Str::contains(
+                        Str::lower($record['context'] ?? ''),
+                        Str::lower($search),
                     ),
                 ),
             )
