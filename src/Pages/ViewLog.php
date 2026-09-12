@@ -26,6 +26,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Livewire\Attributes\Locked;
+use LogicException;
 use Override;
 
 class ViewLog extends Page implements HasTable
@@ -33,8 +34,9 @@ class ViewLog extends Page implements HasTable
     use HasTabs;
     use InteractsWithTable;
 
+    /** @var LogRow */
     #[Locked]
-    public array | object | string | null $record;
+    public array | string $record;
 
     protected string $view = 'filament-log-viewer::view-log';
 
@@ -81,10 +83,12 @@ class ViewLog extends Page implements HasTable
 
     public function mount(string $record): void
     {
-        $this->record = (object) FilamentLogViewerPlugin::get()
+        $logRow = FilamentLogViewerPlugin::get()
             ->getLogsTableFiltered($record);
 
-        abort_if((array) $this->record === [], 404);
+        abort_if($logRow === [], 404);
+
+        $this->record = $logRow;
 
         $this->loadDefaultActiveTab();
 
@@ -95,14 +99,25 @@ class ViewLog extends Page implements HasTable
         ];
     }
 
+    /** @return LogRow */
+    public function getLogRow(): array
+    {
+        if (is_string($this->record)) {
+            throw new LogicException('The log row is not mounted yet.');
+        }
+
+        return $this->record;
+    }
+
     /** @return array<string, Tab> */
     public function getTabs(): array
     {
         // If there is only a level, and it's equal to 'all',
         // then we don't need to show the tabs. We just show the log.
-        $exceptAll = Arr::except((array) $this->record, [Level::ALL]);
+        $record = $this->getLogRow();
+        $exceptAll = Arr::except($record, [Level::ALL]);
 
-        if (in_array($this->record->all, $exceptAll, true)) {
+        if (in_array($record['all'], $exceptAll, true)) {
             return [];
         }
 
@@ -110,42 +125,42 @@ class ViewLog extends Page implements HasTable
             'all' => TabLevel::make(Level::ALL),
             'emergency' => TabLevel::make(Level::Emergency)
                 ->when(
-                    $this->record->emergency === 0,
+                    $record['emergency'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'alert' => TabLevel::make(Level::Alert)
                 ->when(
-                    $this->record->alert === 0,
+                    $record['alert'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'critical' => TabLevel::make(Level::Critical)
                 ->when(
-                    $this->record->critical === 0,
+                    $record['critical'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'error' => TabLevel::make(Level::Error)
                 ->when(
-                    $this->record->error === 0,
+                    $record['error'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'warning' => TabLevel::make(Level::Warning)
                 ->when(
-                    $this->record->warning === 0,
+                    $record['warning'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'notice' => TabLevel::make(Level::Notice)
                 ->when(
-                    $this->record->notice === 0,
+                    $record['notice'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'info' => TabLevel::make(Level::Info)
                 ->when(
-                    $this->record->info === 0,
+                    $record['info'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
             'debug' => TabLevel::make(Level::Debug)
                 ->when(
-                    $this->record->debug === 0,
+                    $record['debug'] === 0,
                     fn (Tab $tab) => $tab->hidden()
                 ),
         ];
@@ -158,7 +173,7 @@ class ViewLog extends Page implements HasTable
 
     public function getTitle(): string
     {
-        $date = $this->record->date ?? null;
+        $date = $this->getLogRow()['date'];
 
         return __('filament-log-viewer::log.show.title', [
             'log' => ParseDateUseCase::execute($date),

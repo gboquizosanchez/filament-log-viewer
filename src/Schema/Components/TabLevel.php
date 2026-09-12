@@ -18,7 +18,7 @@ class TabLevel
 
         return Tab::make()
             ->label(__("filament-log-viewer::log.levels.{$value}"))
-            ->badge(fn (ViewLog $livewire): int => $livewire->record->$value)
+            ->badge(fn (ViewLog $livewire) => $livewire->getLogRow()[$value])
             ->icon(Icons::get($value, IconSize::Small))
             ->extraAttributes([
                 'wire:click' => self::buildWireClickActions($value),

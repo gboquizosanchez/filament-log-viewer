@@ -10,12 +10,15 @@ use ZipArchive;
 
 class DownloadZipUseCase
 {
+    /** @param list<string> $files */
     public static function execute(array $files): BinaryFileResponse
     {
         return (new self)($files);
     }
 
     /**
+     * @param  list<string>  $files
+     *
      * @throws RuntimeException
      */
     public function __invoke(array $files): BinaryFileResponse
@@ -40,12 +43,16 @@ class DownloadZipUseCase
         throw new RuntimeException('Failed to create zip file.'); // @codeCoverageIgnore
     }
 
+    /**
+     * @param  list<string>  $files
+     * @return list<string>
+     */
     private function extractPaths(array $files): array
     {
-        return collect($files)
+        return array_values(collect($files)
             ->map(
                 static fn (string $log): string => ExtractLogPathUseCase::execute($log),
             )
-            ->all();
+            ->all());
     }
 }

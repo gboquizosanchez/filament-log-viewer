@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
+use Boquizo\FilamentLogViewer\Actions\Concerns\ResolvesLogRecord;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Config;
 
 class ClearLogAction
 {
+    use ResolvesLogRecord;
+
     public static function make(bool $withTooltip = false): Action
     {
         $driver = FilamentLogViewerPlugin::get()->driver();
@@ -47,9 +50,7 @@ class ClearLogAction
         Action $action,
         ViewLog | ListLogs $livewire,
     ): string {
-        $model = $action->getRecord() ?? $livewire->record;
-
-        $date = $model?->date ?? $model['date'];
+        $date = self::resolveLogDate($action, $livewire);
 
         return __('filament-log-viewer::log.table.actions.clear.label', [
             'log' => ParseDateUseCase::execute($date),
@@ -61,9 +62,7 @@ class ClearLogAction
         ViewLog | ListLogs $livewire,
     ): void {
         try {
-            $model = $action->getRecord() ?? $livewire->record;
-
-            $date = $model?->date ?? $model['date'];
+            $date = self::resolveLogDate($action, $livewire);
 
             FilamentLogViewerPlugin::get()->clearLog($date);
         } catch (Exception) {

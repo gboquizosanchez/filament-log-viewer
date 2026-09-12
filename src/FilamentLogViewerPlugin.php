@@ -17,22 +17,28 @@ use Boquizo\FilamentLogViewer\Utils\Stats;
 use Closure;
 use DateTimeZone;
 use Filament\Contracts\Plugin;
-use Filament\FilamentManager;
+use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Config;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use TypeError;
 use UnitEnum;
 
 class FilamentLogViewerPlugin implements Plugin
 {
     use EvaluatesClosures;
 
+    public const ID = 'filament-log-viewer';
+
     protected bool | Closure $authorizeUsing = true;
 
+    /** @var class-string<Page> */
     protected string $viewLog = ViewLog::class;
 
+    /** @var class-string<Page> */
     protected string $listLogs = ListLogs::class;
 
     protected string | Closure | UnitEnum | null $navigationGroup = null;
@@ -47,17 +53,31 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'filament-log-viewer';
+        return self::ID;
     }
 
     public static function make(): static
     {
-        return app(static::class);
+        $plugin = app(static::class);
+
+        if (! $plugin instanceof static) {
+            throw new RuntimeException('Unable to resolve the filament-log-viewer plugin.');
+        }
+
+        return $plugin;
     }
 
-    public static function get(): Plugin | FilamentManager | static
+    public static function get(): static
     {
-        return filament(app(static::class)->getId());
+        $plugin = filament(self::ID);
+
+        if (! $plugin instanceof static) {
+            throw new RuntimeException(
+                'The filament-log-viewer plugin is not registered on the current panel.',
+            );
+        }
+
+        return $plugin;
     }
 
     public function register(Panel $panel): void
@@ -74,6 +94,7 @@ class FilamentLogViewerPlugin implements Plugin
         //
     }
 
+    /** @return 'raw'|'single'|'daily' */
     public function driver(): string
     {
         $driver = Config::string('filament-log-viewer.driver');
@@ -96,6 +117,7 @@ class FilamentLogViewerPlugin implements Plugin
         return $this->evaluate($this->authorizeUsing) === true;
     }
 
+    /** @param class-string<Page> $listLogs */
     public function listLogs(string $listLogs): static
     {
         $this->listLogs = $listLogs;
@@ -108,6 +130,7 @@ class FilamentLogViewerPlugin implements Plugin
         return $this->evaluate($this->listLogs);
     }
 
+    /** @param class-string<Page> $viewLog */
     public function viewLog(string $viewLog): static
     {
         $this->viewLog = $viewLog;
@@ -140,7 +163,7 @@ class FilamentLogViewerPlugin implements Plugin
 
         if ($group instanceof UnitEnum) {
             if (method_exists($group, 'getLabel')) {
-                return $group->getLabel();
+                return $this->requireString($group->getLabel(), 'navigation group label');
             }
 
             return $group->name;
@@ -150,7 +173,10 @@ class FilamentLogViewerPlugin implements Plugin
             return $group;
         }
 
-        return __('filament-log-viewer::log.navigation.group');
+        return $this->requireString(
+            __('filament-log-viewer::log.navigation.group'),
+            'translated navigation group',
+        );
     }
 
     public function navigationSort(int | Closure $navigationSort): static
@@ -162,7 +188,13 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getNavigationSort(): int
     {
-        return $this->evaluate($this->navigationSort);
+        $sort = $this->evaluate($this->navigationSort);
+
+        if (! is_int($sort)) {
+            throw new TypeError('The evaluated navigation sort must be an integer.');
+        }
+
+        return $sort;
     }
 
     public function navigationIcon(string | Closure | BackedEnum $navigationIcon): static
@@ -174,7 +206,15 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getNavigationIcon(): string | BackedEnum | null
     {
-        return $this->evaluate($this->navigationIcon);
+        $icon = $this->evaluate($this->navigationIcon);
+
+        if (! is_string($icon) && ! $icon instanceof BackedEnum && $icon !== null) {
+            throw new TypeError(
+                'The evaluated navigation icon must be a string, backed enum, or null.',
+            );
+        }
+
+        return $icon;
     }
 
     public function navigationLabel(string | Closure | null $navigationLabel): static
@@ -186,8 +226,10 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getNavigationLabel(): string
     {
-        return $this->evaluate($this->navigationLabel)
+        $label = $this->evaluate($this->navigationLabel)
             ?? __('filament-log-viewer::log.navigation.label');
+
+        return $this->requireString($label, 'navigation label');
     }
 
     public function getViewerStats(): Stats
@@ -195,21 +237,23 @@ class FilamentLogViewerPlugin implements Plugin
         return Stats::make((new LogCollection)->stats());
     }
 
+    /** @return LogRow|array{} */
     public function getLogsTableFiltered(string $date): array
     {
         return collect($this->getLogsTableRecords())
-            ->filter(fn (array $row): bool => $row['date'] === $date)
+            ->filter(static fn (array $row): bool => $row['date'] === $date)
             ->values()
             ->first() ?? [];
     }
 
+    /** @return list<LogRow> */
     public function getLogsTableRecords(): array
     {
         $rows = $this
             ->getViewerStats()
             ->rows;
 
-        return array_values($rows) ?? [];
+        return array_values($rows);
     }
 
     public function getLogViewerRecord(string $date): Log
@@ -230,7 +274,16 @@ class FilamentLogViewerPlugin implements Plugin
 
     public function getTimezone(): string
     {
-        return $this->timezone ?? Config::get('app.timezone');
+        return $this->timezone ?? Config::string('app.timezone');
+    }
+
+    private function requireString(mixed $value, string $name): string
+    {
+        if (! is_string($value)) {
+            throw new TypeError("The {$name} must be a string.");
+        }
+
+        return $value;
     }
 
     /**
@@ -246,6 +299,7 @@ class FilamentLogViewerPlugin implements Plugin
         return DownloadLogUseCase::execute($date);
     }
 
+    /** @param list<string> $files */
     public function downloadLogs(array $files): BinaryFileResponse
     {
         return DownloadZipUseCase::execute($files);

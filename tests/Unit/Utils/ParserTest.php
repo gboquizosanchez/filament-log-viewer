@@ -57,3 +57,15 @@ it('parse is idempotent — calling twice returns same result', function () use 
     $b = Parser::parse($fixture());
     expect($a)->toBe($b);
 });
+
+it('only discards an empty leading split segment', function () {
+    $method = new ReflectionMethod(Parser::class, 'parseRawData');
+    $method->setAccessible(true);
+
+    [, $segments] = $method->invoke(
+        null,
+        '0[2024-01-15 10:30:45] production.ERROR: Message',
+    );
+
+    expect($segments[0])->toBe('0');
+});

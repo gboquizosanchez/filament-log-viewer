@@ -13,6 +13,7 @@ class DownloadLogUseCase
         return (new self)($file);
     }
 
+    /** @param array<string, string> $headers */
     public function __invoke(
         string $file,
         ?string $filename = null,

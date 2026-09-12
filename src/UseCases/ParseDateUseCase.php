@@ -14,7 +14,7 @@ class ParseDateUseCase
         try {
             return Carbon::parse($date)->isoFormat('LL');
         } catch (InvalidFormatException) {
-            return $date;
+            return $date ?? '';
         }
     }
 }

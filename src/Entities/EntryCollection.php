@@ -9,11 +9,16 @@ use Boquizo\FilamentLogViewer\Utils\Parser;
 use Generator;
 use Illuminate\Support\LazyCollection;
 
+/**
+ * @phpstan-consistent-constructor
+ *
+ * @extends LazyCollection<int, Entry>
+ */
 class EntryCollection extends LazyCollection
 {
     public static function load(string $raw): static
     {
-        return new static(function () use ($raw): Generator {
+        return new static(static function () use ($raw): Generator {
             foreach (Parser::parse($raw) as $entry) {
                 [$level, $header, $stack] = array_values($entry);
 
@@ -29,12 +34,13 @@ class EntryCollection extends LazyCollection
         );
     }
 
+    /** @return LevelCounters */
     public function stats(): array
     {
         $counters = $this->initStats();
 
-        foreach ($this->groupBy('level') as $level => $entries) {
-            $countEntries = count($entries);
+        foreach (collect($this->all())->groupBy('level') as $level => $entries) {
+            $countEntries = $entries->count();
             $countAll = $countEntries;
             $counters[$level] = $countEntries;
             $counters[Level::ALL] += $countAll;
@@ -43,10 +49,19 @@ class EntryCollection extends LazyCollection
         return $counters;
     }
 
+    /** @return LevelCounters */
     private function initStats(): array
     {
-        $levels = array_keys(Level::options());
-
-        return array_map(static fn (): int => 0, array_flip($levels));
+        return [
+            Level::ALL => 0,
+            Level::Emergency->value => 0,
+            Level::Alert->value => 0,
+            Level::Critical->value => 0,
+            Level::Error->value => 0,
+            Level::Warning->value => 0,
+            Level::Notice->value => 0,
+            Level::Info->value => 0,
+            Level::Debug->value => 0,
+        ];
     }
 }

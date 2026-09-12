@@ -44,17 +44,16 @@ class NameColumn
         return $date;
     }
 
-    public static function getFormatStateUsing(array | object $record): string
+    /** @param LogRow|EntryRow $record */
+    public static function getFormatStateUsing(array $record): string
     {
-        $date = $record->date ?? $record['date'] ?? null;
-
-        if ($date !== null) {
-            return $date;
+        if (array_key_exists('date', $record)) {
+            return $record['date'];
         }
 
         $timezone = FilamentLogViewerPlugin::get()->getTimezone();
 
-        return Carbon::parse($record->datetime ?? $record['datetime'])
+        return Carbon::parse($record['datetime'])
             ->timezone($timezone)
             ->format('Y-m-d H:i:s');
     }

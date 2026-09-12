@@ -7,7 +7,6 @@ namespace Boquizo\FilamentLogViewer\Widgets;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Widgets\StatsOverviewWidget;
-use Illuminate\Support\Arr;
 
 class IconsWidget extends StatsOverviewWidget
 {
@@ -22,7 +21,19 @@ class IconsWidget extends StatsOverviewWidget
         return $stats;
     }
 
-    /** @return array{name: string, count: int, percent: float}[] */
+    /**
+     * @return array<string, array{
+     *     name: string,
+     *     count: int,
+     *     percent: float|int,
+     *     totals: array<string, array{
+     *         label: string,
+     *         value: int,
+     *         color: string,
+     *         highlight: string,
+     *     }>,
+     * }>
+     */
     protected function percentages(): array
     {
         $statsTable = FilamentLogViewerPlugin::get()
@@ -31,7 +42,7 @@ class IconsWidget extends StatsOverviewWidget
         $levels = $statsTable->footer;
         $names = $this->names();
         $percents = [];
-        $all = Arr::get($levels, Level::ALL);
+        $all = $levels[Level::ALL] ?? 0;
 
         foreach ($levels as $level => $count) {
             $percents[$level] = [
@@ -45,10 +56,11 @@ class IconsWidget extends StatsOverviewWidget
         return $percents;
     }
 
+    /** @return array<string, string> */
     private function names(): array
     {
-        return array_merge_recursive([
+        return [
             'date' => __('filament-log-viewer::log.table.columns.date.label'),
-        ], Level::options());
+        ] + Level::options();
     }
 }

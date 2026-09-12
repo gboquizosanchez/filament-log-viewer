@@ -34,7 +34,7 @@ class LogsTable
                 self::getResolveSelectedRecordsUsing(...),
             )
             ->paginationPageOptions(
-                Config::array('filament-log-viewer.per-page'),
+                self::paginationPageOptions(),
             )
             ->columns([
                 NameColumn::make('date'),
@@ -63,6 +63,7 @@ class LogsTable
             ]);
     }
 
+    /** @return LengthAwarePaginator<int, LogRow> */
     private static function getRecords(
         ?string $sortColumn,
         ?string $sortDirection,
@@ -76,7 +77,7 @@ class LogsTable
             ->when(
                 filled($sortColumn),
                 fn (Collection $collection) => $collection->sortBy(
-                    $sortColumn,
+                    $sortColumn ?? 'date',
                     SORT_REGULAR,
                     $sortDirection === 'desc',
                 ),
@@ -86,7 +87,7 @@ class LogsTable
                 fn (Collection $collection) => $collection->filter(
                     fn (array $record) => Str::contains(
                         Str::lower($record['date']),
-                        Str::lower($search),
+                        Str::lower($search ?? ''),
                     ),
                 ),
             );
@@ -105,6 +106,11 @@ class LogsTable
         );
     }
 
+    /**
+     * @param  array<int>  $keys
+     * @param  array<int>  $deselectedKeys
+     * @return Collection<int, LogRow>
+     */
     private static function getResolveSelectedRecordsUsing(
         array $keys,
         bool $isTrackingDeselectedKeys,
@@ -119,6 +125,7 @@ class LogsTable
         return $records->only($keys)->values();
     }
 
+    /** @param Collection<int, LogRow> $data */
     private static function isEmpty(Collection $data): bool
     {
         $firstRecord = collect($data->first());
@@ -133,5 +140,14 @@ class LogsTable
         }
 
         return ViewLogAction::make();
+    }
+
+    /** @return list<int|string> */
+    private static function paginationPageOptions(): array
+    {
+        return array_values(array_filter(
+            Config::array('filament-log-viewer.per-page'),
+            static fn (mixed $option): bool => is_int($option) || is_string($option),
+        ));
     }
 }

@@ -6,6 +6,8 @@ namespace Boquizo\FilamentLogViewer\Entities;
 
 use Boquizo\FilamentLogViewer\Utils\Parser;
 use Carbon\Carbon;
+use RuntimeException;
+use TypeError;
 
 class Entry extends Entity
 {
@@ -15,6 +17,7 @@ class Entry extends Entity
 
     public string $header;
 
+    /** @var array<array-key, mixed> */
     public array $context = [];
 
     public function __construct(
@@ -37,11 +40,11 @@ class Entry extends Entity
         // Remove the date
         $pattern = Parser::DATETIME_PATTERN;
 
-        $header = preg_replace("/\\[{$pattern}][ ]/", '', $header);
+        $header = preg_replace("/\\[{$pattern}] /", '', $header) ?? $header;
 
         // Extract environment
         if (preg_match('/^[a-z]+.[A-Z]+:/', $header, $out)) {
-            $this->env = head(explode('.', $out[0]));
+            $this->env = explode('.', $out[0])[0];
 
             $header = trim(str_replace($out[0], '', $header));
         }
@@ -51,7 +54,7 @@ class Entry extends Entity
         if (isset($out[0][0])) {
             $context = json_decode($out[0][0], true);
 
-            if ($context !== null) {
+            if (is_array($context)) {
                 $header = str_replace($out[0][0], '', $header);
                 $this->context = $context;
             }
@@ -64,26 +67,39 @@ class Entry extends Entity
     {
         $pattern = Parser::DATETIME_PATTERN;
 
-        $datetime = preg_replace("/^\[({$pattern})].*/", '$1', $header);
+        $datetime = preg_replace("/^\[({$pattern})].*/", '$1', $header) ?? $header;
 
-        $this->datetime = Carbon::createFromFormat('Y-m-d H:i:s', $datetime);
+        $parsed = Carbon::createFromFormat('Y-m-d H:i:s', $datetime);
+
+        if (! $parsed instanceof Carbon) {
+            throw new RuntimeException(
+                "Unable to parse log datetime: {$datetime}",
+            );
+        }
+
+        $this->datetime = $parsed;
     }
 
     public function stack(): string
     {
+        if ($this->stack === null) {
+            throw new TypeError('Entry stack cannot be null.');
+        }
+
         return trim(htmlentities($this->stack));
     }
 
     public function context(int $options = JSON_PRETTY_PRINT): string
     {
-        return json_encode($this->context, $options);
+        return json_encode($this->context, $options | JSON_THROW_ON_ERROR);
     }
 
-    public function isSame(string $level)
+    public function isSame(string $level): bool
     {
         return $this->level === $level;
     }
 
+    /** @return EntryRow */
     public function toArray(): array
     {
         return [
@@ -98,9 +114,10 @@ class Entry extends Entity
 
     public function toJson($options = 0)
     {
-        return json_encode($this->toArray(), $options);
+        return json_encode($this->toArray(), $options | JSON_THROW_ON_ERROR);
     }
 
+    /** @return EntryRow */
     public function jsonSerialize(): array
     {
         return $this->toArray();

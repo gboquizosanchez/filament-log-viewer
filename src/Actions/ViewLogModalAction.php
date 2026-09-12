@@ -10,6 +10,7 @@ use Filament\Actions\Action;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
 class ViewLogModalAction
@@ -33,11 +34,19 @@ class ViewLogModalAction
     {
         $record = $action->getRecord();
 
-        if (is_array($record)) {
-            return $record['date'] ?? '';
+        if (is_array($record) && is_string($record['date'] ?? null)) {
+            return $record['date'];
         }
 
-        return $record?->date ?? '';
+        if ($record instanceof Model) {
+            $date = $record->getAttribute('date');
+
+            if (is_string($date)) {
+                return $date;
+            }
+        }
+
+        return '';
     }
 
     private static function getHeading(Action $action): string

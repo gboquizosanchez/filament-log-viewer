@@ -31,7 +31,7 @@ class ExtractNamesUseCase
 
     /**
      * @param  list<string>  $files
-     * @return array<string, string>
+     * @return list<string>
      */
     private function extractNames(array $files): array
     {
@@ -48,36 +48,46 @@ class ExtractNamesUseCase
     /** @return list<string> */
     private function files(): array
     {
-        return array_reverse(
+        return array_values(array_reverse(
             array_filter(
-                array_map('realpath', $this->globFiles()),
+                array_map(
+                    realpath(...),
+                    $this->globFiles(),
+                ),
+                is_string(...),
             ),
-        );
+        ));
     }
 
+    /** @return list<string> */
     private function globFiles(): array
     {
         $storagePath = Config::string('filament-log-viewer.storage_path');
         $driver = FilamentLogViewerPlugin::get()->driver();
 
         if ($driver === 'raw') {
-            return File::allFiles($storagePath);
+            return array_values(array_map(
+                static fn (\SplFileInfo $file): string => $file->getPathname(),
+                File::allFiles($storagePath),
+            ));
         }
 
         return glob(
             $storagePath . DIRECTORY_SEPARATOR . $this->pattern(),
             defined('GLOB_BRACE') ? GLOB_BRACE : 0
-        );
+        ) ?: [];
     }
 
     private function pattern(): string
     {
-        $patterns = (object) Config::array('filament-log-viewer.pattern');
+        $prefix = Config::string('filament-log-viewer.pattern.prefix');
+        $date = Config::string('filament-log-viewer.pattern.date');
+        $extension = Config::string('filament-log-viewer.pattern.extension');
 
         return match (FilamentLogViewerPlugin::get()->driver()) {
-            'daily' => $patterns->prefix . $patterns->date . $patterns->extension,
-            'single' => rtrim($patterns->prefix, '-') . $patterns->extension,
-            'raw' => "*{$patterns->extension}",
+            'daily' => $prefix . $date . $extension,
+            'single' => rtrim($prefix, '-') . $extension,
+            'raw' => "*{$extension}",
         };
     }
 }

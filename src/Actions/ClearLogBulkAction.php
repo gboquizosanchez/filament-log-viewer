@@ -37,11 +37,13 @@ class ClearLogBulkAction
             ->deselectRecordsAfterCompletion();
     }
 
+    /** @param Collection<int, LogRow> $records */
     private static function getAction(Collection $records): void
     {
         $records->each(self::clear(...));
     }
 
+    /** @param LogRow $record */
     private static function clear(array $record): bool
     {
         return FilamentLogViewerPlugin::get()->clearLog($record['date']);

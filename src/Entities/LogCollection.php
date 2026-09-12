@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
 
+/** @extends LazyCollection<string, Log> */
 class LogCollection extends LazyCollection
 {
     public function __construct(mixed $source = null)
@@ -37,6 +38,7 @@ class LogCollection extends LazyCollection
         parent::__construct($source);
     }
 
+    /** @return array<string, LevelCounters> */
     public function stats(): array
     {
         return array_map(

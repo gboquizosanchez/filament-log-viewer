@@ -35,7 +35,7 @@ class EntriesTable
             //     LevelGroup::make(),
             // ])
             ->paginationPageOptions(
-                Config::array('filament-log-viewer.per-page'),
+                self::paginationPageOptions(),
             )
             ->columns([
                 EnvColumn::make(),
@@ -62,12 +62,20 @@ class EntriesTable
         return view('filament-log-viewer::log-information', [
             'data' => FilamentLogViewerPlugin::get()
                 ->getLogViewerRecord(
-                    $livewire->record->date,
+                    $livewire->getLogRow()['date'],
                 ),
             'timezone' => Config::string('app.timezone'),
         ]);
     }
 
+    /**
+     * @param array{
+     *     level?: array{
+     *         value?: string|null,
+     *     },
+     * }|null $filters
+     * @return LengthAwarePaginator<int, EntryRow>
+     */
     private static function getRecords(
         ViewLog $livewire,
         ?array $filters,
@@ -78,14 +86,14 @@ class EntriesTable
         int $recordsPerPage,
     ): LengthAwarePaginator {
         $records = FilamentLogViewerPlugin::get()
-            ->getLogViewerRecord($livewire->record->date)
+            ->getLogViewerRecord($livewire->getLogRow()['date'])
             ->toModel();
 
         $collection = collect($records)
             ->when(
                 filled($sortColumn),
                 fn (Collection $collection) => $collection->sortBy(
-                    $sortColumn,
+                    $sortColumn ?? 'datetime',
                     SORT_REGULAR,
                     $sortDirection === 'desc',
                 ),
@@ -93,18 +101,18 @@ class EntriesTable
             ->when(
                 filled($search),
                 fn (Collection $collection) => $collection->filter(
-                    fn (array $record) => Str::contains(
-                        Str::lower($record['datetime'] ?? ''),
-                        Str::lower($search),
+                    static fn (array $record) => Str::contains(
+                        Str::lower($record['datetime']),
+                        Str::lower($search ?? ''),
                     ) || Str::contains(
-                        Str::lower($record['header'] ?? ''),
-                        Str::lower($search),
+                        Str::lower($record['header']),
+                        Str::lower($search ?? ''),
                     ) || Str::contains(
-                        Str::lower($record['stack'] ?? ''),
-                        Str::lower($search),
+                        Str::lower($record['stack']),
+                        Str::lower($search ?? ''),
                     ) || Str::contains(
-                        Str::lower($record['context'] ?? ''),
-                        Str::lower($search),
+                        Str::lower($record['context']),
+                        Str::lower($search ?? ''),
                     ),
                 ),
             )
@@ -126,5 +134,14 @@ class EntriesTable
             perPage: $recordsPerPage,
             currentPage: $page,
         );
+    }
+
+    /** @return list<int|string> */
+    private static function paginationPageOptions(): array
+    {
+        return array_values(array_filter(
+            Config::array('filament-log-viewer.per-page'),
+            static fn (mixed $option): bool => is_int($option) || is_string($option),
+        ));
     }
 }

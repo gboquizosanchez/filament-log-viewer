@@ -10,12 +10,12 @@ use RuntimeException;
 
 class ExtractLogPathUseCase
 {
-    public static function execute(string $name): false | string
+    public static function execute(string $name): string
     {
         return (new self)($name);
     }
 
-    public function __invoke(string $name): false | string
+    public function __invoke(string $name): string
     {
         $path = $this->path($name);
 
@@ -25,7 +25,7 @@ class ExtractLogPathUseCase
             );
         }
 
-        return realpath($path);
+        return realpath($path) ?: $path;
     }
 
     private function path(string $name): string

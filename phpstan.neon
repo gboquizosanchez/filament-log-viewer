@@ -1,5 +1,51 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
 parameters:
-    level: 9
+    level: max
+
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+
+    typeAliases:
+        LogRow: '''
+            array{
+                date: string,
+                all: int,
+                emergency: int,
+                alert: int,
+                critical: int,
+                error: int,
+                warning: int,
+                notice: int,
+                info: int,
+                debug: int,
+            }
+            '''
+        EntryRow: '''
+            array{
+                env: string,
+                level: string,
+                datetime: string,
+                header: string,
+                stack: string,
+                context: string,
+            }
+            '''
+        LevelCounters: '''
+            array{
+                all: int,
+                emergency: int,
+                alert: int,
+                critical: int,
+                error: int,
+                warning: int,
+                notice: int,
+                info: int,
+                debug: int,
+                ...<string, int>,
+            }
+            '''
 
     paths:
         - src

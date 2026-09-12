@@ -7,6 +7,7 @@ namespace Boquizo\FilamentLogViewer\Pages;
 use BackedEnum;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Tables\LogsTable;
+use Filament\Clusters\Cluster;
 use Filament\Pages\Page;
 use Filament\Panel;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -48,7 +49,13 @@ class ListLogs extends Page implements HasTable
 
     public static function getCluster(): ?string
     {
-        return Config::get('filament-log-viewer.resource.cluster');
+        $cluster = Config::get('filament-log-viewer.resource.cluster');
+
+        if (is_string($cluster) && is_a($cluster, Cluster::class, true)) {
+            return $cluster;
+        }
+
+        return null;
     }
 
     public static function getSlug(?Panel $panel = null): string

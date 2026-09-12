@@ -39,7 +39,8 @@ it('static execute delegates to __invoke', function () {
 it('returns array for raw driver using File::allFiles', function () {
     config(['filament-log-viewer.driver' => 'raw']);
     $names = ExtractNamesUseCase::execute();
-    expect($names)->toBeArray();
+    expect($names)->toBeArray()->not->toBeEmpty()
+        ->and(array_values($names))->each->toBeString();
 });
 
 it('returns array for single driver', function () {

@@ -20,7 +20,6 @@ class ExtractFilenameUseCase
                 Config::string('log-viewer.download.prefix', 'laravel-'),
                 Config::string('log-viewer.download.extension', 'log')
             ),
-            default => $filename ?? '',
         };
     }
 }

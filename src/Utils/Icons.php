@@ -9,6 +9,7 @@ use Filament\Support\Enums\IconSize;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\HtmlString;
+use TypeError;
 
 class Icons
 {
@@ -17,10 +18,22 @@ class Icons
         $colors = Config::array('filament-log-viewer.colors.levels');
         $icons = Config::array('filament-log-viewer.icons');
 
-        $icon = $icons[$name];
+        $icon = $icons[$name] ?? null;
 
         if ($icon instanceof ScalableIcon) {
             $icon = $icon->getIconForSize($size);
+        }
+
+        if (! is_string($icon)) {
+            throw new TypeError(
+                "The configured icon for [{$name}] must be a string or scalable icon.",
+            );
+        }
+
+        $color = $colors[$name] ?? '#8A8A8A';
+
+        if (! is_string($color)) {
+            $color = '#8A8A8A';
         }
 
         return new HtmlString(
@@ -29,7 +42,7 @@ class Icons
                     '<x-%s class="%s" style="color: %s"/>',
                     $icon,
                     self::size($size),
-                    $colors[$name],
+                    $color,
                 ),
             ),
         );

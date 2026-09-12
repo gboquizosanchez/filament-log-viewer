@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
+use Boquizo\FilamentLogViewer\Actions\Concerns\ResolvesLogRecord;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
@@ -14,6 +15,8 @@ use Filament\Support\Icons\Heroicon;
 
 class DeleteAction
 {
+    use ResolvesLogRecord;
+
     public static function make(
         bool $withTooltip = false,
     ): FilamentDeleteAction {
@@ -48,9 +51,7 @@ class DeleteAction
         FilamentDeleteAction $action,
         ViewLog | ListLogs $livewire,
     ): string {
-        $model = $action->getRecord() ?? $livewire->record;
-
-        $date = $model?->date ?? $model['date'];
+        $date = self::resolveLogDate($action, $livewire);
 
         return __('filament-log-viewer::log.table.actions.delete.label', [
             'log' => ParseDateUseCase::execute($date),
@@ -62,9 +63,9 @@ class DeleteAction
         ViewLog | ListLogs $livewire,
     ): void {
         try {
-            $model = $action->getRecord() ?? $livewire->record;
-
-            FilamentLogViewerPlugin::get()->deleteLog($model?->date ?? $model['date']);
+            FilamentLogViewerPlugin::get()->deleteLog(
+                self::resolveLogDate($action, $livewire),
+            );
         } catch (Exception) {
             $action->failure();
         }

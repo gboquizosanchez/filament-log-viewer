@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Actions;
 
+use Boquizo\FilamentLogViewer\Actions\Concerns\ResolvesLogRecord;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Boquizo\FilamentLogViewer\Pages\ListLogs;
 use Boquizo\FilamentLogViewer\Pages\ViewLog;
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadAction
 {
+    use ResolvesLogRecord;
+
     public static function make(bool $withTooltip = false): Action
     {
         $action = Action::make('download')
@@ -37,9 +40,7 @@ class DownloadAction
         Action $action,
         ViewLog | ListLogs $livewire,
     ): string {
-        $model = $action->getRecord() ?? $livewire->record;
-
-        $date = $model?->date ?? $model['date'];
+        $date = self::resolveLogDate($action, $livewire);
 
         return __('filament-log-viewer::log.table.actions.download.label', [
             'log' => ParseDateUseCase::execute($date),
@@ -50,8 +51,8 @@ class DownloadAction
         Action $action,
         ViewLog | ListLogs $livewire,
     ): BinaryFileResponse {
-        $model = $action->getRecord() ?? $livewire->record;
-
-        return FilamentLogViewerPlugin::get()->downloadLog($model?->date ?? $model['date']);
+        return FilamentLogViewerPlugin::get()->downloadLog(
+            self::resolveLogDate($action, $livewire),
+        );
     }
 }

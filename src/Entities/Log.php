@@ -47,7 +47,7 @@ class Log extends Entity
 
     public function createdAt(): Carbon
     {
-        return Carbon::createFromTimestamp(filectime($this->file->getPathname()));
+        return Carbon::createFromTimestamp($this->file->getCTime());
     }
 
     public function updatedAt(): Carbon
@@ -62,11 +62,13 @@ class Log extends Entity
             : $this->level($level);
     }
 
+    /** @return list<EntryRow> */
     public function toModel(): array
     {
-        return $this->entries()
+        return array_values(collect($this->entries()->all())
             ->map(fn (Entry $entry): array => $entry->toArray())
-            ->all() ?? [];
+            ->values()
+            ->all());
     }
 
     public function level(string $level): EntryCollection
@@ -74,6 +76,7 @@ class Log extends Entity
         return $this->entries->filterByLevel($level);
     }
 
+    /** @return LevelCounters */
     public function stats(): array
     {
         return $this->entries->stats();
@@ -83,9 +86,16 @@ class Log extends Entity
     #[Override]
     public function toJson($options = 0): string
     {
-        return json_encode($this->toArray(), $options);
+        return json_encode($this->toArray(), $options | JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @return array{
+     *     date: string,
+     *     path: string,
+     *     entries: list<EntryRow>,
+     * }
+     */
     #[Override]
     public function jsonSerialize(): array
     {
@@ -96,15 +106,8 @@ class Log extends Entity
      * @return array{
      *     date: string,
      *     path: string,
-     *     entries: array{
-     *        env: string,
-     *        level: string,
-     *        datetime: \Carbon\Carbon::class,
-     *        header: string,
-     *        stack: string,
-     *        context: string
-     *     }[]
-     *  }
+     *     entries: list<EntryRow>,
+     * }
      */
     #[Override]
     public function toArray(): array
@@ -112,7 +115,7 @@ class Log extends Entity
         return [
             'date' => $this->date,
             'path' => $this->path,
-            'entries' => $this->entries->toArray(),
+            'entries' => $this->toModel(),
         ];
     }
 }

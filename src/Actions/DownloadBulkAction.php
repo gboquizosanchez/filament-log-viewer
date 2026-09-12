@@ -31,12 +31,16 @@ class DownloadBulkAction
             ->action(self::getAction(...));
     }
 
+    /** @param Collection<int, LogRow> $records */
     private static function getAction(
         BulkAction $action,
         Collection $records,
     ): ?BinaryFileResponse {
         try {
-            $logs = $records->pluck('date')->all();
+            $logs = array_values($records
+                ->map(static fn (array $record): string => $record['date'])
+                ->values()
+                ->all());
 
             return FilamentLogViewerPlugin::get()->downloadLogs($logs);
         } catch (Exception) {

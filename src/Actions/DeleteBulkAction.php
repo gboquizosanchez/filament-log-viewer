@@ -26,11 +26,13 @@ class DeleteBulkAction
         $action->success();
     }
 
+    /** @param Collection<int, LogRow> $records */
     private static function processing(Collection $records): void
     {
         $records->each(self::delete(...));
     }
 
+    /** @param LogRow $record */
     private static function delete(array $record): bool
     {
         return FilamentLogViewerPlugin::get()->deleteLog($record['date']);

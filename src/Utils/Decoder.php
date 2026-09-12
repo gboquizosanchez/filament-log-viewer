@@ -12,7 +12,7 @@ class Decoder
             $decodedAttempt = json_decode($data, true);
 
             if (json_last_error() === JSON_ERROR_NONE
-                && (is_array($decodedAttempt) || is_object($decodedAttempt))
+                && is_array($decodedAttempt)
             ) {
                 return self::decode($decodedAttempt);
             }

@@ -21,6 +21,7 @@ class ViewLogAction
             ->color('info');
     }
 
+    /** @param LogRow $record */
     private static function getUrl(array $record): string
     {
         return ViewLog::getUrl([

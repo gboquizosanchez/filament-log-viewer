@@ -16,6 +16,7 @@ class LevelGroup
             ->getTitleFromRecordUsing(self::getTitle(...));
     }
 
+    /** @param EntryRow $record */
     private static function getTitle(array $record): string
     {
         return Level::from($record['level'])->label();

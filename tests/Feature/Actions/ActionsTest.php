@@ -104,6 +104,30 @@ it('ViewLogModalAction::make() returns Action', function () {
 
 // BackAction::getAction is covered by the Livewire callAction test in ViewLogTest.php
 
+it('resolves records consistently for list and view actions', function (string $actionClass) {
+    $method = new ReflectionMethod($actionClass, 'resolveLogDate');
+    $method->setAccessible(true);
+
+    $tableAction = Mockery::mock(Action::class);
+    $tableAction->shouldReceive('getRecord')->andReturn(['date' => '2024-01-15']);
+
+    expect($method->invoke(null, $tableAction, Mockery::mock(ListLogs::class)))
+        ->toBe('2024-01-15');
+
+    $headerAction = Mockery::mock(Action::class);
+    $headerAction->shouldReceive('getRecord')->andReturn(null);
+
+    $viewLog = Mockery::mock(ViewLog::class)->makePartial();
+    $viewLog->record = ['date' => '2024-01-16'];
+
+    expect($method->invoke(null, $headerAction, $viewLog))
+        ->toBe('2024-01-16');
+})->with([
+    ClearLogAction::class,
+    DeleteAction::class,
+    DownloadAction::class,
+]);
+
 // ClearLogAction::getTitle
 it('ClearLogAction getTitle returns string with date from record array', function () {
     $method = new ReflectionMethod(ClearLogAction::class, 'getTitle');
@@ -126,7 +150,7 @@ it('ClearLogAction getTitle uses livewire record when action has no record', fun
     $action->shouldReceive('getRecord')->andReturn(null);
 
     $livewire = Mockery::mock(ViewLog::class);
-    $livewire->record = (object) ['date' => '2024-01-15'];
+    $livewire->shouldReceive('getLogRow')->andReturn(['date' => '2024-01-15']);
 
     $result = $method->invoke(null, $action, $livewire);
     expect($result)->toBeString()->toContain('2024');

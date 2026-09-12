@@ -28,6 +28,7 @@ class ContextAction
             ->modalSubmitAction(false);
     }
 
+    /** @param EntryRow $record */
     private static function getHidden(array $record): bool
     {
         return $record['context'] === '[]';

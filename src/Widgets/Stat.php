@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Boquizo\FilamentLogViewer\Widgets;
 
+use BackedEnum;
 use Boquizo\FilamentLogViewer\Utils\Level;
 use Filament\Widgets\StatsOverviewWidget\Stat as FilamentStat;
 use Illuminate\Support\Arr;
@@ -12,15 +13,34 @@ use Illuminate\Support\HtmlString;
 
 class Stat
 {
+    /**
+     * @param array{
+     *     name: string,
+     *     count: int,
+     *     percent: float|int,
+     *     totals: array<string, array{
+     *         label: string,
+     *         value: int,
+     *         color: string,
+     *         highlight: string,
+     *     }>,
+     * } $data
+     */
     public static function make(string $level, array $data): FilamentStat
     {
         $label = $data['name'];
         $value = $data['count'];
         $progressColor = self::getProgressColor($level, $data);
 
+        $icon = Config::get("filament-log-viewer.icons.{$level}");
+
+        if (! is_string($icon) && ! $icon instanceof BackedEnum && $icon !== null) {
+            throw new \TypeError("The configured icon for [{$level}] is invalid.");
+        }
+
         return FilamentStat::make($label, $value)
             ->label(self::getLabel($label, $progressColor))
-            ->icon(Config::get("filament-log-viewer.icons.{$level}"))
+            ->icon($icon)
             ->description(self::getDescription([
                 'progressColor' => $progressColor,
                 'style' => self::getStyle($level, $progressColor),
@@ -28,9 +48,25 @@ class Stat
             ]));
     }
 
+    /**
+     * @param array{
+     *     totals: array<string, array{
+     *         label: string,
+     *         value: int,
+     *         color: string,
+     *         highlight: string,
+     *     }>,
+     * } $data
+     */
     private static function getProgressColor(string $level, array $data): string
     {
-        return Arr::get($data, "totals.{$level}.color", '#8A8A8A');
+        $color = Arr::get($data, "totals.{$level}.color", '#8A8A8A');
+
+        if (is_string($color)) {
+            return $color;
+        }
+
+        return '#8A8A8A';
     }
 
     private static function getLabel(string $name, string $progressColor): HtmlString
@@ -84,10 +120,17 @@ class Stat
         return array_search($level, array_keys($colors), true) + 1;
     }
 
+    /**
+     * @param array{
+     *     progressColor: string,
+     *     style: string,
+     *     percent: float|int,
+     * } $array
+     */
     private static function getDescription(array $array): HtmlString
     {
         return new HtmlString(
-            view('filament-log-viewer::progress-bar', $array),
+            view('filament-log-viewer::progress-bar', $array)->render(),
         );
     }
 }

@@ -129,7 +129,7 @@ it('NameColumn getFormatStateUsing returns date from record with date field', fu
 });
 
 it('NameColumn getFormatStateUsing formats datetime when date is null', function () {
-    $record = ['date' => null, 'datetime' => '2024-01-15 10:30:45'];
+    $record = ['datetime' => '2024-01-15 10:30:45'];
     $result = NameColumn::getFormatStateUsing($record);
     expect($result)->toBeString()->toContain('2024-01-15');
 });
