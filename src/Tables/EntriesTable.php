@@ -30,10 +30,6 @@ class EntriesTable
         return $table
             ->records(self::getRecords(...))
             ->header(self::getHeader(...))
-            // TODO: Fix grouping. Groups not working with custom data feature.
-            // ->groups([
-            //     LevelGroup::make(),
-            // ])
             ->paginationPageOptions(
                 self::paginationPageOptions(),
             )
