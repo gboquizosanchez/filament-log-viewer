@@ -159,7 +159,7 @@
                                     <summary class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
                                         {{ __('filament-log-viewer::log.table.modal.context') }}
                                     </summary>
-                                    <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words" x-text="entry.context"></pre>
+                                    <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded max-h-64 overflow-auto font-mono whitespace-pre-wrap break-words" x-text="entry.context"></pre>
                                 </details>
                             </template>
                             <template x-if="entry.stack">
@@ -167,7 +167,7 @@
                                     <summary class="text-xs text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300">
                                         {{ __('filament-log-viewer::log.table.modal.stack_trace') }}
                                     </summary>
-                                    <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded overflow-x-auto font-mono whitespace-pre-wrap break-words" x-html="formatStack(entry.stack)"></pre>
+                                    <pre class="mt-2 p-3 text-xs bg-gray-100 dark:bg-gray-900 rounded max-h-64 overflow-auto font-mono whitespace-pre-wrap break-words" x-html="formatStack(entry.stack)"></pre>
                                 </details>
                             </template>
                         </div>
