@@ -1,0 +1,16 @@
+* text=auto eol=lf
+
+/.github export-ignore
+/.idea export-ignore
+/build export-ignore
+/docs export-ignore
+/tests export-ignore
+/.editorconfig export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/phpstan.neon export-ignore
+/phpunit.xml export-ignore
+/phpunit.xml.dist export-ignore
+/testbench.yaml export-ignore
+/CHANGELOG.md export-ignore
